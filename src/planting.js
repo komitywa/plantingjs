@@ -14,7 +14,7 @@
         pe.proxy.append('<div class="plantingjs-toolbox"></div>');
         pe.toolbox = pe.proxy.find(".plantingjs-toolbox");
         pe.proxy.append('<div class="plantingjs-overlay"></div>');
-        pe.overlay = pe.proxy.find(".plantingjs-proxy");
+        pe.overlay = pe.proxy.find(".plantingjs-overlay");
         pe.proxy.append('<div class="plantingjs-google"></div>');
         pe.google = pe.proxy.find(".plantingjs-google");
     }
