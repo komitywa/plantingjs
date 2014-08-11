@@ -27,27 +27,33 @@
         pe.map = new google.maps.Map(pe.google.get(0), mapOptions);
         pe.pano = pe.map.getStreetView();
 
-        var toogle_start_button = (function (pe) {
-            return function () {
-                if (pe.pano.getVisible()) {
-                    pe.startBtn.show();
-                } else {
-                    pe.startBtn.hide();
-                }
-            };
-        }) (pe);
+        google.maps.event.addListener(pe.pano, 'visible_changed', toogle_start_button(pe));
+        pe.startBtn.click(start_planting(pe));
+    }
 
-        var start_planting = (function (pe) {
-            return function () {
-                pe.overlay.show();
-                pe.toolbox.show();
+    function toogle_start_button(pe) {
+        return function () {
+            if (pe.pano.getVisible()) {
+                pe.startBtn.show();
+            } else {
                 pe.startBtn.hide();
-            };
-        }) (pe);
+            }
+        };
+    }
 
-        google.maps.event.addListener(pe.pano, 'visible_changed', toogle_start_button);
+    function start_planting(pe) {
+        return function () {
+            pe.overlay.show();
+            pe.toolbox.show();
+            pe.startBtn.hide();
+            pe.pano.setOptions({
+                panControl: false,
+                zoomControl: false,
+                addressControl: false,
+                linkControl: false,
+            });
 
-        pe.startBtn.click(start_planting);
+        };
     }
 
     function FromMap(values) {
