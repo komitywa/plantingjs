@@ -56,9 +56,17 @@
         };
     }
 
+    function download_bucket(pe) {
+        return function (data) {
+        };
+    }
+
     function FromMap(values) {
         createContainers(this, values.div);
         initialazeMap(this, values.lat, values.lng, values.zoom);
+
+        this.bucket = values.bucket;
+        $.ajax(this.bucket).success(download_bucket(this));
     }
 
     function FromStreetView(values) {
