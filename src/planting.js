@@ -50,7 +50,7 @@
                 panControl: false,
                 zoomControl: false,
                 addressControl: false,
-                linkControl: false,
+                linksControl: false,
             });
 
         };
