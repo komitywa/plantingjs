@@ -34,10 +34,20 @@
                 } else {
                     pe.startBtn.hide();
                 }
-            }
+            };
+        }) (pe);
+
+        var start_planting = (function (pe) {
+            return function () {
+                pe.overlay.show();
+                pe.toolbox.show();
+                pe.startBtn.hide();
+            };
         }) (pe);
 
         google.maps.event.addListener(pe.pano, 'visible_changed', toogle_start_button);
+
+        pe.startBtn.click(start_planting);
     }
 
     function FromMap(values) {

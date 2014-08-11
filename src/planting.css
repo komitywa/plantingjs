@@ -1,41 +1,41 @@
 .plantingjs-proxy {
-	position: relative;
-	height: 100%;
-	width: 100%;
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
-      
+
 .plantingjs-overlay {
-	height: 100%; 
-	width: 100%; 
-	z-index: 1;
-	display: none;
-	position: absolute;
-	overflow: hidden;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    display: none;
+    position: absolute;
+    overflow: hidden;
 }
 
 .plantingjs-google {
-	height: 100%;
-	width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .plantingjs-startbtn {
-	z-index: 999;
-	display: none;
-	position: absolute;
-  	top: 5px;
-  	left: 50%;
-  	margin-left: -180px;
- 	background-color: #fff;
-  	padding: 5px;
-  	border: 1px solid #999;
+    z-index: 999;
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: -180px;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
 }
 
 .plantingjs-toolbox {
-	z-index: 999;
-	display:none;
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	width: 150px;
-	height: 500px;
+    z-index: 999;
+    display:none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 150px;
+    height: 500px;
 }
