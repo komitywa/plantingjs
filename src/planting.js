@@ -56,44 +56,45 @@
         };
     }
 
-    function download_bucket(pe) {
+    function download_manifesto(pe) {
         return function (data) {
+            pe.lat = data.lat;
+            pe.lng = data.lng;
+            pe.zoom = data.zoom;
+            initialazeMap(pe, pe.lat, pe.lng, pe.zoom);
         };
     }
 
-    function FromMap(values) {
-        createContainers(this, values.div);
-        initialazeMap(this, values.lat, values.lng, values.zoom);
-
-        this.bucket = values.bucket;
-        $.ajax(this.bucket).success(download_bucket(this));
+    function FromMap(div, manifesto) {
+        this.manifesto = manifesto;
+        createContainers(this, div);
+        $.getJSON(this.manifesto).done(download_manifesto(this));
     }
 
-    function FromStreetView(values) {
-        createContainers(this, values.div);
+    function FromStreetView(div, manifesto) {
+        createContainers(this, div);
     }
 
-    function Viewer(values) {
-        createContainers(this, values.div);
-        
+    function Viewer(div, manifesto) {
+        createContainers(this, div);
     }
 
     PlantingJS = {
 
-        fromMap: function (values) {
-            var pe = new FromMap(values);
+        fromMap: function (div, manifesto) {
+            var pe = new FromMap(div, manifesto);
             plantingEngineList.push(pe);
             return pe;
         },
 
-        fromStreetView: function (values) {
-            var pe = new FromStreetView(values);
+        fromStreetView: function (div, manifesto) {
+            var pe = new FromStreetView(div, manifesto);
             plantingEngineList.push(pe);
             return pe;
         },
 
-        viewer: function (values) {
-            var pe = new Viewer(values);
+        viewer: function (div, manifesto) {
+            var pe = new Viewer(div, manifesto);
             plantingEngineList.push(pe);
             return pe;
         },
