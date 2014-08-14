@@ -40,3 +40,17 @@
     width: 320px;
     background-color:  #fff;
 }
+
+.plantingjs-toolboxobject-container {
+    position: relative;
+}
+
+.plantingjs-toolboxobject-prototype, .plantingjs-toolboxobject-draggable {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.plantingjs-hidden {
+    display: none;
+}

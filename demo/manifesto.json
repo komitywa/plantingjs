@@ -2,7 +2,7 @@
     "lat": 52.3965155,
     "lng": 16.8978846,
     "zoom": 14,
-    "bucket": [
+    "toolboxobjects": [
         {
             "projections": [
                 "http://localhost:8000/demo/objects/00.png",

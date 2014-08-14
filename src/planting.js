@@ -15,6 +15,7 @@
         pe.toolbox = pe.proxy.find(".plantingjs-toolbox");
         pe.proxy.append('<div class="plantingjs-overlay"></div>');
         pe.overlay = pe.proxy.find(".plantingjs-overlay");
+        pe.overlay.droppable({ drop: plant_object(pe), accept: ".plantingjs-toolboxobject-draggable"});
         pe.proxy.append('<div class="plantingjs-google"></div>');
         pe.google = pe.proxy.find(".plantingjs-google");
     }
@@ -56,12 +57,47 @@
         };
     }
 
+    function plant_object(pe) {
+        return function (e, ui) {
+            for (var i = 0; i < pe.toolboxobjects.length; i++) {
+                if (ui.draggable.is(pe.toolboxobjects[i].draggable)) {
+                    pe.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
+                }
+            }
+        };
+    }
+
+    function download_toolbox(pe) {
+        for (var i = 0; i < pe.toolboxobjects.length; i++) {
+            pe.toolbox.append('<div class="plantingjs-toolboxobject-container">' +
+                '<div class="plantingjs-toolboxobject-prototype"></div>' +
+                '<div class="plantingjs-toolboxobject-draggable"></div>' +
+                '</div>');
+            var container = pe.toolbox.find('.plantingjs-toolboxobject-container').last();
+            var prototype = container.find('.plantingjs-toolboxobject-prototype');
+            var draggable = container.find('.plantingjs-toolboxobject-draggable');
+            var img = $('<img />').attr('src', pe.toolboxobjects[i].projections[0]);
+            prototype.append(img.clone());
+            draggable.append(img).draggable({ containment: ".plantingjs-overlay" });
+            pe.toolboxobjects[i].container = container;
+            pe.toolboxobjects[i].draggable = draggable;
+        }
+
+        for (var i = 0; i < pe.toolboxobjects.length; i++) {
+            for (var j = 0; j < 36; j++) {
+                var img = $('<img />').attr('src', pe.toolboxobjects[i].projections[j]);
+            }
+        }
+    }
+
     function download_manifesto(pe) {
         return function (data) {
             pe.lat = data.lat;
             pe.lng = data.lng;
             pe.zoom = data.zoom;
+            pe.toolboxobjects = data.toolboxobjects;
             initialazeMap(pe, pe.lat, pe.lng, pe.zoom);
+            download_toolbox(pe);
         };
     }
 
