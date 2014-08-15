@@ -1,6 +1,7 @@
 (function ($) {
 
     var plantingEngineList = [];
+    $(window).resize(engine_resize);
 
     function createContainers(pe, div) {
         pe.container = div.first();
@@ -16,6 +17,8 @@
         pe.proxy.append('<div class="plantingjs-overlay"></div>');
         pe.overlay = pe.proxy.find(".plantingjs-overlay");
         pe.overlay.droppable({ drop: plant_object(pe), accept: ".plantingjs-toolboxobject-draggable"});
+        pe.width = pe.overlay.width();
+        pe.height = pe.overlay.height();
         pe.proxy.append('<div class="plantingjs-google"></div>');
         pe.google = pe.proxy.find(".plantingjs-google");
         pe.plantedobjects = [];
@@ -65,8 +68,6 @@
 
                     var containerOffset = pe.container.offset();
                     var objectOffset = pe.toolboxobjects[i].draggable.offset();
-                    console.log(containerOffset);
-                    console.log(objectOffset);
                     var top = objectOffset.top - containerOffset.top;
                     var left = objectOffset.left - containerOffset.left;
 
@@ -78,11 +79,44 @@
                         .append(img)
                         .append(tools);
                     pe.overlay.append(container);
-
+                    pe.plantedobjects.push({
+                        container: container,
+                        tools: tools,
+                        img: img,
+                    });
                     pe.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
                 }
             }
         };
+    }
+
+    function engine_resize() {
+        for(var i = 0; i < plantingEngineList.length; i++) {
+            var pe = plantingEngineList[i];
+            var oldH = pe.height;
+            var oldW = pe.width;
+            var newH = pe.overlay.height();
+            var newW = pe.overlay.width();
+            var scale = newW / oldW;
+
+            for(var j = 0; j < pe.plantedobjects.length; j++)
+            {
+                var h = pe.plantedobjects[j].img.height()
+                var w = pe.plantedobjects[j].img.width();
+                pe.plantedobjects[j].img.height(h * scale);
+                pe.plantedobjects[j].img.width(w * scale);
+
+                var pos = pe.plantedobjects[j].container.position();
+                var t = pos.top;
+                var l = pos.left;
+                l = l * scale;
+                t = newH / 2 + (t - oldH / 2) * scale;
+                pe.plantedobjects[j].container.css({ top: t, left: l});
+            }
+
+            pe.height = newH;
+            pe.width = newW;
+        }
     }
 
     function download_toolbox(pe) {
