@@ -54,3 +54,16 @@
 .plantingjs-hidden {
     display: none;
 }
+
+.plantingjs-plantedobject-container {
+    position: absolute;
+}
+
+.plantingjs-plantedobject-tools {
+    width: 100px;
+    height: 20px;
+    top: -20px;
+    left: 0px;
+    position: absolute;
+    background-color: #fff;
+}

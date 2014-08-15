@@ -18,6 +18,7 @@
         pe.overlay.droppable({ drop: plant_object(pe), accept: ".plantingjs-toolboxobject-draggable"});
         pe.proxy.append('<div class="plantingjs-google"></div>');
         pe.google = pe.proxy.find(".plantingjs-google");
+        pe.plantedobjects = [];
     }
 
     function initialazeMap(pe, lat, lng, zoom) {
@@ -61,6 +62,23 @@
         return function (e, ui) {
             for (var i = 0; i < pe.toolboxobjects.length; i++) {
                 if (ui.draggable.is(pe.toolboxobjects[i].draggable)) {
+
+                    var containerOffset = pe.container.offset();
+                    var objectOffset = pe.toolboxobjects[i].draggable.offset();
+                    console.log(containerOffset);
+                    console.log(objectOffset);
+                    var top = objectOffset.top - containerOffset.top;
+                    var left = objectOffset.left - containerOffset.left;
+
+                    var img = $('<img />').attr('src', pe.toolboxobjects[i].projections[0]);
+                    var tools = $('<div class="plantingjs-plantedobject-tools" />');
+                    var container = $('<div class="plantingjs-plantedobject-container">')
+                        .offset({ top: top, left: left})
+                        .draggable()
+                        .append(img)
+                        .append(tools);
+                    pe.overlay.append(container);
+
                     pe.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
                 }
             }
