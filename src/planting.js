@@ -14,6 +14,9 @@
         pe.startBtn = pe.proxy.find(".plantingjs-startbtn");
         pe.proxy.append('<div class="plantingjs-toolbox"></div>');
         pe.toolbox = pe.proxy.find(".plantingjs-toolbox");
+        pe.toolbox.append('<div class="plantingjs-savebtn">SAVE</div>');
+        pe.saveBtn = pe.toolbox.find(".plantingjs-savebtn");
+        pe.saveBtn.click(save(pe));
         pe.proxy.append('<div class="plantingjs-overlay"></div>');
         pe.overlay = pe.proxy.find(".plantingjs-overlay");
         pe.overlay.droppable({ drop: plant_object(pe), accept: ".plantingjs-toolboxobject-draggable"});
@@ -80,6 +83,8 @@
                         .append(tools);
                     pe.overlay.append(container);
                     pe.plantedobjects.push({
+                        object: i,
+                        projection: 0,
                         container: container,
                         tools: tools,
                         img: img,
@@ -117,6 +122,35 @@
             pe.height = newH;
             pe.width = newW;
         }
+    }
+
+    function save(pe) {
+        return function () {
+            var position = pe.pano.getPosition();
+            var pov = pe.pano.getPov();
+            var save_json = {
+                manifesto: pe.manifesto,
+                lat: position.lat(),
+                lng: position.lng(),
+                heading: pov.heading,
+                pitch: pov.pitch,
+                zoom: pe.pano.getZoom(),
+                objects: []
+            };
+            for (var i = 0; i < pe.plantedobjects.length; i++) {
+                position = pe.plantedobjects[i].container.position();
+                save_json.objects.push({
+                    object: pe.plantedobjects[i].object,
+                    projection: pe.plantedobjects[i].projection,
+                    width: pe.plantedobjects[i].img.width()/pe.width,
+                    position: {
+                        x: position.left / pe.width,
+                        y: (position.top - pe.height / 2) / pe.width
+                    }
+                });
+            }
+            console.log(JSON.stringify(save_json));
+        };
     }
 
     function download_toolbox(pe) {
