@@ -187,6 +187,46 @@
         };
     }
 
+    function plant_objects_for_view(pe) {
+        return function (data) {
+            for (var i = 0; i < pe.plantedobjects.length; i++) {
+                pe.plantedobjects[i].url = data.toolboxobjects[pe.plantedobjects[i].object].projections[pe.plantedobjects[i].projection];
+                var img = $('<img />')
+                    .attr('src', pe.plantedobjects[i].url)
+                var containerOffset = pe.container.offset();
+                var div = $('<div class="plantingjs-plantedobject-container" />')
+                    .offset({
+                        left: containerOffset.left + pe.plantedobjects[i].position.x * pe.width,
+                        top: containerOffset.top + pe.height / 2 + pe.plantedobjects[i].position.y * pe.width
+                    });
+                div.append(img);
+                pe.overlay.append(div);
+            }
+        }
+    }
+
+    function download_view(pe) {
+        return function (data) {
+            pe.manifesto = data.manifesto;
+            pe.lat = data.lat;
+            pe.lng = data.lng;
+            pe.heading = data.heading;
+            pe.pitch = data.pitch;
+            pe.zoom = data.zoom;
+            pe.plantedobjects = data.objects;
+            var panoOptions = {
+                position: {lat: pe.lat, lng: pe.lng},
+                pov: {heading: pe.heading, pitch: pe.pitch, zoom: pe.zoom},
+                panControl: false,
+                zoomControl: false,
+                addressControl: false,
+                linksControl: false
+            };
+            pe.pano = new  google.maps.StreetViewPanorama(pe.google.get(0), panoOptions);
+            $.getJSON(pe.manifesto).done(plant_objects_for_view(pe));
+        }
+    }
+
     function FromMap(div, manifesto) {
         this.manifesto = manifesto;
         createContainers(this, div);
@@ -198,7 +238,12 @@
     }
 
     function Viewer(div, manifesto) {
+        this.view = manifesto;
         createContainers(this, div);
+        this.overlay
+            .droppable("disable")
+            .show();
+        $.getJSON(this.view).done(download_view(this));
     }
 
     PlantingJS = {
