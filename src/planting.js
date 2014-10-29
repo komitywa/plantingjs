@@ -192,7 +192,7 @@
             for (var i = 0; i < pe.plantedobjects.length; i++) {
                 pe.plantedobjects[i].url = data.toolboxobjects[pe.plantedobjects[i].object].projections[pe.plantedobjects[i].projection];
                 var img = $('<img />')
-                    .attr('src', pe.plantedobjects[i].url)
+                    .attr('src', pe.plantedobjects[i].url);
                 var containerOffset = pe.container.offset();
                 var div = $('<div class="plantingjs-plantedobject-container" />')
                     .offset({
@@ -201,6 +201,8 @@
                     });
                 div.append(img);
                 pe.overlay.append(div);
+                pe.plantedobjects[i].img = img;
+                pe.plantedobjects[i].container = div;
             }
         }
     }
