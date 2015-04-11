@@ -39,7 +39,10 @@ Planting.prototype.plant_object = function () {
                 var img = $('<img />').attr('src', that.toolboxobjects[i].projections[0]);
                 var uiTrash = $('<span class="icon-trash" />');
                 var uiResize = $('<span class="icon-resize" />');
-                var uiRefresh = $('<span class="icon-loop" />');
+                var uiRefresh = $('<span class="icon-loop" />')
+                    .append('<span class="icon-menu-left" />')
+                    .append('<span class="degrees">0&deg;</span>')
+                    .append('<span class="icon-menu-right" />');
                 var tools = $('<div class="plantingjs-plantedobject-tools" />')
                     .append(uiTrash)
                     .append(uiResize)
