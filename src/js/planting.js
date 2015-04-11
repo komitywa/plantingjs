@@ -14,7 +14,7 @@
         pe.startBtn = pe.proxy.find(".plantingjs-startbtn");
         pe.proxy.append('<div class="plantingjs-toolbox"></div>');
         pe.toolbox = pe.proxy.find(".plantingjs-toolbox");
-        pe.toolbox.append('<div class="plantingjs-savebtn">SAVE</div>');
+        pe.toolbox.append('<div class="plantingjs-savebtn"><span class="icon-uni77"></span> SAVE</div>');
         pe.saveBtn = pe.toolbox.find(".plantingjs-savebtn");
         pe.saveBtn.click(save(pe));
         pe.proxy.append('<div class="plantingjs-overlay"></div>');
@@ -162,8 +162,10 @@
     function download_toolbox(pe) {
         for (var i = 0; i < pe.toolboxobjects.length; i++) {
             pe.toolbox.append('<div class="plantingjs-toolboxobject-container">' +
+                '<div class="plantingjs-toolboxobject-item">' +
                 '<div class="plantingjs-toolboxobject-prototype"></div>' +
                 '<div class="plantingjs-toolboxobject-draggable"></div>' +
+                '</div>' +
                 '</div>');
             var container = pe.toolbox.find('.plantingjs-toolboxobject-container').last();
             var prototype = container.find('.plantingjs-toolboxobject-prototype');
