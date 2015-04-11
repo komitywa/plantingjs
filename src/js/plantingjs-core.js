@@ -41,13 +41,13 @@ PlantingJS.prototype.initFromMap = function (div, manifesto) {
     return pe;
 };
 
-PlantingJS.prototype.fromStreetView = function (div, manifesto) {
+PlantingJS.prototype.initFromStreetView = function (div, manifesto) {
     var pe = new Planting(div);
     this.plantingEngineList.push(pe);
     return pe;
 };
 
-PlantingJS.prototype.viewer = function (div, manifesto) {
+PlantingJS.prototype.initViewer = function (div, manifesto) {
     var pe = new Planting(div);
     this.plantingEngineList.push(pe);
     pe.overlay
