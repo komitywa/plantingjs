@@ -37,7 +37,13 @@ Planting.prototype.plant_object = function () {
                 var left = objectOffset.left - containerOffset.left;
 
                 var img = $('<img />').attr('src', that.toolboxobjects[i].projections[0]);
-                var tools = $('<div class="plantingjs-plantedobject-tools" />');
+                var uiTrash = $('<span class="icon-trash" />');
+                var uiResize = $('<span class="icon-resize" />');
+                var uiRefresh = $('<span class="icon-loop" />');
+                var tools = $('<div class="plantingjs-plantedobject-tools" />')
+                    .append(uiTrash)
+                    .append(uiResize)
+                    .append(uiRefresh);
                 var container = $('<div class="plantingjs-plantedobject-container">')
                     .offset({ top: top, left: left})
                     .draggable()
