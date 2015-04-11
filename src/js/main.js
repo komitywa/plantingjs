@@ -1,5 +1,8 @@
+var plantingJSInstance;
+
 $(document).ready(
     function () {
-      PlantingJS.fromMap($("#viewport"), "/manifesto.json");
+      plantingJSInstance = new PlantingJS();
+      plantingJSInstance.initFromMap($("#viewport"), "/manifesto.json");
     }
 );
