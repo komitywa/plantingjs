@@ -64,11 +64,33 @@
         };
     }
 
+    function rotate_object(e) {
+        var plantedObject = e.data.plantedObject;
+        var direction = e.data.direction;
+        var toolBoxObjects = e.data.toolBoxObjects;
+
+        var projections = toolBoxObjects[plantedObject.object].projections;
+
+        if (direction === 'left') {
+            if (plantedObject.projection === 0) {
+                plantedObject.projection = projections.length;
+            } else {
+                plantedObject.projection -= 1;
+            }
+            plantedObject.img = plantedObject.img.attr('src', projections[plantedObject.projection]);
+        } else if (direction === 'right') {
+            if (plantedObject.projection === projections.length) {
+                plantedObject.projection = 0;
+            } else {
+                plantedObject.projection += 1;
+            }
+        }
+    }
+
     function plant_object(pe) {
         return function (e, ui) {
             for (var i = 0; i < pe.toolboxobjects.length; i++) {
                 if (ui.draggable.is(pe.toolboxobjects[i].draggable)) {
-
                     var containerOffset = pe.container.offset();
                     var objectOffset = pe.toolboxobjects[i].draggable.offset();
                     var top = objectOffset.top - containerOffset.top;
@@ -76,19 +98,25 @@
 
                     var img = $('<img />').attr('src', pe.toolboxobjects[i].projections[0]);
                     var tools = $('<div class="plantingjs-plantedobject-tools" />');
+                    tools.append('<div class="plantingjs-rotate"></div>');
+                    tools.rotate = tools.find('.plantingjs-rotate');
+                    tools.rotate.append('<div class="plantingjs-rotate-left"><</div>');
+                    tools.rotate.left = tools.find('.plantingjs-rotate-left');
                     var container = $('<div class="plantingjs-plantedobject-container">')
                         .offset({ top: top, left: left})
                         .draggable()
                         .append(img)
                         .append(tools);
                     pe.overlay.append(container);
-                    pe.plantedobjects.push({
+                    var plant = {
                         object: i,
                         projection: 0,
                         container: container,
                         tools: tools,
                         img: img,
-                    });
+                    }
+                    tools.rotate.left.on('click', {toolBoxObjects: pe.toolboxobjects, plantedObject: plant, direction: 'left'}, rotate_object);
+                    pe.plantedobjects.push(plant);
                     pe.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
                 }
             }
