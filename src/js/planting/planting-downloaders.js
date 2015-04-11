@@ -11,7 +11,14 @@ Planting.prototype.download_toolbox = function () {
         var draggable = container.find('.plantingjs-toolboxobject-draggable');
         var img = $('<img />').attr('src', this.toolboxobjects[i].projections[0]);
         prototype.append(img.clone());
-        draggable.append(img).draggable({ containment: ".plantingjs-overlay" });
+
+        draggable.append(img).draggable({
+            containment: ".plantingjs-overlay" ,
+            helper: 'clone',
+            appendTo: '.plantingjs-overlay',
+            zIndex: 1000
+        });
+
         this.toolboxobjects[i].container = container;
         this.toolboxobjects[i].draggable = draggable;
     }

@@ -5,11 +5,11 @@ function Planting(div) {
         .empty()
         .append('<div class="plantingjs-proxy"></div>');
     this.proxy = this.container.find(".plantingjs-proxy");
-    this.proxy.append('<div class="plantingjs-startbtn"><span class="icon-uniE08A"></span> 2sStart planting!</div>');
+    this.proxy.append('<div class="plantingjs-startbtn"><span class="icon-uniE08A"></span> Start planting!</div>');
     this.startBtn = this.proxy.find(".plantingjs-startbtn");
     this.proxy.append('<div class="plantingjs-toolbox"></div>');
     this.toolbox = this.proxy.find(".plantingjs-toolbox");
-    this.toolbox.append('<div class="plantingjs-savebtn"><span class="icon-uni77"></span> SAVE</div>');
+    this.toolbox.append('<div class="plantingjs-savebtn">SAVE</div>');
     this.saveBtn = this.toolbox.find(".plantingjs-savebtn");
     this.saveBtn.click(this.save(this));
     this.proxy.append('<div class="plantingjs-overlay"></div>');
