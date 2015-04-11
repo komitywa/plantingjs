@@ -1,8 +1,4 @@
 
-function simple_save_callback() {
-    console.log('save callback');
-}
-
 var plantingJSInstance;
 
 $(document).ready(
