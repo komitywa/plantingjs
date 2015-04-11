@@ -1,5 +1,5 @@
 {
-    "manifesto": "http://localhost:8000/demo/manifesto.json",
+    "manifesto": "/manifesto.json",
     "lat": 52.403526,
     "lng": 16.911023999999998,
     "heading": -74.81401617250674,
