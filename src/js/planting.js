@@ -10,7 +10,7 @@
             .empty()
             .append('<div class="plantingjs-proxy"></div>');
         pe.proxy = pe.container.find(".plantingjs-proxy");
-        pe.proxy.append('<div class="plantingjs-startbtn">Start planting!</div>');
+        pe.proxy.append('<div class="plantingjs-startbtn"><span class="icon-uniE08A"></span> Start planting!</div>');
         pe.startBtn = pe.proxy.find(".plantingjs-startbtn");
         pe.proxy.append('<div class="plantingjs-toolbox"></div>');
         pe.toolbox = pe.proxy.find(".plantingjs-toolbox");
@@ -75,7 +75,13 @@
                     var left = objectOffset.left - containerOffset.left;
 
                     var img = $('<img />').attr('src', pe.toolboxobjects[i].projections[0]);
-                    var tools = $('<div class="plantingjs-plantedobject-tools" />');
+                    var uiTrash = $('<span class="icon-trash" />');
+                    var uiResize = $('<span class="icon-resize" />');
+                    var uiRefresh = $('<span class="icon-loop" />');
+                    var tools = $('<div class="plantingjs-plantedobject-tools" />')
+                        .append(uiTrash)
+                        .append(uiResize)
+                        .append(uiRefresh);
                     var container = $('<div class="plantingjs-plantedobject-container">')
                         .offset({ top: top, left: left})
                         .draggable()
