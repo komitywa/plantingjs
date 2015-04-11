@@ -51,7 +51,7 @@ Planting.prototype.plant_object = function () {
                 tools.rotate.left = tools.find('.plantingjs-rotate-left');
 
                 var container = $('<div class="plantingjs-plantedobject-container">')
-                    .offset({ top: top, left: left})
+                    .offset({ top: ui.offset.top, left: ui.offset.left})
                     .draggable()
                     .append(img)
                     .append(tools);
