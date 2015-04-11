@@ -16,6 +16,12 @@ npm install
 bower install
 ```
 
+Windows miewa problemy ze ścieżkami unixowymi, więc warto także doinstalować Gulpa globalnie (na linuxie z sudo)
+
+```shell
+npm install -g gulp
+```
+
 #### Odpalanie produkcyjnego builda:
 
 ```shell
