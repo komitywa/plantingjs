@@ -4,8 +4,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "server": "./node_modules/.bin/gulp serve",
-    "build": "./node_modules/.bin/gulp build"
+    "server": "gulp serve",
+    "build": "gulp build"
   },
   "devDependencies": {
     "apache-server-configs": "^2.7.1",
