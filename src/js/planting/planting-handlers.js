@@ -43,16 +43,11 @@ Planting.prototype.plant_object = function () {
                 var tools = $('<div class="plantingjs-plantedobject-tools" />')
                     .append(uiTrash)
                     .append(uiResize)
-                    .append(uiRefresh)
-                    .append('<div class="plantingjs-rotate"></div>');
-
-                tools.rotate = tools.find('.plantingjs-rotate');
-                tools.rotate.append('<div class="plantingjs-rotate-left"></div>');
-                tools.rotate.left = tools.find('.plantingjs-rotate-left');
+                    .append(uiRefresh);
 
                 var container = $('<div class="plantingjs-plantedobject-container">')
                     .offset({ top: ui.offset.top, left: ui.offset.left})
-                    .draggable()
+                    .draggable({ cancel: ".icon-loop"})
                     .append(img)
                     .append(tools);
 
@@ -64,9 +59,9 @@ Planting.prototype.plant_object = function () {
                     container: container,
                     tools: tools,
                     img: img,
-                }
+                };
 
-                uiRefresh.on('click', {toolBoxObjects: that.toolboxobjects, plantedObject: plant, direction: 'left'}, that.rotate_object);
+                uiRefresh.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
                 uiTrash.on('click', that.remove_object);
                 that.plantedobjects.push(plant);
                 that.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
@@ -93,33 +88,76 @@ Planting.prototype.plant_objects_for_view = function () {
             that.plantedobjects[i].img = img;
             that.plantedobjects[i].container = div;
         }
-    }
+    };
 };
 
+var calc_direction = function calc_direction(objectPosition, mousePosition) {
+    var calc = {};
+
+    if (objectPosition < mousePosition) {
+        calc.direction = "ASC";
+        calc.width = mousePosition - objectPosition;
+    } else if (objectPosition > mousePosition) {
+        calc.direction = "DSC";
+        calc.width = objectPosition - mousePosition;
+    }
+
+    return calc;
+};
+
+var isDown = false;
 Planting.prototype.rotate_object = function (e) {
+    isDown = true;
+    $('body').addClass('noselect rotate');
+
     var plantedObject = e.data.plantedObject;
-    var direction = e.data.direction;
-    var toolBoxObjects = e.data.toolBoxObjects;
+    var projections = e.data.toolBoxObjects[plantedObject.object].projections;
 
-    var projections = toolBoxObjects[plantedObject.object].projections;
+    var side_width = 20;
+    var projection;
 
-    if (direction === 'left') {
-        if (plantedObject.projection === 0) {
-            plantedObject.projection = projections.length;
-        } else {
-            plantedObject.projection -= 1;
+    buttonX = $(this).offset().left;
+    currentProjection = plantedObject.projection;
+
+    var calc_projection = function calc_projection(objectPosition, mousePosition) {
+        var rotate = calc_direction(objectPosition, mousePosition);
+        rotate.current = currentProjection;
+        rotate.current++;
+        rotate.sides = (rotate.width - (rotate.width % side_width)) / side_width;
+        if (rotate.sides >= projections.length) {
+            rotate.sides = rotate.sides % projections.length;
         }
-        plantedObject.img = plantedObject.img.attr('src', projections[plantedObject.projection]);
-    } else if (direction === 'right') {
-        if (plantedObject.projection === projections.length) {
-            plantedObject.projection = 0;
-        } else {
-            plantedObject.projection += 1;
+        if (rotate.direction === "ASC") {
+            if ((rotate.current + rotate.sides) > projections.length) {
+                rotate.projection = (rotate.current + rotate.sides) % projections.length;
+            } else {
+                rotate.projection = rotate.current + rotate.sides;
+            }
+        } else if (rotate.direction === "DSC") {
+            if (rotate.current <= rotate.sides) {
+                rotate.current += projections.length;
+            }
+            rotate.projection = rotate.current - rotate.sides;
         }
-    }
+        return --rotate.projection;
+    };
+
+    $(document).mousemove(function(e) {
+        if (!isDown) return;
+        projection = calc_projection(buttonX, e.pageX);
+
+        plantedObject.img = plantedObject.img.attr('src', projections[projection]);
+    });
+
+    $(document).mouseup(function(e) {
+        if (isDown) {
+            plantedObject.projection = projection;
+            $('body').removeClass('noselect rotate');
+            isDown = false;
+        }
+    });
 };
-
 
 Planting.prototype.remove_object = function (e) {
     $(this).closest('.plantingjs-plantedobject-container').remove();
-}
+};
