@@ -95,47 +95,45 @@ var calc_direction = function calc_direction(objectPosition, mousePosition) {
     var calc = {};
 
     if (objectPosition < mousePosition) {
-        calc.direction = "ASC";
+        calc.direction = true;
         calc.width = mousePosition - objectPosition;
     } else if (objectPosition > mousePosition) {
-        calc.direction = "DSC";
+        calc.direction = false;
         calc.width = objectPosition - mousePosition;
     }
 
     return calc;
 };
 
-var isDown = false;
+var EVENT_MOUSEDOWN = false;
 Planting.prototype.rotate_object = function (e) {
-    isDown = true;
+    EVENT_MOUSEDOWN = true;
     $('body').addClass('noselect rotate');
 
     var plantedObject = e.data.plantedObject;
-    var projections = e.data.toolBoxObjects[plantedObject.object].projections;
+    var objectProjections = e.data.toolBoxObjects[plantedObject.object].projections;
 
-    var side_width = 20;
+    var side_length = 20;
     var projection;
-
-    buttonX = $(this).offset().left;
-    currentProjection = plantedObject.projection;
+    var buttonX = $(this).offset().left;
 
     var calc_projection = function calc_projection(objectPosition, mousePosition) {
         var rotate = calc_direction(objectPosition, mousePosition);
-        rotate.current = currentProjection;
+        rotate.current = plantedObject.projection;
         rotate.current++;
-        rotate.sides = (rotate.width - (rotate.width % side_width)) / side_width;
-        if (rotate.sides >= projections.length) {
-            rotate.sides = rotate.sides % projections.length;
+        rotate.sides = (rotate.width - (rotate.width % side_length)) / side_length;
+        if (rotate.sides >= objectProjections.length) {
+            rotate.sides = rotate.sides % objectProjections.length;
         }
-        if (rotate.direction === "ASC") {
-            if ((rotate.current + rotate.sides) > projections.length) {
-                rotate.projection = (rotate.current + rotate.sides) % projections.length;
+        if (rotate.direction) {
+            if ((rotate.current + rotate.sides) > objectProjections.length) {
+                rotate.projection = (rotate.current + rotate.sides) % objectProjections.length;
             } else {
                 rotate.projection = rotate.current + rotate.sides;
             }
-        } else if (rotate.direction === "DSC") {
+        } else if (!rotate.direction) {
             if (rotate.current <= rotate.sides) {
-                rotate.current += projections.length;
+                rotate.current += objectProjections.length;
             }
             rotate.projection = rotate.current - rotate.sides;
         }
@@ -143,17 +141,17 @@ Planting.prototype.rotate_object = function (e) {
     };
 
     $(document).mousemove(function(e) {
-        if (!isDown) return;
+        if (!EVENT_MOUSEDOWN) return;
         projection = calc_projection(buttonX, e.pageX);
 
-        plantedObject.img = plantedObject.img.attr('src', projections[projection]);
+        plantedObject.img = plantedObject.img.attr('src', objectProjections[projection]);
     });
 
     $(document).mouseup(function(e) {
-        if (isDown) {
+        if (EVENT_MOUSEDOWN) {
             plantedObject.projection = projection;
             $('body').removeClass('noselect rotate');
-            isDown = false;
+            EVENT_MOUSEDOWN = false;
         }
     });
 };
