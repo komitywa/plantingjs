@@ -68,7 +68,7 @@ Planting.prototype.plant_object = function () {
 
                 uiResize.on('mousedown', {plantedObject: plant}, that.resize_object);
                 uiRotate.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
-                uiTrash.on('click', that.remove_object);
+                uiTrash.on('click', {plantedObjectsArray: that.plantedobjects, plantedObject: plant}, that.remove_object);
                 that.plantedobjects.push(plant);
                 that.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
             }
@@ -220,5 +220,9 @@ Planting.prototype.rotate_object = function (e) {
 // };
 
 Planting.prototype.remove_object = function (e) {
+    plantedObjectsArray = e.data.plantedObjectsArray;
+    plantedObject = e.data.plantedObject;
+    var index = plantedObjectsArray.indexOf(plantedObject);
+    plantedObjectsArray.splice(index, 1);
     $(this).closest('.plantingjs-plantedobject-container').remove();
 };
