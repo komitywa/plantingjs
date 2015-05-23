@@ -39,11 +39,16 @@ Planting.prototype.plant_object = function () {
                 var img = $('<img />').attr('src', that.toolboxobjects[i].projections[0]);
                 var uiTrash = $('<span class="icon-trash" />');
                 var uiResize = $('<span class="icon-resize" />');
-                var uiRefresh = $('<span class="icon-loop" />');
+                var uiRotate = $('<span class="icon-loop" />');
+                var uiRotateWrapper = $('<div class="wrapper-rotate" />')
+                    .append('<span class="icon-menu-left" />')
+                    .append('<span class="degrees">0&deg;</span>')
+                    .append('<span class="icon-menu-right" />')
+                    .append(uiRotate);
                 var tools = $('<div class="plantingjs-plantedobject-tools" />')
                     .append(uiTrash)
                     .append(uiResize)
-                    .append(uiRefresh);
+                    .append(uiRotateWrapper);
 
                 var container = $('<div class="plantingjs-plantedobject-container">')
                     .offset({ top: ui.offset.top, left: ui.offset.left})
@@ -62,7 +67,7 @@ Planting.prototype.plant_object = function () {
                 };
 
                 uiResize.on('mousedown', {plantedObject: plant}, that.resize_object);
-                uiRefresh.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
+                uiRotate.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
                 uiTrash.on('click', that.remove_object);
                 that.plantedobjects.push(plant);
                 that.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
