@@ -83,6 +83,7 @@
     border: 2px solid #000;
     border-radius: 50%;
     font-size: 1.5em;
+    text-shadow: 0 0 1px #fff;
 }
 .plantingjs-plantedobject-tools [class*="icon-"] {
     position: absolute;
@@ -102,6 +103,34 @@
 .plantingjs-plantedobject-tools .icon-loop {
     top: 70%;
     left: 82%;
+}
+.plantingjs-plantedobject-tools .icon-loop * {
+    opacity: 0;
+    transition: all .5s;
+}
+.plantingjs-plantedobject-tools .icon-loop:hover * {
+    opacity: 1;
+}
+.plantingjs-plantedobject-tools .icon-loop [class*="icon-"] {
+    top: 20%;
+    font-size: .7em;
+    border: 0;
+}
+.plantingjs-plantedobject-tools .icon-loop .icon-menu-right {
+    right: -1.3em;
+}
+.plantingjs-plantedobject-tools .icon-loop .icon-menu-left {
+    left: -1.3em;
+}
+.plantingjs-plantedobject-tools .icon-loop .degrees {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    text-align: center;
+    font-family: Roboto, arial, sans-serif;
+    font-size: .8em;
+    font-weight: bold;
 }
 
 .plantingjs-savebtn {
