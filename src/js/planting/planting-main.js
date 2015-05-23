@@ -1,4 +1,5 @@
-function Planting(div) {
+function Planting(div, save_callback) {
+    this.save_callback = save_callback;
     this.container = div.first();
     this.container
         .addClass("plantingjs-container")

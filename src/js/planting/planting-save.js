@@ -24,6 +24,6 @@ Planting.prototype.save = function (pe) {
                 }
             });
         }
-        console.log(JSON.stringify(save_json));
+        that.save_callback(save_json);
     };
 };

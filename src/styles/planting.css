@@ -38,14 +38,28 @@
     bottom: 5px;
     right: 5px;
     width: 320px;
-    background-color:  #fff;
+    background-color: #fff;
 }
 
 .plantingjs-toolboxobject-container {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    right: 0;
+    left: 0;
+    overflow: auto;
+}
+.plantingjs-toolboxobject-item {
     position: relative;
+    margin-bottom: 2px;
+    min-height: 100px;
+    background: #fafafa;
 }
 
-.plantingjs-toolboxobject-prototype, .plantingjs-toolboxobject-draggable {
+.plantingjs-toolboxobject-prototype {
+
+}
+.plantingjs-toolboxobject-draggable {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -80,15 +94,15 @@
 }
 .plantingjs-plantedobject-tools .icon-trash {
     top: -20px;
-    left: 50%;
+    left: 49%;
 }
 .plantingjs-plantedobject-tools .icon-resize {
     top: 70%;
-    left: 2%;
+    left: 0;
 }
 .plantingjs-plantedobject-tools .icon-loop {
     top: 70%;
-    left: 90%;
+    left: 82%;
 }
 .plantingjs-plantedobject-tools .icon-loop * {
     opacity: 0;

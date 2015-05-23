@@ -34,20 +34,20 @@ function PlantingJS () {
     }
 };
 
-PlantingJS.prototype.initFromMap = function (div, manifesto) {
-    var pe = new Planting(div);
+PlantingJS.prototype.initFromMap = function (div, manifesto, save_callback) {
+    var pe = new Planting(div, save_callback);
     this.plantingEngineList.push(pe);
     $.getJSON(manifesto).done(pe.download_manifesto(this));
     return pe;
 };
 
-PlantingJS.prototype.fromStreetView = function (div, manifesto) {
+PlantingJS.prototype.initFromStreetView = function (div, manifesto, save_callback) {
     var pe = new Planting(div);
     this.plantingEngineList.push(pe);
     return pe;
 };
 
-PlantingJS.prototype.viewer = function (div, manifesto) {
+PlantingJS.prototype.initViewer = function (div, manifesto) {
     var pe = new Planting(div);
     this.plantingEngineList.push(pe);
     pe.overlay
