@@ -1,4 +1,5 @@
-function Planting(div, save_callback) {
+function Planting(div, manifesto, save_callback) {
+    this.manifesto = manifesto;
     this.save_callback = save_callback;
     this.container = div.first();
     this.container
