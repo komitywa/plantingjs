@@ -31,6 +31,6 @@ Planting.prototype.initialazeMap = function (lat, lng, zoom) {
     this.map = new google.maps.Map(this.google.get(0), mapOptions);
     this.pano = this.map.getStreetView();
 
-    google.maps.event.addListener(this.pano, 'visible_changed', this.toogle_start_button(this));
+    google.maps.event.addListener(this.pano, 'visible_changed', this.toggle_start_button(this));
     this.startBtn.click(this.start_planting());
 };
