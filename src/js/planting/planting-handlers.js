@@ -14,6 +14,7 @@ Planting.prototype.start_planting = function () {
     return function () {
         that.overlay.show();
         that.toolbox.show();
+        $('.layers-menu').show();
         that.startBtn.hide();
         that.pano.setOptions({
             panControl: false,
@@ -57,6 +58,10 @@ Planting.prototype.plant_object = function () {
                     .append(tools);
 
                 that.overlay.append(container);
+                
+                var layerItem = $('<div class="plantingjs-layer-item">' + i + '</div>');
+                that.overlay.parent().find('.layers-menu').append(layerItem);
+                            
 
                 var plant = {
                     object: i,
