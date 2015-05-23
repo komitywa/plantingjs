@@ -111,37 +111,47 @@
     top: 70%;
     left: 0;
 }
-.plantingjs-plantedobject-tools .icon-loop {
+.plantingjs-plantedobject-tools .wrapper-rotate {
+    position: absolute;
     top: 70%;
     left: 82%;
 }
-.plantingjs-plantedobject-tools .icon-loop * {
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-loop {
+    opacity: 1;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.plantingjs-plantedobject-tools .wrapper-rotate > * {
+    padding:.3em;
     opacity: 0;
     transition: all .5s;
 }
-.noselect .plantingjs-plantedobject-tools .icon-loop *,
-.plantingjs-plantedobject-tools .icon-loop:hover * {
+.noselect .plantingjs-plantedobject-tools .wrapper-rotate .icon-loop,
+.noselect .plantingjs-plantedobject-tools .wrapper-rotate > *,
+.plantingjs-plantedobject-tools .wrapper-rotate:hover > * {
     opacity: 1;
 }
-.plantingjs-plantedobject-tools .icon-loop [class*="icon-"] {
-    top: 20%;
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-left,
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-right {
+    top: 5%;
     font-size: .7em;
     border: 0;
 }
-.plantingjs-plantedobject-tools .icon-loop .icon-menu-right {
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-right {
     right: -1.3em;
 }
-.plantingjs-plantedobject-tools .icon-loop .icon-menu-left {
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-left {
     left: -1.3em;
 }
-.plantingjs-plantedobject-tools .icon-loop .degrees {
+.plantingjs-plantedobject-tools .wrapper-rotate .degrees {
     position: absolute;
-    top: 100%;
+    top: 90%;
     right: 0;
     left: 0;
     text-align: center;
     font-family: Roboto, arial, sans-serif;
-    font-size: .8em;
+    font-size: .7em;
     font-weight: bold;
 }
 
