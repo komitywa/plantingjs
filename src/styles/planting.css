@@ -127,7 +127,6 @@
     opacity: 0;
     transition: all .5s;
 }
-.noselect .plantingjs-plantedobject-tools .wrapper-rotate .icon-loop,
 .noselect .plantingjs-plantedobject-tools .wrapper-rotate > *,
 .plantingjs-plantedobject-tools .wrapper-rotate:hover > * {
     opacity: 1;
