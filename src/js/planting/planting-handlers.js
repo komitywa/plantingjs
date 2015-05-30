@@ -19,9 +19,8 @@ Planting.prototype.start_planting = function () {
             panControl: false,
             zoomControl: false,
             addressControl: false,
-            linksControl: false,
+            linksControl: false
         });
-
     };
 };
 
@@ -63,7 +62,7 @@ Planting.prototype.plant_object = function () {
                     projection: 0,
                     container: container,
                     tools: tools,
-                    img: img,
+                    img: img
                 };
 
                 uiResize.on('mousedown', {plantedObject: plant}, that.resize_object);
@@ -170,54 +169,67 @@ Planting.prototype.rotate_object = function (e) {
             plantedObject.img = plantedObject.img.attr('src', objectProjections[projection]);
         }
     }
-    $(document).mousemove(rotateOnMove);
 
-    $(document).mouseup(function(e) {
+    function finishRotation(e) {
         var plantedObjectContainer = plantedObject.container;
         if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
+            $(document).off('mousemove', rotateOnMove);
+            $(document).off('mouseup', finishRotation);
             plantedObject.projection = projection;
             $('body').removeClass('noselect rotate');
             plantedObjectContainer.removeClass('plantingjs-active-object');
             EVENT_MOUSEDOWN = false;
         }
-    });
+    }
+
+    $(document).on('mousemove', rotateOnMove);
+
+    $(document).on('mouseup', finishRotation);
 };
 
-// Planting.prototype.resize_object = function (e) {
-//     EVENT_MOUSEDOWN = true;
-//     $('body').addClass('noselect resize');
-//     var plantedObject = e.data.plantedObject;
-//     plantedObject.container.addClass('plantingjs-active-object');
-//
-//     buttonX = $(this).offset().left;
-//
-//     var resizeOnDrag = function(e) {
-//         if (!EVENT_MOUSEDOWN) return;
-//         if (plantedObject.container.hasClass('plantingjs-active-object')) {
-//             buttonCursorDistance = buttonX - e.pageX;
-//             if (buttonCursorDistance === 0) {
-//                 scale = 1;
-//             } else if (buttonCursorDistance < 0) {
-//                 scale = 1 - Math.abs(buttonCursorDistance/100);
-//             } else if (buttonCursorDistance > 0) {
-//                 scale = 1 + buttonCursorDistance/100;
-//             }
-//             plantedObject.img = plantedObject.img.css('transform', 'scale(' + scale + ')');
-//         }
-//     };
-//
-//     $(document).on('mousemove', resizeOnDrag);
-//
-//     $(document).mouseup(function(e) {
-//         var plantedObjectContainer = plantedObject.container;
-//         if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-//             plantedObject.scale = scale;
-//             $('body').removeClass('noselect resize');
-//             plantedObjectContainer.removeClass('plantingjs-active-object');
-//             EVENT_MOUSEDOWN = false;
-//         }
-//     });
-// };
+Planting.prototype.resize_object = function (e) {
+    EVENT_MOUSEDOWN = true;
+    $('body').addClass('noselect resize');
+    var plantedObject = e.data.plantedObject,
+        scale = plantedObject.scale || 1,
+        cssScale,
+        resizeOnDrag,
+        finishResizing;
+    plantedObject.container.addClass('plantingjs-active-object');
+
+
+    resizeOnDrag = function (e) {
+        if (!EVENT_MOUSEDOWN) return;
+        if (plantedObject.container.hasClass('plantingjs-active-object')) {
+            var buttonCursorDistance = buttonX - e.pageX;
+
+            if (buttonCursorDistance === 0) {
+                cssScale = scale;
+            } else if (buttonCursorDistance < 0) {
+                cssScale = scale - Math.abs(buttonCursorDistance / 100);
+            } else if (buttonCursorDistance > 0) {
+                cssScale = scale + buttonCursorDistance / 100;
+            }
+
+            if (cssScale > 0.2)
+                plantedObject.img = plantedObject.img.css('transform', 'scale(' + cssScale + ')');
+        }
+    };
+    finishResizing = function (e) {
+        var plantedObjectContainer = plantedObject.container;
+        if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
+            plantedObject.scale = cssScale;
+            $('body').removeClass('noselect resize');
+            plantedObjectContainer.removeClass('plantingjs-active-object');
+            $(document).off('mousemove', resizeOnDrag);
+            $(document).off('mouseup', finishResizing);
+            EVENT_MOUSEDOWN = false;
+        }
+    };
+
+    $(document).on('mousemove', resizeOnDrag);
+    $(document).on('mouseup', finishResizing);
+};
 
 Planting.prototype.remove_object = function (e) {
     plantedObjectsArray = e.data.plantedObjectsArray;
