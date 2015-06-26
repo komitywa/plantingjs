@@ -194,9 +194,10 @@ Planting.prototype.resize_object = function (e) {
         scale = plantedObject.scale || 1,
         cssScale,
         resizeOnDrag,
-        finishResizing;
-    plantedObject.container.addClass('plantingjs-active-object');
+        finishResizing,
+        buttonX = $(this).offset().left;
 
+    plantedObject.container.addClass('plantingjs-active-object');
 
     resizeOnDrag = function (e) {
         if (!EVENT_MOUSEDOWN) return;
