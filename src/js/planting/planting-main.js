@@ -9,6 +9,7 @@ function Planting(div, manifesto, save_callback) {
     this.proxy = this.container.find(".plantingjs-proxy");
     this.proxy.append('<div class="plantingjs-startbtn"><span class="icon-menu-hamburger"></span> Start planting!</div>');
     this.startBtn = this.proxy.find(".plantingjs-startbtn");
+    this.proxy.append('<div class="layers-menu"></div>');
     this.proxy.append('<div class="plantingjs-toolbox"></div>');
     this.toolbox = this.proxy.find(".plantingjs-toolbox");
     this.toolbox.append('<div class="plantingjs-savebtn">SAVE</div>');
