@@ -57,10 +57,10 @@ Planting.prototype.plant_object = function () {
                     .append(tools);
 
                 that.overlay.append(container);
-                
+
                 var layerItem = $('<div class="plantingjs-layer-item">' + i + '</div>');
                 that.overlay.parent().find('.layers-menu').append(layerItem);
-                            
+
 
                 var plant = {
                     object: i,
@@ -101,88 +101,51 @@ Planting.prototype.plant_objects_for_view = function () {
     };
 };
 
-function calc_direction(objectPosition, mousePosition) {
-    var calc = {};
-    if (objectPosition <= mousePosition) {
-        calc = {
-            direction: true,
-            mouseObjectDiff: mousePosition - objectPosition
-        };
-    } else if (objectPosition > mousePosition) {
-        calc = {
-            direction: false,
-            mouseObjectDiff: objectPosition - mousePosition
-        };
-    }
-    return calc;
-}
-
-function calc_sides(mouseObjectDiff, projectionsLength) {
-    var sideLength = 20;
-    var sides = (mouseObjectDiff - (mouseObjectDiff % sideLength)) / sideLength;
-    if (sides >= projectionsLength) {
-        sides = sides % projectionsLength;
-    }
-    return sides;
-}
-
-var rotateHelpers = {
-    calc_direction: calc_direction,
-    calc_sides: calc_sides
-};
-
-
 var EVENT_MOUSEDOWN = false;
 Planting.prototype.rotate_object = function (e) {
     EVENT_MOUSEDOWN = true;
     $('body').addClass('noselect rotate');
 
     var plantedObject = e.data.plantedObject;
-    var objectProjections = e.data.toolBoxObjects[plantedObject.object].projections;
-
-    plantedObject.container.addClass('plantingjs-active-object');
-
-    var projection;
+    var plantedObjectProjections = e.data.toolBoxObjects[plantedObject.object].projections;
+    var newProjection;
     var buttonX = $(this).offset().left;
 
-    function calc_projection(objectPosition, mousePosition) {
-        var newProjection;
-        var currentSide = plantedObject.projection;
-        var direction = rotateHelpers.calc_direction(objectPosition, mousePosition);
-        var numberOfSides = rotateHelpers.calc_sides(direction.mouseObjectDiff, objectProjections.length);
-
-        currentSide++;
-        if (direction.direction) {
-            if ((currentSide + numberOfSides) > objectProjections.length) {
-                newProjection = (currentSide + numberOfSides) % objectProjections.length;
-            } else {
-                newProjection = currentSide + numberOfSides;
-            }
-        } else {
-            if (currentSide <= numberOfSides) {
-                currentSide += objectProjections.length;
-            }
-            newProjection = currentSide - numberOfSides;
-        }
-        return --newProjection;
-    }
+    plantedObject.container.addClass('plantingjs-active-object');
 
     function rotateOnMove(e) {
         if (!EVENT_MOUSEDOWN) return;
         if (plantedObject.container.hasClass('plantingjs-active-object')) {
-            projection = calc_projection(buttonX, e.pageX);
-            plantedObject.img = plantedObject.img.attr('src', objectProjections[projection]);
+            var uiDegrees = plantedObject.tools.find('.degrees');
+            var currentProjection = plantedObject.projection;
+            var buttonCursorDistance = e.pageX - buttonX;
+
+            var projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % 10) / 10;
+            projectionsToRotate %= plantedObjectProjections.length;
+            if (buttonCursorDistance > 0) {
+                currentProjection += projectionsToRotate;
+                currentProjection %= plantedObjectProjections.length;
+            } else if (buttonCursorDistance < 0) {
+                if (currentProjection <= projectionsToRotate) {
+                    currentProjection += plantedObjectProjections.length;
+                }
+                currentProjection -= projectionsToRotate;
+            }
+            newProjection = currentProjection;
+            plantedObject.img = plantedObject.img.attr('src', plantedObjectProjections[currentProjection]);
+
+            var degrees = 360 / plantedObjectProjections.length * newProjection;
+            uiDegrees.html(degrees + '&deg;');
         }
     }
 
     function finishRotation(e) {
-        var plantedObjectContainer = plantedObject.container;
-        if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
+        if (EVENT_MOUSEDOWN && plantedObject.container.hasClass('plantingjs-active-object')) {
             $(document).off('mousemove', rotateOnMove);
             $(document).off('mouseup', finishRotation);
-            plantedObject.projection = projection;
+            plantedObject.projection = newProjection;
             $('body').removeClass('noselect rotate');
-            plantedObjectContainer.removeClass('plantingjs-active-object');
+            plantedObject.container.removeClass('plantingjs-active-object');
             EVENT_MOUSEDOWN = false;
         }
     }
