@@ -24,13 +24,22 @@ RUN \
 
 ADD . /root/plantingjs
 
-WORKDIR /root/plantingjs
+WORKDIR /root
 
-RUN npm install
-RUN npm install -g gulp
-RUN npm install -g bower
-RUN bower install --allow-root --config.interactive=false
+RUN cd plantingjs && \
+    npm install -g gulp
+RUN cd plantingjs && \
+    npm install -g bower
+RUN cd plantingjs && \
+    npm install && \
+    mv node_modules ..
+RUN cd plantingjs && \
+    bower install --allow-root --config.interactive=false && \
+    mv bower_components ..
+
+WORKDIR /root/plantingjs
 
 EXPOSE 9000
 EXPOSE 35729
+
 CMD npm run server

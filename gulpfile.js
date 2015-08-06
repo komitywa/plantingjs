@@ -72,6 +72,7 @@ gulp.task('connect', function () {
     // paths to bower_components should be relative to the current file
     // e.g. in src/index.html you should use ../bower_components
     .use('/bower_components', serveStatic('bower_components'))
+    .use('/bower_components', serveStatic('../bower_components'))
     .use(serveIndex('src'));
 
   require('http').createServer(app)
