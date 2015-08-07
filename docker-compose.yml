@@ -1,0 +1,8 @@
+plantingjs:
+    build: .
+    ports:
+     - "9000:9000"
+     - "35729:35729"
+    volumes:
+     - .:/root/plantingjs
+    command: npm run server
