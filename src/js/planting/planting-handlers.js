@@ -101,6 +101,7 @@ Planting.prototype.plant_objects_for_view = function () {
 };
 
 var EVENT_MOUSEDOWN = false;
+var PROJECTION_LENGTH = 10;
 Planting.prototype.rotate_object = function (e) {
     EVENT_MOUSEDOWN = true;
     $('body').addClass('noselect rotate');
@@ -118,7 +119,7 @@ Planting.prototype.rotate_object = function (e) {
             var currentProjection = plantedObject.projection;
             var buttonCursorDistance = e.pageX - buttonX;
 
-            var projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % 10) / 10;
+            var projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % PROJECTION_LENGTH) / PROJECTION_LENGTH;
             projectionsToRotate %= plantedObjectProjections.length;
             if (buttonCursorDistance > 0) {
                 currentProjection += projectionsToRotate;
