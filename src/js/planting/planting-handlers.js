@@ -80,9 +80,20 @@ Planting.prototype.plant_object = function () {
     };
 };
 
+Planting.prototype.render_layers_tool = function() {
+    /**
+     * TODO
+     */
+};
+
+Planting.prototype.plantedobjects_modified = function() {
+    this.update_plants_zIndex();
+    this.render_layers_tool();
+};
+
 Planting.prototype.add_plant = function(plant) {
     this.plantedobjects.push(plant);
-    this.update_plants_zIndex();
+    this.plantedobjects_modified();
 };
 
 Planting.prototype.update_plants_zIndex = function() {
@@ -102,15 +113,9 @@ Planting.prototype.change_plant_index = function (at, to) {
     while (to < 0) {
         to += this.plantedobjects.length;
     }
-    if (to >= this.plantedobjects.length) {
-        var k = to - this.plantedobjects.length;
-        while ((k--) + 1) {
-            this.plantedobjects.push(undefined);
-        }
-    }
     this.plantedobjects.splice(to, 0, this.plantedobjects.splice(at, 1)[0]);
 
-    this.update_plants_zIndex();
+    this.plantedobjects_modified();
 };
 
 Planting.prototype.plant_objects_for_view = function () {
@@ -276,4 +281,5 @@ Planting.prototype.remove_object = function (e) {
     var index = plantedObjectsArray.indexOf(plantedObject);
     plantedObjectsArray.splice(index, 1);
     $(this).closest('.plantingjs-plantedobject-container').remove();
+    this.plantedobjects_modified();
 };
