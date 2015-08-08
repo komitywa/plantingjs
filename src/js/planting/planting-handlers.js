@@ -108,7 +108,7 @@ Planting.prototype.rotate_object = function (e) {
 
     var plantedObject = e.data.plantedObject;
     var plantedObjectProjections = e.data.toolBoxObjects[plantedObject.object].projections;
-    var newProjection;
+    var newProjection = plantedObject.projection;
     var buttonX = $(this).offset().left;
 
     plantedObject.container.addClass('plantingjs-active-object');
@@ -130,6 +130,7 @@ Planting.prototype.rotate_object = function (e) {
                     currentProjection += plantedObjectProjections.length;
                 }
                 currentProjection -= projectionsToRotate;
+                currentProjection--;
             }
             newProjection = currentProjection;
             plantedObject.img = plantedObject.img.attr('src', plantedObjectProjections[currentProjection]);
