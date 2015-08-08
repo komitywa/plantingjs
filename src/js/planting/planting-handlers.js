@@ -84,11 +84,49 @@ Planting.prototype.plant_object = function () {
                 uiResize.on('mousedown', {plantedObject: plant}, that.resize_object);
                 uiRotate.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
                 uiTrash.on('click', {plantedObjectsArray: that.plantedobjects, plantedObject: plant}, that.remove_object);
-                that.plantedobjects.push(plant);
+                that.add_plant(plant);
                 that.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
             }
         }
     };
+};
+
+Planting.prototype.render_layers_tool = function() {
+    /**
+     * TODO
+     */
+};
+
+Planting.prototype.plantedobjects_modified = function() {
+    this.update_plants_zIndex();
+    this.render_layers_tool();
+};
+
+Planting.prototype.add_plant = function(plant) {
+    this.plantedobjects.push(plant);
+    this.plantedobjects_modified();
+};
+
+Planting.prototype.update_plants_zIndex = function() {
+    if (!this.plantedobjects.length) {
+        return;
+    }
+
+    this.plantedobjects.forEach(function(plant, index) {
+        plant.container.css({ zIndex: index });
+    });
+};
+
+Planting.prototype.change_plant_index = function (at, to) {
+    while (at < 0) {
+        at += this.plantedobjects.length;
+    }
+    while (to < 0) {
+        to += this.plantedobjects.length;
+    }
+    this.plantedobjects.splice(to, 0, this.plantedobjects.splice(at, 1)[0]);
+
+    this.plantedobjects_modified();
 };
 
 Planting.prototype.plant_objects_for_view = function () {
@@ -215,4 +253,5 @@ Planting.prototype.remove_object = function (e) {
     var index = plantedObjectsArray.indexOf(plantedObject);
     plantedObjectsArray.splice(index, 1);
     $(this).closest('.plantingjs-plantedobject-container').remove();
+    this.plantedobjects_modified();
 };
