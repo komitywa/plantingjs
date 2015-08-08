@@ -9,6 +9,18 @@ Planting.prototype.toggle_start_button = function () {
     };
 };
 
+Planting.prototype.toggle_toolbox = function() {
+    var that = this;
+    return function() {
+        that.toolbox.toggleClass('plantingjs-toolbox-hide');
+        if (that.toolbox.hasClass('plantingjs-toolbox-hide')) {
+            that.toggleToolbox.text('hide');
+        } else {
+            that.toggleToolbox.text('show');
+        }
+    };
+};
+
 Planting.prototype.start_planting = function () {
     var that = this;
     return function () {
