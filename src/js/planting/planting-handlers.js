@@ -42,7 +42,6 @@ Planting.prototype.plant_object = function () {
                 var uiRotate = $('<span class="icon-loop" />');
                 var uiRotateWrapper = $('<div class="wrapper-rotate" />')
                     .append('<span class="icon-menu-left" />')
-                    .append('<span class="degrees">0&deg;</span>')
                     .append('<span class="icon-menu-right" />')
                     .append(uiRotate);
                 var tools = $('<div class="plantingjs-plantedobject-tools" />')
@@ -116,7 +115,6 @@ Planting.prototype.rotate_object = function (e) {
     function rotateOnMove(e) {
         if (!EVENT_MOUSEDOWN) return;
         if (plantedObject.container.hasClass('plantingjs-active-object')) {
-            var uiDegrees = plantedObject.tools.find('.degrees');
             var currentProjection = plantedObject.projection;
             var buttonCursorDistance = e.pageX - buttonX;
 
@@ -134,9 +132,6 @@ Planting.prototype.rotate_object = function (e) {
             }
             newProjection = currentProjection;
             plantedObject.img = plantedObject.img.attr('src', plantedObjectProjections[currentProjection]);
-
-            var degrees = 360 / plantedObjectProjections.length * newProjection;
-            uiDegrees.html(degrees + '&deg;');
         }
     }
 
