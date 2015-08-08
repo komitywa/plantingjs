@@ -60,6 +60,16 @@
     background-color: #fff;
 }
 
+.plantingjs-toolbox-toggle {
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+}
+
+.plantingjs-toolbox-hide {
+    width: 0;
+}
+
 .plantingjs-toolboxobject-container {
     position: absolute;
     top: 30px;
