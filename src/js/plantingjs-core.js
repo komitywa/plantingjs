@@ -1,4 +1,4 @@
-function PlantingJS () {
+function PlantingJS (options) {
     var that = this;
 
     this.plantingEngineList = [];
@@ -32,6 +32,10 @@ function PlantingJS () {
             pe.width = newW;
         }
     }
+    
+    if (options.showHelp) {
+        that.showHelpDialog();
+    }
 };
 
 PlantingJS.prototype.initFromMap = function (div, manifesto, save_callback) {
@@ -55,4 +59,23 @@ PlantingJS.prototype.initViewer = function (div, manifesto) {
         .show();
     $.getJSON(manifesto).done(pe.download_view(this));
     return pe;
+};
+
+PlantingJS.prototype.showHelpDialog = function() {
+    var content = "<ul>" +
+        "<li>Wybierz na mapie miejsce do wysadzania.</li>" + 
+        "<li>Przejdź do Google Street View - przeciągnij żółtego ludzika z lewego górnego rogu i upuść na wybrane miejsce.</li>" + 
+        "<li>Kliknij przycisk 'Start planning'.</li>" + 
+        "<li>Z panelu po prawej wybieraj elementy do wysadzania.</li>" +
+        "</ul>";
+         
+    $('<div class="help-dialog" title="Pierwszy raz z planting">' + content + '</div>').dialog({
+        modal: true,
+        width: 500,
+        buttons: {
+            Zaczynam: function() {
+                $(this).dialog("close");
+            }
+        }
+    });
 };
