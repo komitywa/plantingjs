@@ -73,11 +73,44 @@ Planting.prototype.plant_object = function () {
                 uiResize.on('mousedown', {plantedObject: plant}, that.resize_object);
                 uiRotate.on('mousedown', {toolBoxObjects: that.toolboxobjects, plantedObject: plant}, that.rotate_object);
                 uiTrash.on('click', {plantedObjectsArray: that.plantedobjects, plantedObject: plant}, that.remove_object);
-                that.plantedobjects.push(plant);
+                that.add_plant(plant);
                 that.toolboxobjects[i].draggable.css({'top': '0px', 'left': '0px'});
             }
         }
     };
+};
+
+Planting.prototype.add_plant = function(plant) {
+    this.plantedobjects.push(plant);
+    this.update_plants_zIndex();
+};
+
+Planting.prototype.update_plants_zIndex = function() {
+    if (!this.plantedobjects.length) {
+        return;
+    }
+
+    this.plantedobjects.forEach(function(plant, index) {
+        plant.container.css({ zIndex: index });
+    });
+};
+
+Planting.prototype.change_plant_index = function (at, to) {
+    while (at < 0) {
+        at += this.plantedobjects.length;
+    }
+    while (to < 0) {
+        to += this.plantedobjects.length;
+    }
+    if (to >= this.plantedobjects.length) {
+        var k = to - this.plantedobjects.length;
+        while ((k--) + 1) {
+            this.plantedobjects.push(undefined);
+        }
+    }
+    this.plantedobjects.splice(to, 0, this.plantedobjects.splice(at, 1)[0]);
+
+    this.update_plants_zIndex();
 };
 
 Planting.prototype.plant_objects_for_view = function () {
