@@ -69,10 +69,12 @@ Planting.prototype.plant_object = function () {
 
                 that.overlay.append(container);
 
-                var layerItem = $('<div class="plantingjs-layer-item">' + i + '</div>');
-                that.overlay.parent().find('.layers-menu').append(layerItem);
 
-
+                var up = '<span class="plantingjs-layer-item-arrow" data-direction="up">UP</span>';
+                var down = '<span class=".plantingjs-layer-item-down" data-direction="down">DOWN</span>';                
+                var layerItem = $('<div class="plantingjs-layer-item" data-index="'+i+'">' + i + up + '<br/>'+ down + '</div>');
+                that.layersMenu.append(layerItem);
+               
                 var plant = {
                     object: i,
                     projection: 0,
@@ -95,6 +97,19 @@ Planting.prototype.render_layers_tool = function() {
     /**
      * TODO
      */
+};
+
+Planting.prototype.change_layer_order = function(e){
+    var self = $(e.target);
+    var direction = self.data('direction');
+    var currentIndex = self.parent().data('index');
+    
+    if(direction == 'up'){
+        this.change_plant_index(currentIndex, currentIndex + 1);
+    }
+    else {
+        this.change_plant_index(currentIndex, currentIndex - 1);
+    }    
 };
 
 Planting.prototype.plantedobjects_modified = function() {

@@ -10,6 +10,8 @@ function Planting(div, manifesto, save_callback) {
     this.proxy.append('<div class="plantingjs-startbtn"><span class="icon-menu-hamburger"></span> Start planting!</div>');
     this.startBtn = this.proxy.find(".plantingjs-startbtn");
     this.proxy.append('<div class="layers-menu"></div>');
+    this.layersMenu = this.proxy.find(".layers-menu");
+    this.layersMenu.on('click', '.plantingjs-layer-item-arrow', this.change_layer_order.bind(this));
     this.proxy.append('<div class="plantingjs-toolbox"></div>');
     this.toolbox = this.proxy.find(".plantingjs-toolbox");
     this.toolbox.append('<div class="plantingjs-toolbox-toggle">hide</div>');
