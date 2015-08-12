@@ -226,6 +226,8 @@ Planting.prototype.resize_object = function (e) {
         resizeOnDrag,
         finishResizing,
         buttonX = $(this).offset().left;
+    var h = plantedObject.img.height();
+    var w = plantedObject.img.width();
 
     plantedObject.container.addClass('plantingjs-active-object');
 
@@ -242,14 +244,15 @@ Planting.prototype.resize_object = function (e) {
                 cssScale = scale + buttonCursorDistance / 100;
             }
 
-            if (cssScale > 0.2)
-                plantedObject.img = plantedObject.img.css('transform', 'scale(' + cssScale + ')');
+            if (cssScale > 0.2) {
+                plantedObject.img.height(h * cssScale);
+                plantedObject.img.width(w * cssScale);
+            }
         }
     };
     finishResizing = function (e) {
         var plantedObjectContainer = plantedObject.container;
         if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-            plantedObject.scale = cssScale;
             $('body').removeClass('noselect resize');
             plantedObjectContainer.removeClass('plantingjs-active-object');
             $(document).off('mousemove', resizeOnDrag);

@@ -15,7 +15,7 @@ function PlantingJS (options) {
 
             for(var j = 0; j < pe.plantedobjects.length; j++)
             {
-                var h = pe.plantedobjects[j].img.height()
+                var h = pe.plantedobjects[j].img.height();
                 var w = pe.plantedobjects[j].img.width();
                 pe.plantedobjects[j].img.height(h * scale);
                 pe.plantedobjects[j].img.width(w * scale);
