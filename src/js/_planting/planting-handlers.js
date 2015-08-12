@@ -113,8 +113,8 @@ Planting.prototype.change_plant_index = function (at, to) {
     while (to < 0) {
         to += this.plantedobjects.length;
     }
-    this.plantedobjects.splice(to, 0, this.plantedobjects.splice(at, 1)[0]);
 
+    this.plantedobjects.splice(to, 0, this.plantedobjects.splice(at, 1)[0]);
     this.plantedobjects_modified();
 };
 

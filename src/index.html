@@ -20,9 +20,11 @@
 
   </head>
   <body>
+<!-- 
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc">
     </script>
+   -->
     <div id="viewport" class="viewport">
     </div>
 
@@ -30,15 +32,38 @@
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
     <script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
+    <script src="../bower_components/backbone/backbone-min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js js/planting.js -->
-        <script src="js/plantingjs-core.js"></script>
+       <!--  <script src="js/plantingjs-core.js"></script>
         <script src="js/planting/planting-main.js"></script>
         <script src="js/planting/planting-handlers.js"></script>
         <script src="js/planting/planting-downloaders.js"></script>
-        <script src="js/planting/planting-save.js"></script>
+        <script src="js/planting/planting-save.js"></script> -->
+
+        <script src="js/planting-core.js"></script>
+        
+        <!-- main -->
+        <script src="js/components/main/main-view.js"></script>
+        <script src="js/components/main/main-overlay-view.js"></script>
+        <script src="js/components/main/main-object-view.js"></script>
+
+        <!-- object -->
+        <script src="js/components/object/object-model.js"></script>
+        <script src="js/components/object/objects-collection.js"></script>
+
+        <!-- toolbox -->
+        <script src="js/components/toolbox/toolbox-objects-view.js"></script>
+        <script src="js/components/toolbox/toolbox-object-view.js"></script>
+
+        <!-- map -->
+        <script src="js/components/map/map-view.js"></script>
+
+        <script src="js/planting-application.js"></script>
+
         <!-- endbuild -->
 
         <script type="text/javascript">
@@ -48,7 +73,7 @@
         </script>
 
         <!-- build:js js/main.js -->
-        <script src="js/main.js"></script>
+        <!-- <script src="js/main.js"></script> -->
         <!-- endbuild -->
 </body>
 </html>

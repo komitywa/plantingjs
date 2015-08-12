@@ -73,6 +73,7 @@ gulp.task('connect', function () {
     // e.g. in src/index.html you should use ../bower_components
     .use('/bower_components', serveStatic('bower_components'))
     .use('/bower_components', serveStatic('../bower_components'))
+    .use('/node_modules', serveStatic('../node_modules'))
     .use(serveIndex('src'));
 
   require('http').createServer(app)
