@@ -71,7 +71,7 @@ Planting.prototype.plant_object = function () {
 
 
                 var up = '<span class="plantingjs-layer-item-arrow" data-direction="up">UP</span>';
-                var down = '<span class=".plantingjs-layer-item-down" data-direction="down">DOWN</span>';
+                var down = '<span class="plantingjs-layer-item-down" data-direction="down">DOWN</span>';
                 var layerItem = $('<div class="plantingjs-layer-item" data-index="'+i+'">' + i + up + '<br/>'+ down + '</div>');
                 that.layersMenu.append(layerItem);
                
@@ -163,7 +163,6 @@ Planting.prototype.plant_objects_for_view = function () {
             that.plantedobjects[i].container = div;
 
             img.load(function () {
-                debugger;
                 for (var i = 0; i < that.plantedobjects.length; i++) {
                     if (that.plantedobjects[i].img.get()[0] === this) {
                         var h = that.plantedobjects[i].img.height();
