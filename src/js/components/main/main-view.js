@@ -18,10 +18,7 @@ Planting.Main.MainView = Backbone.View.extend({
     },
 
     initialize: function(opts) {
-
-        this.overlay = new Planting.Main.MainOverlayView({ 
-            collection: new Planting.Object.ObjectsCollection(),
-            parent: this });
+        this.overlay = new Planting.Plant.PlantsOverlayView();
         this.render();
         this.toolbox = new Planting.Toolbox.ToolboxObjectsView({
             collection: new Planting.Object.ObjectsCollection(opts.manifesto.toolboxobjects),
@@ -35,14 +32,14 @@ Planting.Main.MainView = Backbone.View.extend({
                 zoom: opts.manifesto.zoom
             }
         });
-
+        
         Planting.Mediator
             .on(Planting.Event.VISIBLE_CHANGED, function(visible) {
                 this.$el.find('.plantingjs-startbtn').toggle(visible);
             }, this)
             .on(Planting.Event.START_PLANTING, function() {
                 this.$el.find('.plantingjs-startbtn').hide();
-            }, this);      
+            }, this);
     },
 
     render: function() {

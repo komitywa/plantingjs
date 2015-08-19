@@ -2,7 +2,9 @@ Planting.Object.ObjectModel = Backbone.Model.extend({
     defaults: {
         projections: [],
         selectedProjection: 0,
-        projectionValue: null
+        projectionValue: null,
+        width: 0,
+        height: 0
     },
     
     initialize: function() {

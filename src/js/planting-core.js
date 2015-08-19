@@ -1,6 +1,7 @@
 var Planting = {
     Main: {},
     Map: {},
+    Plant: {},
     Object: {},
     Toolbox: {},
     Application: null,
