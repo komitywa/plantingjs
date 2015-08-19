@@ -23,7 +23,7 @@ Planting.Plant.PlantsOverlayView = Backbone.View.extend({
         }, this);
         this.collection.on('add', this.addObject, this);
         this.model.on('change:scale', this.collection.rescaleObjects, this.collection);
-        $(window).on('resize', this.storeOverlayProps.bind(this));
+        $(window).on('resize', _.throttle(this.storeOverlayProps.bind(this), 16));
     },
 
     addObject: function(model) {
