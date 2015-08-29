@@ -14,6 +14,7 @@
                 <div class="plantingjs-toolbox"></div>\
                 <div class="plantingjs-overlay ui-droppable"></div>\
                 <div class="plantingjs-google"></div>\
+                <div class="plantingjs-dialog"></div>\
             </div>\
         '),
         events: {
@@ -22,6 +23,10 @@
 
         initialize: function(opts) {
             this.render();
+            this.dialog = new Main.View.Dialog({
+                el: this.el.querySelector('.plantingjs-dialog'),
+                app: this.app
+            });
             this.app
                 .on(EVENT.VISIBLE_CHANGED, function(visible) {
                     this.$el.find('.plantingjs-startbtn').toggle(visible);
