@@ -21,8 +21,11 @@
             'click .plantingjs-startbtn': 'startPlanting'
         },
 
+        $proxy: null,
+
         initialize: function(opts) {
             this.render();
+            this.$proxy = this.$el.children();
             this.dialog = new Main.View.Dialog({
                 el: this.el.querySelector('.plantingjs-dialog'),
                 app: this.app

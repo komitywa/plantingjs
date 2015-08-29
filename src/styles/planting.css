@@ -179,3 +179,7 @@
     height: 20px;
     background-color: #f00;
 }
+
+.plantingjs-layer-item.user-active {
+    box-shadow: 0px 0px 20px white;
+}

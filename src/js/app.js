@@ -33,6 +33,7 @@ Planting.prototype._initializeViews = function() {
     var Plant = Planting.module('plant');
     var Toolbox = Planting.module('toolbox');
     var Map = Planting.module('map');
+    var LayersManager = Planting.module('layersManager');
 
     this.main = new Main.View.Main({
         el: this.container,
@@ -55,6 +56,11 @@ Planting.prototype._initializeViews = function() {
             lng: this.data.manifesto.get('lng'),
             zoom: this.data.manifesto.get('zoom')
         },
+        app: this
+    });
+    this.layersManager = new LayersManager.View.Menu({
+        $parent: this.main.$proxy,
+        collection: this.data.plantedObjects,
         app: this
     });
     

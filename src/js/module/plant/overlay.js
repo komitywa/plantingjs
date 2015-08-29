@@ -22,6 +22,9 @@
                 this._height = this.$el.height();
                 $(window).on('resize', this.resizeHandler.bind(this));
             }, this);
+            _.extend(this.app.data, {
+                plantedObjects: this.collection
+            });
         },
 
         addObject: function(model) {

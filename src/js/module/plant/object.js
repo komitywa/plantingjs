@@ -8,7 +8,9 @@
         '),
 
         events: {
-            'dragstop': 'saveCoords'
+            'dragstop': 'saveCoords',
+            'mouseover': 'setUserActivity',
+            'mouseleave': 'unsetUserActivity'
         },
 
         $img: null,
@@ -28,7 +30,8 @@
             });
             this.model
                 .on('change:scale', this.resize, this)
-                .on('change:currentProjection', this.updateProjection, this);
+                .on('change:currentProjection', this.updateProjection, this)
+                .on('change:order', this.setLayer, this);
         },
 
         render: function(model) {
@@ -36,12 +39,18 @@
                 .html(this.template(model.toJSON())).attr('data-cid', model.cid)
                 .css({
                     left: model.get('x'),
-                    top: model.get('y')
+                    top: model.get('y'),
+                    zIndex: model.get('order')
                 });
 
             this.$img = this.$el.children('img');
 
             return this;
+        },
+
+        setLayer: function(model) {
+            
+            this.$el.css('zIndex', model.get('order'));
         },
 
         resize: function(model) {
@@ -62,7 +71,15 @@
             });
 
             return this;
-        }
+        },
+
+        setUserActivity: function() {
+            this.model.set('userActivity', true);
+        },
+
+        unsetUserActivity: function() {
+            this.model.set('userActivity', false);
+        },
     });
 
 
