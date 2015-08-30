@@ -2,7 +2,10 @@
 
     PlantingData.Model = Backbone.Model.extend({
         url: 'http://plantingjs.org/save',
-
+        ignoreObjectValues: [
+            'userActivity', 
+            'projections'
+        ],
         defaults: {
             lat: null,
             lng: null,
@@ -12,19 +15,26 @@
             objects: [],
             pitch: 0
         },
-        
+
+        initialize: function() {
+
+            this.on('request', function() {
+                console.log(this.toJSON());
+            }, this);
+        },
+
         setPanoCoords: function(data) {
 
             this.set(data);
         },
 
         setObjects: function(objectsArray) {
+            var objects = _.map(objectsArray, function(object) {
 
-            this.set('objects', objectsArray);
-        },
+                return _.omit(object, this.ignoreObjectValues);
+            }, this);
 
-        save: function() {
-            console.log(this.toJSON());
+            this.set('objects', objects);
         }
     });
 

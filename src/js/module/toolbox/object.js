@@ -4,10 +4,10 @@
         className: 'plantingjs-toolboxobject-item',
         template: _.template('\
             <div class="plantingjs-toolboxobject-prototype">\
-                <img src="<%= projectionValue %>">\
+                <img src="<%= projectionUrl %>">\
             \</div>\
             <div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\
-                <img src="<%= projectionValue %>">\
+                <img src="<%= projectionUrl %>">\
             </div>\
             '),
 
@@ -36,7 +36,10 @@
         },
 
         render: function(model) {
-            this.$el.html(this.template(model.toJSON())).attr('data-cid', model.cid);
+
+            this.$el
+                .html(this.template(model.getRenderData()))
+                .attr('data-cid', model.cid);
         },
 
         attachData: function() {

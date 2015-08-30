@@ -3,7 +3,7 @@
    Plant.View.Object = Core.View.extend({
         className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
         template: _.template('\
-            <img src="<%= projectionValue %>" />\
+            <img src="<%= projectionUrl %>" />\
             <div class="plantingjs-plantedobject-tools">\</div>\
         '),
 
@@ -31,16 +31,18 @@
             this.model
                 .on('change:scale', this.resize, this)
                 .on('change:currentProjection', this.updateProjection, this)
-                .on('change:order', this.setLayer, this);
+                .on('change:layerIndex', this.setLayer, this);
         },
 
         render: function(model) {
+
             this.$el
-                .html(this.template(model.toJSON())).attr('data-cid', model.cid)
+                .html(this.template(model.getRenderData()))
+                .attr('data-cid', model.cid)
                 .css({
                     left: model.get('x'),
                     top: model.get('y'),
-                    zIndex: model.get('order')
+                    zIndex: model.get('layerIndex')
                 });
 
             this.$img = this.$el.children('img');
@@ -50,7 +52,7 @@
 
         setLayer: function(model) {
             
-            this.$el.css('zIndex', model.get('order'));
+            this.$el.css('zIndex', model.get('layerIndex'));
         },
 
         resize: function(model) {

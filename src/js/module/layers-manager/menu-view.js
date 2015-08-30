@@ -2,39 +2,17 @@
 
     LayersManager.View.Menu = Core.View.extend({
         className: 'layers-menu',
-        itemTemplate: _.template('\
-            <div class="plantingjs-layer-item" data-cid="<%= cid %>">\
-                <button class="plantingjs-layer-item-arrow js-dir-up">UP</button>\
-                <button class="plantingjs-layer-item-down js-dir-down">DOWN</button>\
-            </div>'),
-
-        events: {
-            'click .js-dir-down': 'moveDown',
-            'click .js-dir-up': 'moveUp'
-        },
+        items: [],
 
         initialize: function(options) {
             this.$parent = options.$parent;
             this.$parent.append(this.$el);
-            this.render();
 
             this.collection.each(this.addItem);
             this.collection
-                .on('all', this.manageVisibility, this)
-                .on('add sort remove', this.render, this)
-                .on('sort', console.log.bind(console))
-                .on('change:userActivity', this.highlightItem, this);
-        },
-
-        render: function() {
-            console.log('render');
-            this.$el.empty();
-            this.collection
-                .each(function(model) {
-                    this.$el.append(this.itemTemplate({
-                        cid: model.cid
-                    }));
-                }, this);
+                .on('add remove', this.manageVisibility, this)
+                .on('add', this.addItem, this)
+                .on('remove', this.removeItem, this);
         },
 
         manageVisibility: function() {
@@ -42,23 +20,28 @@
             this.$el.toggle(!!this.collection.length);
         },
 
-        moveUp: function(e) {
-            var cid = e.target.parentNode.dataset.cid;
+        addItem: function(model) {
+            var item = new LayersManager.View.Item({
+                $parent: this.$el,
+                model: model,
+                collection: this.collection
+            });
 
-            this.collection.moveUp(this.collection.get(cid));
+            this.items.push(item);
         },
 
-        moveDown: function(e) {
-            var cid = e.target.parentNode.dataset.cid;
+        removeItem: function(model) {
+            var viewIndex = _.findIndex(this.items, function(item) {
 
-            this.collection.moveDown(this.collection.get(cid));
-        },
+                return item.model.cid === model.cid;
+            });
+            var view = this.items[viewIndex];
 
-        highlightItem: function(model) {
-            this.$el
-                .children()
-                .eq(model.get('order'))
-                    .toggleClass('user-active', model.get('userActivity'));
+            view.model = null;
+            view.collection = null;
+            view.$parent = null;
+            view.remove();
+            this.items.splice(viewIndex, 1);
         }
     });
 

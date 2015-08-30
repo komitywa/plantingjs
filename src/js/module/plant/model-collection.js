@@ -4,20 +4,20 @@
             x: null,
             y: null,
             scale: 1,
+            layerIndex: null,
             projections: [],
             currentProjection: 0,
-            projectionValue: null,
             width: 0,
             height: 0,
             order: 0,
             userActivity: false
         },
 
-        initialize: function() {
-            this.on('change:currentProjection', function() {
-                this.set('projectionValue', this.getProjection());
-            });
-            this.set('projectionValue', this.getProjection(), { silent: true });
+        getRenderData: function() {
+
+            return _.extend({
+                projectionUrl: this.getProjection()
+            }, this.attributes);
         },
 
         getProjection: function() {
@@ -38,6 +38,7 @@
     Plant.Collection = Core.Collection.extend({
         model: Plant.Model,
         comparator: 'order',
+        layers: [],
 
         initialize: function() {
 
@@ -46,33 +47,41 @@
                     this.engineDataStore()
                         .setObjects(this.toJSON());
                 }), this)
-                .on('add', this.setOrder, this);
+                .on('add', this.setLayer, this)
+                .on('remove', this.removeLayer, this);
         },
 
-        setOrder: function(model) {
+        setLayer: function(model) {
+            var layerIndex = model.get('layerIndex');
 
-            model.set('order', this.length - 1);
-        },
+            if (_.isNull(layerIndex)) {
+                model.set('layerIndex', this.layers.length);
+                this.layers.push(model.cid);
+            
+            } else if (_.isNumber(layerIndex)) {
 
-        move: function(currentOrder, nextOrder) {
-            this.at(nextOrder).set('order', currentOrder);
-            this.at(currentOrder).set('order', nextOrder);
-        },
-
-        moveDown: function(model) {
-            var currentOrder = model.get('order');
-
-            if (currentOrder < this.length -1) {
-                this.move(currentOrder, currentOrder + 1);
+                this.layers.splice(layerIndex, 0, model.cid);
             }
         },
 
-        moveUp: function(model) {
-            var currentOrder = model.get('order');
+        removeLayer: function(model) {
+            var layerIndex = model.get('layerIndex');
 
-            if (currentOrder > 0) {
-                this.move(currentOrder, currentOrder - 1);
-            }
+            this.layers.splice(layerIndex, 1);
+            this.reindexLayers();
+        },
+
+        moveLayer: function(newIndex, oldIndex) {
+
+            this.layers.splice(newIndex, 0, this.layers.splice(oldIndex, 1)[0]);
+            this.reindexLayers();
+        },
+
+        reindexLayers: function() {
+            _.each(this.layers, function(modelCid, index) {
+                this.get(modelCid)
+                    .set('layerIndex', index);
+            }, this);
         }
     });
 }(

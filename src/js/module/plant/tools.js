@@ -27,6 +27,10 @@
         initialize: function(opts) {
             this.render();
             this.parentView = opts.parent;
+            this.model
+                .on('change:userActivity', function(model, userActivity) {
+                    this.$el.toggleClass('user-active', userActivity);
+                }, this);
         },
 
         render: function() {
