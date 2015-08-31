@@ -24,6 +24,7 @@
         },
 
         disableUIElements: function() {
+            
             this.panorama.setOptions({
                 panControl: false,
                 zoomControl: false,
