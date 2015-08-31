@@ -9,7 +9,6 @@
             currentProjection: 0,
             width: 0,
             height: 0,
-            order: 0,
             userActivity: false
         },
 
@@ -68,16 +67,17 @@
             var layerIndex = model.get('layerIndex');
 
             this.layers.splice(layerIndex, 1);
-            this.reindexLayers();
+            this.reindexModelsLayer();
         },
 
         moveLayer: function(newIndex, oldIndex) {
 
             this.layers.splice(newIndex, 0, this.layers.splice(oldIndex, 1)[0]);
-            this.reindexLayers();
+            this.reindexModelsLayer();
         },
 
-        reindexLayers: function() {
+        reindexModelsLayer: function() {
+            
             _.each(this.layers, function(modelCid, index) {
                 this.get(modelCid)
                     .set('layerIndex', index);
