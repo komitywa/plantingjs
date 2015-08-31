@@ -4,11 +4,14 @@ function Planting(args) {
     var MapsLoader = $.Deferred();
     var googleApiUrl = 'https://maps.googleapis.com/maps/api/js?key=' + args.googleApiKey;
 
-    this.container = args.container;
+    this.options = args;
     this.data = {
-        planting: new PlantingData.Model(),
+        planting: new PlantingData.Model(null, {
+            app: this
+        }),
         manifesto: null
     };
+
     this._initializeEventEmmiter();
     $.getScript('https://www.google.com/jsapi')
         .then(function() {
@@ -36,7 +39,7 @@ Planting.prototype._initializeViews = function() {
     var LayersManager = Planting.module('layersManager');
 
     this.main = new Main.View.Main({
-        el: this.container,
+        el: this.options.container,
         manifesto: this.data.manifesto.toJSON(),
         app: this
     });
@@ -90,12 +93,4 @@ _.extend(Planting, {
         START_PLANTING: 'start_planting',
         SAVE_REQUEST: 'save_request'
     }
-});
-
-$(function() {
-    PlantingInstance = new Planting( {
-        container:document.querySelector('.viewport'),
-        manifestoUrl: '/manifesto.json',
-        googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc'
-    });
 });
