@@ -44,7 +44,6 @@
         },
 
         onSave: function() {
-            this.app.trigger(EVENT.SAVE_REQUEST);
             this.engineDataStore()
                 .save();
         }

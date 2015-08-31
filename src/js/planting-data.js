@@ -1,7 +1,7 @@
-(function(PlantingData) {
+(function(Core, EVENT, PlantingData) {
 
-    PlantingData.Model = Backbone.Model.extend({
-        url: 'http://plantingjs.org/save',
+    PlantingData.Model = Core.Model.extend({
+
         ignoreObjectValues: [
             'userActivity',
             'projections'
@@ -16,13 +16,6 @@
             pitch: 0
         },
 
-        initialize: function() {
-
-            this.on('request', function() {
-                console.log(this.toJSON());
-            }, this);
-        },
-
         setPanoCoords: function(data) {
 
             this.set(data);
@@ -35,9 +28,22 @@
             }, this);
 
             this.set('objects', objects);
+        },
+
+        save: function() {
+            var data = this.toJSON();
+
+            this.app.trigger(EVENT.SAVE_REQUEST, data);
+
+            if (_.isFunction(this.app.options.onSave)) {
+                
+                this.app.options.onSave.call(this, data);
+            }
         }
     });
 
 }(
+    Planting.module('core'),
+    Planting.Event,
     Planting.module('plantingData')
 ));
