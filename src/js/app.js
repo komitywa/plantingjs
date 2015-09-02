@@ -3,10 +3,14 @@ function Planting(args) {
     var PlantingData = Planting.module('plantingData');
     var MapsLoader = $.Deferred();
     var googleApiUrl = 'https://maps.googleapis.com/maps/api/js?key=' + args.googleApiKey;
+    var Plant = Planting.module('plant');
 
     this.options = args;
     this.data = {
         planting: new PlantingData.Model(null, {
+            app: this
+        }),
+        plantedObjects: new Plant.Collection(null, {
             app: this
         }),
         manifesto: null
@@ -45,6 +49,7 @@ Planting.prototype._initializeViews = function() {
     });
     this.overlay = new Plant.View.Overlay({
         el: this.main.el.querySelector('.plantingjs-overlay'),
+        collection: this.data.plantedObjects,
         app: this
     });
     this.toolbox = new Toolbox.View.Sidebar({
@@ -59,6 +64,7 @@ Planting.prototype._initializeViews = function() {
             lng: this.data.manifesto.get('lng'),
             zoom: this.data.manifesto.get('zoom')
         },
+        model: this.data.planting,
         app: this
     });
     this.layersManager = new LayersManager.View.Menu({

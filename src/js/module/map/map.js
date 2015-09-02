@@ -12,7 +12,6 @@
 
             this.map = new google.maps.Map(this.el, mapOptions);
             this.panorama = this.map.getStreetView();
-
             google.maps.event.addListener(this.panorama, 'visible_changed', function() {
 
                 this.app.trigger(Event.VISIBLE_CHANGED, this.panorama.getVisible());

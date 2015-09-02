@@ -8,10 +8,7 @@
         _height: null,
 
         initialize: function() {
-            this.objects = [];
-            this.collection = new Plant.Collection(null, {
-                app: this.app
-            });
+            this.objects = [];;
             this.collection.on('add', this.addObject, this);
             this.$el.droppable({
                 accept: ".plantingjs-toolboxobject-draggable"
@@ -22,9 +19,6 @@
                 this._height = this.$el.height();
                 $(window).on('resize', this.resizeHandler.bind(this));
             }, this);
-            _.extend(this.app.data, {
-                plantedObjects: this.collection
-            });
         },
 
         addObject: function(model) {
