@@ -59,12 +59,7 @@ Planting.prototype._initializeViews = function() {
     });
     this.map = new Map.View({
         el: this.main.el.querySelector('.plantingjs-google'),
-        map: {
-            lat: this.data.manifesto.get('lat'),
-            lng: this.data.manifesto.get('lng'),
-            zoom: this.data.manifesto.get('zoom')
-        },
-        model: this.data.planting,
+        model: this.data.manifesto,
         app: this
     });
     this.layersManager = new LayersManager.View.Menu({

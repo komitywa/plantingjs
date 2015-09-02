@@ -5,12 +5,8 @@
         panorama: null,
 
         initialize: function(obj) {
-            var mapOptions = {
-                center: new google.maps.LatLng(obj.map.lat, obj.map.lng),
-                zoom: obj.map.zoom,
-            };
 
-            this.map = new google.maps.Map(this.el, mapOptions);
+            this.map = new google.maps.Map(this.el, this.getMapOptions());
             this.panorama = this.map.getStreetView();
             google.maps.event.addListener(this.panorama, 'visible_changed', function() {
 
@@ -20,6 +16,14 @@
             this.app
                 .on(Event.START_PLANTING, this.disableUIElements, this)
                 .on(Event.START_PLANTING, this.storePanoCoords, this);
+        },
+
+        getMapOptions: function() {
+
+            return {
+                center: new google.maps.LatLng(this.model.get('lat'), this.model.get('lng')),
+                zoom: this.model.get('zoom')
+            }
         },
 
         disableUIElements: function() {
