@@ -1,4 +1,4 @@
-(function(Core, LayersManager) {
+(function(Core, LayersManager, State, Event) {
 
     LayersManager.View.Menu = Core.View.extend({
         className: 'layers-menu',
@@ -7,7 +7,6 @@
         initialize: function(options) {
             this.$parent = options.$parent;
             this.$parent.append(this.$el);
-
             this.collection.each(this.addItem);
             this.collection
                 .on('add remove', this.manageVisibility, this)
@@ -21,6 +20,7 @@
         },
 
         addItem: function(model) {
+
             var item = new LayersManager.View.Item({
                 $parent: this.$el,
                 model: model,
@@ -45,4 +45,9 @@
         }
     });
 
-}(Planting.module('core'), Planting.module('layersManager')));
+}(
+    Planting.module('core'),
+    Planting.module('layersManager'),
+    Planting.State,
+    Planting.Event
+));

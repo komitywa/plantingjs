@@ -1,4 +1,4 @@
-(function(Core, EVENT, Plant) {
+(function(Core, Event, State, Plant) {
 
     Plant.View.Overlay = Core.View.extend({
         events: {
@@ -8,23 +8,38 @@
         _height: null,
 
         initialize: function() {
-            this.objects = [];;
-            this.collection.on('add', this.addObject, this);
+            this.objects = [];
+            this.collection
+                .on('add', this.addObject, this)
+                .on('reset', function(collection) {
+                    collection.each(this.addObject, this);
+                }, this);
             this.$el.droppable({
                 accept: ".plantingjs-toolboxobject-draggable"
             });
-            this.app.on(EVENT.START_PLANTING, function() {
-                this.$el.show();
-                this._width = this.$el.width();
-                this._height = this.$el.height();
-                $(window).on('resize', this.resizeHandler.bind(this));
-            }, this);
+            this.app
+                .on(Event.START_PLANTING, this._init, this)
+                .on(Event.STATE_CHANGED, function(state) {
+                    
+                    if(state === State.VIEWER) {
+                        this._init();
+                    }
+                    
+                }, this);
+        },
+
+        _init: function() {
+            this.$el.show();
+            this._width = this.$el.width();
+            this._height = this.$el.height();
+            $(window).on('resize', this.resizeHandler.bind(this));
         },
 
         addObject: function(model) {
             var newObject = new Plant.View.Object({
                 model: model,
-                app: this.app
+                app: this.app,
+                overlay: this
             });
 
             this.objects.push(newObject);
@@ -74,16 +89,29 @@
         plantObject: function(e, ui) {
             var model = ui.draggable.data('model');
             var newModel = _.extend(model, {
-                x: ui.position.left,
-                y: ui.position.top
+                x: ui.position.left / this.width(),
+                y: ui.position.top / (this.height() * 2) / this.width()
             });
 
-            this.collection.add(newModel);
+            this.collection.add(newModel, {
+                app: this.app
+            });
+        },
+
+        width: function() {
+
+            return this._width;
+        },
+
+        height: function() {
+
+            return this._height;
         }
     });
 
 }(
     Planting.module('core'),
     Planting.Event,
+    Planting.State,
     Planting.module('plant')
 ));

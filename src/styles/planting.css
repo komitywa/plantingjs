@@ -4,6 +4,11 @@
     width: 100%;
 }
 
+.plantingjs-proxy[data-state="viewer"] .plantingjs-plantedobject-tools,
+.plantingjs-proxy[data-state="viewer"] .layers-menu {
+    display: none !important;
+}
+
 .plantingjs-overlay {
     height: 100%;
     width: 100%;

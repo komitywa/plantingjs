@@ -1,40 +1,78 @@
 function Planting(args) {
     var Core = Planting.module('core');
-    var PlantingData = Planting.module('plantingData');
-    var MapsLoader = $.Deferred();
-    var googleApiUrl = 'https://maps.googleapis.com/maps/api/js?key=' + args.googleApiKey;
+    var SessionData = Planting.module('sessionData');
+    var ManifestoData = Planting.module('manifestoData');
     var Plant = Planting.module('plant');
-
-    this.options = args;
-    this.data = {
-        planting: new PlantingData.Model(null, {
-            app: this
-        }),
-        plantedObjects: new Plant.Collection(null, {
-            app: this
-        }),
-        manifesto: null
-    };
+    var mapsLoader = this._initGoogleMaps(args.googleApiKey);
+    var initDefer = $.Deferred();
 
     this._initializeEventEmmiter();
-    $.getScript('https://www.google.com/jsapi')
-        .then(function() {
-            google.load('maps', '3', {
-                other_params: 'key=' + args.googleApiKey,
-                callback: MapsLoader.resolve.bind(MapsLoader)
-            });
-        });
-    $.when( $.getJSON(args.manifestoUrl), MapsLoader )
-        .then(function(manifestoResult) {
-            this.data.manifesto = new Backbone.Model(manifestoResult[0]);
-        }.bind(this))
-        .done(this._initializeViews.bind(this));
+    this._initializeHelpers();
+    this.options = args;
+    this.data = {
+        session: new SessionData.Model(null, {
+            app: this
+        }),
+        manifesto: new ManifestoData.Model(null, {
+            url: args.manifestoUrl,
+            app: this
+        })
+    };
+    this.setState(Planting.State.INITING);
+    $.when(this.manifesto().fetch(), mapsLoader)
+        .done(function() {
+            this._initializeViews();
+            initDefer.resolve();
+        }.bind(this));
+    this.initDefer = initDefer.promise();
 };
 
 Planting.prototype._initializeEventEmmiter = function() {
     _.extend(this, _.clone(Backbone.Events));
 };
 
+Planting.prototype._initializeHelpers = function() {
+    _.extend(this, {
+        _state: null,
+
+        session: function() {
+
+            return this.data.session;
+        },
+        manifesto: function() {
+
+            return this.data.manifesto;
+        },
+
+        setState: function(state) {
+            var prevState = this._state;
+            
+            this._state = state;
+            this.trigger(Planting.Event.STATE_CHANGED, this._state, prevState);
+
+            return this;
+        },
+
+        getState: function() {
+
+            return this._state;
+        }
+    });
+};
+
+Planting.prototype._initGoogleMaps = function(key) {
+    var defer = $.Deferred();
+
+    $.getScript('https://www.google.com/jsapi')
+        .then(function() {
+            google.load('maps', '3', {
+                other_params: 'key=' + key,
+                callback: defer.resolve.bind(defer)
+            });
+        });
+
+    return defer.promise();
+};
 Planting.prototype._initializeViews = function() {
     var Main = Planting.module('main');
     var Plant = Planting.module('plant');
@@ -44,30 +82,68 @@ Planting.prototype._initializeViews = function() {
 
     this.main = new Main.View.Main({
         el: this.options.container,
-        manifesto: this.data.manifesto.toJSON(),
+        manifesto: this.manifesto().toJSON(),
         app: this
     });
     this.overlay = new Plant.View.Overlay({
         el: this.main.el.querySelector('.plantingjs-overlay'),
-        collection: this.data.plantedObjects,
+        collection: this.session().objects(),
         app: this
     });
     this.toolbox = new Toolbox.View.Sidebar({
         el: this.main.el.querySelector('.plantingjs-toolbox'),
-        manifesto: this.data.manifesto.toJSON(),
         app: this
     });
     this.map = new Map.View({
         el: this.main.el.querySelector('.plantingjs-google'),
-        model: this.data.manifesto,
+        model: this.manifesto(),
         app: this
     });
     this.layersManager = new LayersManager.View.Menu({
         $parent: this.main.$proxy,
-        collection: this.data.plantedObjects,
+        collection: this.session().objects(),
         app: this
     });
 
+};
+
+Planting.prototype.initPlant = function(objects) {
+    this.main.dialog.close();
+    _.each(objects, function(object) {
+
+        this.session().objects().add(object, {
+            parse: true,
+            app: this
+        });
+    }, this);
+};
+
+Planting.prototype.initViewer = function(options) {
+    var panoOptions = {
+        position: {
+            lat: options.lat,
+            lng: options.lng
+        },
+        pov: {
+            heading: options.heading,
+            pitch: options.pitch,
+            zoom: options.zoom
+        }
+    };
+    var objects = options.objects;
+
+    this.initDefer
+        .then(function() {
+
+            this.setState(Planting.State.VIEWER);
+            this.map.initializeViewer(panoOptions);
+
+            if (objects &&
+                objects.length) {
+
+                this.initPlant(objects);
+            }
+        }.bind(this));
 };
 
 _.extend(Planting, {
@@ -89,9 +165,18 @@ _.extend(Planting, {
         };
     }(),
 
+    State: {
+        INITING: 'initing',
+        MAP: 'map',
+        PLANTING: 'planting',
+        VIEWER: 'viewer'
+    },
+
     Event: {
         VISIBLE_CHANGED: 'visible_changed',
         START_PLANTING: 'start_planting',
-        SAVE_REQUEST: 'save_request'
+        SAVE_REQUEST: 'save_request',
+        MANIFESTO_INITED: 'manifesto_inited',
+        STATE_CHANGED: 'state_changed'
     }
 });
