@@ -17,7 +17,8 @@
 
         initialize: function() {
             var $img;
-            this.render(this.model);
+            
+            this.render();
             $img = this.$el.find('img').first();
             this.$el.find('.plantingjs-toolboxobject-draggable')
                 .draggable({
@@ -26,20 +27,15 @@
                     appendTo: '.plantingjs-overlay',
                     zIndex: 1000
                 });
-
-            $img.on('load', function(e) {
-                this.model.set({
-                    width: e.target.width,
-                    height: e.target.height
-                });
-            }.bind(this));
         },
 
-        render: function(model) {
+        render: function() {
 
             this.$el
-                .html(this.template(model.getRenderData()))
-                .attr('data-cid', model.cid);
+                .html(this.template({
+                    projectionUrl: this.model.getProjection()
+                }))
+                .attr('data-cid', this.model.cid);
         },
 
         attachData: function() {

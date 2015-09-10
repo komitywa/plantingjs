@@ -16,7 +16,7 @@
             width: 500,
             buttons: {
                 Zaczynam: function() {
-                    $(this).dialog("close");
+                    $(this).dialog('close');
                 }
             }
         },
@@ -30,6 +30,11 @@
                 .attr('title', this.title)
                 .html(this.template())
                 .dialog(this.dialogOptions);
+        },
+
+        close: function() {
+
+            this.$el.dialog('close');
         }
     });
 

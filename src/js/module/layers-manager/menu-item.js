@@ -67,4 +67,7 @@
         }
     });
 
-}(Planting.module('core'), Planting.module('layersManager')));
+}(
+    Planting.module('core'), 
+    Planting.module('layersManager')
+));

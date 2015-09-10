@@ -11,14 +11,16 @@
             'click .plantingjs-savebtn': 'onSave'
         },
 
-        constructor: function(obj) {
-            this.collection = new Toolbox.Collection(obj.manifesto.toolboxobjects, {
+        initialize: function(obj) {
+            var objectsIds = _.range(this.manifesto().getCopy('toolboxobjects').length);
+
+            this.collection = new Toolbox.Collection(_.map(objectsIds, function(objectId) {
+                return {
+                    objectId: objectId
+                };
+            }), {
                 app: this.app
             });
-            Core.View.call(this, obj);
-        },
-
-        initialize: function(obj) {
             this.objects = this.collection.map(function(toolboxObjectModel) {
 
                 return new Toolbox.View.Object({
@@ -29,7 +31,6 @@
             this.app.on(EVENT.START_PLANTING, function(visible) {
                 this.$el.show();
             }, this);
-
             this.render( this.objects );
         },
 
@@ -44,8 +45,12 @@
         },
 
         onSave: function() {
-            this.engineDataStore()
+            this.session()
                 .save();
+        },
+
+        hide: function() {
+            this.$el.hide();
         }
     });
 

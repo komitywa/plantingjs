@@ -1,11 +1,10 @@
-(function(Core, Toolbox, Plant) {
+(function(Core, Toolbox) {
 
     Toolbox.Collection = Core.Collection.extend({
-        model: Plant.Model
+        model: Toolbox.Model
     });
 
 }(
     Planting.module('core'),
-    Planting.module('toolbox'),
-    Planting.module('plant')
+    Planting.module('toolbox')
 ));

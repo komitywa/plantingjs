@@ -1,4 +1,4 @@
-(function(Core, EVENT, Main) {
+(function(Core, Event, State, Main) {
 
     Main.View.Main = Core.View.extend({
         toolbox: null,
@@ -31,11 +31,19 @@
                 app: this.app
             });
             this.app
-                .on(EVENT.VISIBLE_CHANGED, function(visible) {
-                    this.$el.find('.plantingjs-startbtn').toggle(visible);
+                .on(Event.VISIBLE_CHANGED, function(visible) {
+                    
+                    if(this.app.getState() !== State.VIEWER) {
+
+                        this.$el.find('.plantingjs-startbtn').toggle(visible);
+                    }
                 }, this)
-                .on(EVENT.START_PLANTING, function() {
+                .on(Event.START_PLANTING, function() {
                     this.$el.find('.plantingjs-startbtn').hide();
+                }, this)
+                .on(Event.STATE_CHANGED, function(state) {
+                    this.$el
+                        .children().attr('data-state', state);
                 }, this);
         },
 
@@ -46,12 +54,13 @@
 
         startPlanting: function() {
 
-            this.app.trigger(EVENT.START_PLANTING);
+            this.app.trigger(Event.START_PLANTING);
         }
     });
 
 }(
     Planting.module('core'),
     Planting.Event,
+    Planting.State,
     Planting.module('main')
 ));
