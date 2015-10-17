@@ -5,4 +5,5 @@ dist
 bower_components
 coverage/
 test/bower_components
+.DS_Store
 *.pyc
