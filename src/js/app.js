@@ -1,16 +1,19 @@
-function Planting(args) {
-    var Core = Planting.module('core');
-    var SessionData = Planting.module('sessionData');
-    var ManifestoData = Planting.module('manifestoData');
-    var Plant = Planting.module('plant');
-    var mapsLoader = this._initGoogleMaps(args.googleApiKey);
-    var initDefer = $.Deferred();
+var _ = require('underscore');
+var Backbone = require('backbone');
+var SessionDataModel = require('session-data');
+// var ManifestoData = require('./manifesto-data');
+// var Main = require('./module/main/main');
+// var LayersManager = require('./module/layers-manager/layers-manager');
+// var Map = require('./module/map/map')
+// var Plant = require('./module/plant/plant');
+// var Toolbox = require('./module/toolbox/toolbox');
 
+function Planting(args) {
     this._initializeEventEmmiter();
     this._initializeHelpers();
     this.options = args;
     this.data = {
-        session: new SessionData.Model(null, {
+        session: new SessionDataModel(null, {
             app: this
         }),
         manifesto: new ManifestoData.Model(null, {
@@ -74,12 +77,6 @@ Planting.prototype._initGoogleMaps = function(key) {
     return defer.promise();
 };
 Planting.prototype._initializeViews = function() {
-    var Main = Planting.module('main');
-    var Plant = Planting.module('plant');
-    var Toolbox = Planting.module('toolbox');
-    var Map = Planting.module('map');
-    var LayersManager = Planting.module('layersManager');
-
     this.main = new Main.View.Main({
         el: this.options.container,
         manifesto: this.manifesto().toJSON(),
@@ -147,24 +144,6 @@ Planting.prototype.initViewer = function(options) {
 };
 
 _.extend(Planting, {
-    module: function() {
-        var _modules = {};
-
-        return function(name) {
-            name = name.toUpperCase();
-
-            if (_modules[name]) {
-                return _modules[name];
-            }
-
-            return _modules[name] = {
-                Model: {},
-                Collection: {},
-                View: {}
-            };
-        };
-    }(),
-
     State: {
         INITING: 'initing',
         MAP: 'map',
@@ -180,3 +159,5 @@ _.extend(Planting, {
         STATE_CHANGED: 'state_changed'
     }
 });
+
+module.exports = Planting;

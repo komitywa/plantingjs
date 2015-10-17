@@ -22,6 +22,7 @@
             return toolboxobjects.projections;
         }
     });
+    module.exports = ManifestoData;
 
 }(
     Planting.module('core'),
