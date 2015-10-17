@@ -15,7 +15,6 @@ Odpalać wszsytkie komendy w roocie projektu
 
 ```shell
 npm install
-npm install bower
 bower install
 ```
 
