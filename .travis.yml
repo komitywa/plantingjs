@@ -1,0 +1,10 @@
+language: node_js
+python:
+  - "0.12"
+install:
+  - "npm install"
+  - "bower install"
+script:
+  "./node_modules/gulp/bin/gulp.js build"
+after_success:
+  - "codecov"
