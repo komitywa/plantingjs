@@ -3,5 +3,6 @@ dist
 .tmp
 .sass-cache
 bower_components
+coverage/
 test/bower_components
 *.pyc
