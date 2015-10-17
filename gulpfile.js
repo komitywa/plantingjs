@@ -4,8 +4,10 @@
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 
-gulp.task('styles', function () {
-  return gulp.src('src/styles/main.css')
+
+gulp.task('tmp:sass', ['clean:tmp'], function() {
+  return gulp.src('src/styles/**/*.scss')
+    .pipe($.sass())
     .pipe($.autoprefixer({browsers: ['last 1 version']}))
     .pipe(gulp.dest('.tmp/styles'));
 });
@@ -17,7 +19,7 @@ gulp.task('jshint', function () {
     .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', ['tmp:sass'], function () {
   var assets = $.useref.assets({searchPath: '{.tmp,src}'});
 
   return gulp.src('src/*.html')
@@ -60,7 +62,8 @@ gulp.task('extras', function () {
   }).pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean:tmp', require('del').bind(null, ['.tmp']));
+gulp.task('clean:dist', require('del').bind(null, ['dist']));
 
 gulp.task('connect', function () {
   var serveStatic = require('serve-static');
@@ -96,19 +99,19 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('src'));
 });
 
-gulp.task('watch', ['connect'], function () {
+gulp.task('watch', ['tmp:sass', 'connect'], function () {
   $.livereload.listen();
 
   // watch for changes
   gulp.watch([
     'src/*.html',
-    '.tmp/styles/**/*.css',
     'src/js/**/*.js',
+    '.tmp/styles/**/*.css',
     'src/images/**/*',
     'src/objects/**/*',
   ]).on('change', $.livereload.changed);
 
-  gulp.watch('src/styles/**/*.css', ['styles']);
+  gulp.watch('src/styles/**/*.scss', ['tmp:sass']);
   gulp.watch('bower.json', ['wiredep']);
 });
 
@@ -116,6 +119,6 @@ gulp.task('build', ['html', 'images', 'fonts', 'extras'], function () {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('default', ['clean'], function () {
+gulp.task('default', ['clean:dist'], function () {
   gulp.start('build');
 });

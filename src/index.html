@@ -10,14 +10,12 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/dialog.css">
     <!-- endbuild -->
 
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/planting.css">
-    <link rel="stylesheet" href="styles/fonts.css">
-    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.min.css">
-    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/dialog.css">
     <!-- endbuild -->
 
   </head>
@@ -39,56 +37,46 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js js/planting.js -->
-       <!--  <script src="js/plantingjs-core.js"></script>
-        <script src="js/planting/planting-main.js"></script>
-        <script src="js/planting/planting-handlers.js"></script>
-        <script src="js/planting/planting-downloaders.js"></script>
-        <script src="js/planting/planting-save.js"></script> -->
+    <!-- build:js js/planting.js -->
+    <script src="js/app.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/session-data.js"></script>
+    <script src="js/manifesto-data.js"></script>
 
-        <script src="js/app.js"></script>
-        <script src="js/core.js"></script>
-        <script src="js/session-data.js"></script>
-        <script src="js/manifesto-data.js"></script>
+    <script src="js/module/main/main.js"></script>
+    <script src="js/module/main/dialog.js"></script>
 
-        <script src="js/module/main/main.js"></script>
-        <script src="js/module/main/dialog.js"></script>
+    <script src="js/module/map/map.js"></script>
 
-        <script src="js/module/map/map.js"></script>
+    <script src="js/module/plant/model.js"></script>
+    <script src="js/module/plant/collection.js"></script>
+    <script src="js/module/plant/object.js"></script>
+    <script src="js/module/plant/tools.js"></script>
+    <script src="js/module/plant/overlay.js"></script>
 
-        <script src="js/module/plant/model.js"></script>
-        <script src="js/module/plant/collection.js"></script>
-        <script src="js/module/plant/object.js"></script>
-        <script src="js/module/plant/tools.js"></script>
-        <script src="js/module/plant/overlay.js"></script>
+    <script src="js/module/toolbox/model.js"></script>
+    <script src="js/module/toolbox/collection.js"></script>
+    <script src="js/module/toolbox/object.js"></script>
+    <script src="js/module/toolbox/sidebar.js"></script>
 
-        <script src="js/module/toolbox/model.js"></script>
-        <script src="js/module/toolbox/collection.js"></script>
-        <script src="js/module/toolbox/object.js"></script>
-        <script src="js/module/toolbox/sidebar.js"></script>
+    <script src="js/module/layers-manager/menu-view.js"></script>
+    <script src="js/module/layers-manager/menu-item.js"></script>
 
-        <script src="js/module/layers-manager/menu-view.js"></script>
-        <script src="js/module/layers-manager/menu-item.js"></script>
+    <!-- endbuild -->
 
-        <!-- endbuild -->
+    <script type="text/javascript">
+        function simple_save_callback(planting) {
+            console.log(planting);
+        }
 
-        <script type="text/javascript">
-            function simple_save_callback(planting) {
-                console.log(planting);
-            }
-
-            $(function() {
-                PlantingInstance = new Planting( {
-                    container:document.querySelector('.viewport'),
-                    manifestoUrl: '/manifesto.json',
-                    googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc',
-                    onSave: simple_save_callback
-                });
+        $(function() {
+            PlantingInstance = new Planting( {
+                container:document.querySelector('.viewport'),
+                manifestoUrl: '/manifesto.json',
+                googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc',
+                onSave: simple_save_callback
             });
-        </script>
-
-        <!-- build:js js/main.js -->
-        <!-- <script src="js/main.js"></script> -->
-        <!-- endbuild -->
+        });
+    </script>
 </body>
 </html>
