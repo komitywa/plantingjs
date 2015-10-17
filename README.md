@@ -2,6 +2,8 @@ PLANTING JS
 ====
 
 [![Join the chat at https://gitter.im/komitywa/plantingjs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/komitywa/plantingjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/komitywa/plantingjs.svg)](https://travis-ci.org/komitywa/plantingjs)
+[![codecov.io](http://codecov.io/github/komitywa/plantingjs/coverage.svg?branch=master)](http://codecov.io/github/komitywa/plantingjs?branch=master)
 
 Aby możliwe było uruchomienie źródeł zarówno w trybie developerskim, jak i builda na produkcje, wymagane są następujące pakiety:
 

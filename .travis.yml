@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "0.12"
+install:
+  - "npm install"
+  - "bower install"
+script:
+  - "./node_modules/gulp/bin/gulp.js build"
+# Line below should be uncommented when issue #73
+#  - "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha src/**/*.js"
+after_success:
+  - "./node_modules/codecov/bin/codecov"
