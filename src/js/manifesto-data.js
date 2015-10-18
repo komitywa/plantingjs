@@ -1,31 +1,26 @@
-(function(Core, EVENT, ManifestoData) {
+var Core = require('core');
+var Planting = require('app');
 
-    ManifestoData.Model = Core.Model.extend({
+var ManifestoDataModel = Core.Model.extend({
 
-        constructor: function(data, options) {
+    constructor: function(data, options) {
 
-            this.url = options.url;
-            Core.Model.call(this, data, options);
-        },
+        this.url = options.url;
+        Core.Model.call(this, data, options);
+    },
 
-        initialize: function() {
+    initialize: function() {
 
-            this.on('fetch', function() {
+        this.on('fetch', function() {
 
-                this.app.trigger(EVENT.MANIFESTO_INITED, this);
-            }, this);
-        },
+            this.app.trigger(Planting.EVENT.MANIFESTO_INITED, this);
+        }, this);
+    },
 
-        getProjectionsFor: function(objectId) {
-            var toolboxobjects = this.get('toolboxobjects')[objectId];
+    getProjectionsFor: function(objectId) {
+        var toolboxobjects = this.get('toolboxobjects')[objectId];
 
-            return toolboxobjects.projections;
-        }
-    });
-    module.exports = ManifestoData;
-
-}(
-    Planting.module('core'),
-    Planting.Event,
-    Planting.module('manifestoData')
-));
+        return toolboxobjects.projections;
+    }
+});
+module.exports = ManifestoDataModel;

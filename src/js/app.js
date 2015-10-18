@@ -1,7 +1,8 @@
+var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var SessionDataModel = require('session-data');
-// var ManifestoData = require('./manifesto-data');
+var ManifestoDataModel = require('./manifesto-data');
 // var Main = require('./module/main/main');
 // var LayersManager = require('./module/layers-manager/layers-manager');
 // var Map = require('./module/map/map')
@@ -9,6 +10,8 @@ var SessionDataModel = require('session-data');
 // var Toolbox = require('./module/toolbox/toolbox');
 
 function Planting(args) {
+    var mapsLoader = this._initGoogleMaps(args.googleApiKey);
+    var initDefer = $.Deferred();
     this._initializeEventEmmiter();
     this._initializeHelpers();
     this.options = args;
@@ -16,7 +19,7 @@ function Planting(args) {
         session: new SessionDataModel(null, {
             app: this
         }),
-        manifesto: new ManifestoData.Model(null, {
+        manifesto: new ManifestoDataModel(null, {
             url: args.manifestoUrl,
             app: this
         })
