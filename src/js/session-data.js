@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Core = require('core');
-var EVENT = require('app').EVENT;
-var Plant = require('module/plant/plant');
+var Planting = require('planting');
+var PlantCollection = require('module/plant/collection');
 
 var SessionDataModel = Core.Model.extend({
 
@@ -21,7 +21,7 @@ var SessionDataModel = Core.Model.extend({
 
     constructor: function(data, options) {
 
-        this._objectsCollection = new Plant.Collection(null, {
+        this._objectsCollection = new PlantCollection(null, {
             app: options.app
         });
         Core.Model.call(this, data, options);
@@ -48,7 +48,7 @@ var SessionDataModel = Core.Model.extend({
     save: function() {
         var data = this.toJSON();
 
-        this.app.trigger(EVENT.SAVE_REQUEST, data);
+        this.app.trigger(Planting.Event.SAVE_REQUEST, data);
 
         if (_.isFunction(this.app.options.onSave)) {
 

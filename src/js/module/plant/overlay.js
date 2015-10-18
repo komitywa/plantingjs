@@ -1,6 +1,8 @@
 var _ = require('underscore');
+var $ = require('jquery');
 var Core = require('core');
-var Planting = require('app');
+var Planting = require('planting');
+var PlantViewObject = require('./object');
 
 var PlantViewOverlay = Core.View.extend({
     events: {
@@ -38,7 +40,7 @@ var PlantViewOverlay = Core.View.extend({
     },
 
     addObject: function(model) {
-        var newObject = new Plant.View.Object({
+        var newObject = new PlantViewObject({
             model: model,
             app: this.app,
             overlay: this

@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Core = require('core');
-var PlantModel = require('module/plant/model');
+var PlantModel = require('./model');
 
 
 var PlantCollection = Core.Collection.extend({

@@ -2,7 +2,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var Core = require('core');
 var PlantViewTools = require('module/plant/tools');
-var Planting = require('app');
+var Planting = require('planting');
 
 var PlantViewObject = Core.View.extend({
     className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',

@@ -1,15 +1,12 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var SessionDataModel = require('session-data');
-var ManifestoDataModel = require('./manifesto-data');
-// var Main = require('./module/main/main');
-// var LayersManager = require('./module/layers-manager/layers-manager');
-// var Map = require('./module/map/map')
-// var Plant = require('./module/plant/plant');
-// var Toolbox = require('./module/toolbox/toolbox');
 
 function Planting(args) {
+    // TODO: we have circular imports - need to think how to change this.
+    var SessionDataModel = require('session-data');
+    var ManifestoDataModel = require('manifesto-data');
+
     var mapsLoader = this._initGoogleMaps(args.googleApiKey);
     var initDefer = $.Deferred();
     this._initializeEventEmmiter();
@@ -80,6 +77,12 @@ Planting.prototype._initGoogleMaps = function(key) {
     return defer.promise();
 };
 Planting.prototype._initializeViews = function() {
+    var Main = require('module/main/main');
+    var Plant = require('module/plant/plant');
+    var Toolbox = require('module/toolbox/toolbox');
+    var Map = require('module/map/map')
+    var LayersManager = require('module/layers-manager/layers-manager');
+
     this.main = new Main.View.Main({
         el: this.options.container,
         manifesto: this.manifesto().toJSON(),
@@ -162,5 +165,4 @@ _.extend(Planting, {
         STATE_CHANGED: 'state_changed'
     }
 });
-
 module.exports = Planting;

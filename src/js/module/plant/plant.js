@@ -6,5 +6,5 @@ var Plant = {
         Tools: require('module/plant/tools'),
         Overlay: require('module/plant/overlay')
     }
-};
+}
 module.exports = Plant;

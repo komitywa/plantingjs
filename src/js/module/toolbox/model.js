@@ -1,10 +1,4 @@
-(function(Plant, Toolbox) {
+var PlantModel = require('module/plant/model');
 
-    Toolbox.Model = Plant.Model.extend({
-
-    });
-
-}(
-    Planting.module('plant'),
-    Planting.module('toolbox')
-));
+var ToolboxModel = PlantModel.extend({});
+module.exports = ToolboxModel;

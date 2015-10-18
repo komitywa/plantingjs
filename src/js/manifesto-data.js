@@ -1,5 +1,5 @@
 var Core = require('core');
-var Planting = require('app');
+var Planting = require('planting');
 
 var ManifestoDataModel = Core.Model.extend({
 
