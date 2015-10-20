@@ -71,7 +71,7 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-    return gulp.src(require('main-bower-files')().concat('src/fonts/**/*'))
+    return gulp.src('src/fonts/**/*')
         .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
         .pipe($.flatten())
         .pipe(gulp.dest('dist/fonts'));
@@ -101,11 +101,7 @@ gulp.task('connect', function () {
         .use(require('connect-livereload')({port: 35729}))
         .use(serveStatic('.tmp'))
         .use(serveStatic('src'))
-        // paths to bower_components should be relative to the current file
-        // e.g. in src/index.html you should use ../bower_components
-        .use('/bower_components', serveStatic('bower_components'))
-        .use('/bower_components', serveStatic('../bower_components'))
-        .use('/node_modules', serveStatic('../node_modules'))
+        .use('/node_modules', serveStatic('node_modules'))
         .use(serveIndex('src'));
 
     require('http').createServer(app)
