@@ -6,22 +6,23 @@ var browserify = require('browserify');
 var tap = require('gulp-tap');
 var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
+var sequence = require('gulp-sequence');
+var concat = require('gulp-concat');
 // TODO: get rid off gulp-load-plugins as it doesn't work that well
 var $ = require('gulp-load-plugins')();
-
 
 gulp.task('bower', function() {
     $.bower();
 });
 
-gulp.task('tmp:sass', ['clean:tmp'], function() {
+gulp.task('sass', function() {
     return gulp.src('src/styles/**/*.scss')
         .pipe($.sass())
         .pipe($.autoprefixer({browsers: ['last 1 version']}))
-        .pipe(gulp.dest('.tmp/styles'));
+        .pipe(gulp.dest('./dist/styles'));
 });
 
-gulp.task('tmp:browserify', ['clean:tmp'], function() {
+gulp.task('browserify', function() {
     return gulp.src('./src/js/main.js')
         .pipe(plumber())
         .pipe(tap(function(file) {
@@ -39,7 +40,7 @@ gulp.task('tmp:browserify', ['clean:tmp'], function() {
                 }).bundle();
             });
         }))
-        .pipe(gulp.dest('.tmp/js/'));
+        .pipe(gulp.dest('./dist/js/'));
 });
 
 gulp.task('jshint', function () {
@@ -49,12 +50,11 @@ gulp.task('jshint', function () {
         .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('html', ['tmp:sass'], function () {
+gulp.task('html', function () {
     var assets = $.useref.assets({searchPath: '{.tmp,src}'});
 
     return gulp.src('src/*.html')
         .pipe(assets)
-        .pipe($.if('*.js', $.uglify()))
         .pipe($.if('*.css', $.csso()))
         .pipe(assets.restore())
         .pipe($.useref())
@@ -100,7 +100,7 @@ gulp.task('connect', function () {
     var serveIndex = require('serve-index');
     var app = require('connect')()
         .use(require('connect-livereload')({port: 35729}))
-        .use(serveStatic('.tmp'))
+        .use(serveStatic('dist'))
         .use(serveStatic('src'))
         .use('/node_modules', serveStatic('node_modules'))
         .use(serveIndex('src'));
@@ -112,7 +112,7 @@ gulp.task('connect', function () {
         });
 });
 
-gulp.task('serve', ['bower', 'connect', 'watch', 'tmp:browserify'], function () {
+gulp.task('serve', ['build', 'connect', 'watch'], function () {
     require('opn')('http://localhost:9000');
 });
 
@@ -125,7 +125,7 @@ gulp.task('wiredep', function () {
         .pipe(gulp.dest('src'));
 });
 
-gulp.task('watch', ['tmp:sass', 'connect'], function () {
+gulp.task('watch', ['sass', 'connect'], function () {
     $.livereload.listen();
 
     // watch for changes
@@ -137,13 +137,27 @@ gulp.task('watch', ['tmp:sass', 'connect'], function () {
         'src/objects/**/*',
     ]).on('change', $.livereload.changed);
 
-    gulp.watch('src/styles/**/*.scss', ['tmp:sass']);
+    gulp.watch('src/styles/**/*.scss', ['sass']);
     gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extras'], function () {
-    return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+gulp.task('css:vendor', function() {
+    
+    return gulp.src([
+        './node_modules/jquery-ui/themes/base/jquery-ui.css',
+        './node_modules/jquery-ui/themes/base/jquery.ui.dialog.css'
+        ])
+        .pipe(concat('vendor.css'))
+        .pipe(gulp.dest('./dist/styles/'));    
 });
+
+gulp.task('build', sequence(
+    'clean:dist',
+    ['html', 'images', 'fonts', 'extras', 'browserify', 'css:vendor', 'sass'],
+    function () {
+        return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+    }
+));
 
 gulp.task('default', ['clean:dist'], function () {
     gulp.start('build');
