@@ -1,62 +1,59 @@
-(function(Core, EVENT, SessionData, Plant) {
+var _ = require('underscore');
+var Core = require('core');
+var Planting = require('planting');
+var PlantCollection = require('module/plant/collection');
 
-    SessionData.Model = Core.Model.extend({
+var SessionDataModel = Core.Model.extend({
 
-        ignoreObjectValues: [
-            'userActivity',
-            'projections'
-        ],
-        defaults: {
-            lat: null,
-            lng: null,
-            zoom: null,
-            heading: null,
-            pitch: 0
-        },
+    ignoreObjectValues: [
+        'userActivity',
+        'projections'
+    ],
+    defaults: {
+        lat: null,
+        lng: null,
+        zoom: null,
+        heading: null,
+        pitch: 0
+    },
 
-        _objectsCollection: null,
+    _objectsCollection: null,
 
-        constructor: function(data, options) {
+    constructor: function(data, options) {
 
-            this._objectsCollection = new Plant.Collection(null, {
-                app: options.app
-            });
-            Core.Model.call(this, data, options);
-        },
+        this._objectsCollection = new PlantCollection(null, {
+            app: options.app
+        });
+        Core.Model.call(this, data, options);
+    },
 
-        objects: function() {
+    objects: function() {
 
-            return this._objectsCollection;
-        },
+        return this._objectsCollection;
+    },
 
-        setPanoCoords: function(data) {
+    setPanoCoords: function(data) {
 
-            this.set(data);
-        },
+        this.set(data);
+    },
 
-        toJSON: function() {
-            var objects = this.objects().toJSON();
-            
-            return _.extend(Core.Model.prototype.toJSON.call(this), {
-                objects: _.omit(objects, this.ignoreObjectValues)
-            });
-        },
+    toJSON: function() {
+        var objects = this.objects().toJSON();
 
-        save: function() {
-            var data = this.toJSON();
+        return _.extend(Core.Model.prototype.toJSON.call(this), {
+            objects: _.omit(objects, this.ignoreObjectValues)
+        });
+    },
 
-            this.app.trigger(EVENT.SAVE_REQUEST, data);
+    save: function() {
+        var data = this.toJSON();
 
-            if (_.isFunction(this.app.options.onSave)) {
-                
-                this.app.options.onSave.call(this, data);
-            }
+        this.app.trigger(Planting.Event.SAVE_REQUEST, data);
+
+        if (_.isFunction(this.app.options.onSave)) {
+
+            this.app.options.onSave.call(this, data);
         }
-    });
-
-}(
-    Planting.module('core'),
-    Planting.Event,
-    Planting.module('sessionData'),
-    Planting.module('plant')
-));
+    }
+});
+module.exports = SessionDataModel;

@@ -1,51 +1,47 @@
-(function (Core, Toolbox) {
+var _ = require('underscore');
+var Core = require('core');
 
-   Toolbox.View.Object = Core.View.extend({
-        className: 'plantingjs-toolboxobject-item',
-        template: _.template('\
-            <div class="plantingjs-toolboxobject-prototype">\
-                <img src="<%= projectionUrl %>">\
-            \</div>\
-            <div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\
-                <img src="<%= projectionUrl %>">\
-            </div>\
-            '),
+var ToolboxViewObject = Core.View.extend({
+    className: 'plantingjs-toolboxobject-item',
+    template: _.template('\
+        <div class="plantingjs-toolboxobject-prototype">\
+            <img src="<%= projectionUrl %>">\
+        \</div>\
+        <div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\
+            <img src="<%= projectionUrl %>">\
+        </div>\
+        '),
 
-        events: {
-            'dragstart': 'attachData'
-        },
+    events: {
+        'dragstart': 'attachData'
+    },
 
-        initialize: function() {
-            var $img;
-            
-            this.render();
-            $img = this.$el.find('img').first();
-            this.$el.find('.plantingjs-toolboxobject-draggable')
-                .draggable({
-                    containment: ".plantingjs-overlay" ,
-                    helper: 'clone',
-                    appendTo: '.plantingjs-overlay',
-                    zIndex: 1000
-                });
-        },
+    initialize: function() {
+        var $img;
 
-        render: function() {
+        this.render();
+        $img = this.$el.find('img').first();
+        this.$el.find('.plantingjs-toolboxobject-draggable')
+            .draggable({
+                containment: ".plantingjs-overlay" ,
+                helper: 'clone',
+                appendTo: '.plantingjs-overlay',
+                zIndex: 1000
+            });
+    },
 
-            this.$el
-                .html(this.template({
-                    projectionUrl: this.model.getProjection()
-                }))
-                .attr('data-cid', this.model.cid);
-        },
+    render: function() {
 
-        attachData: function() {
-            this.$el.find('.plantingjs-toolboxobject-draggable')
-                .data('model', this.model.clone().toJSON());
-        }
-    });
+        this.$el
+            .html(this.template({
+                projectionUrl: this.model.getProjection()
+            }))
+            .attr('data-cid', this.model.cid);
+    },
 
-
-} (
-    Planting.module('core'),
-    Planting.module('toolbox')
-));
+    attachData: function() {
+        this.$el.find('.plantingjs-toolboxobject-draggable')
+            .data('model', this.model.clone().toJSON());
+    }
+});
+module.exports = ToolboxViewObject;

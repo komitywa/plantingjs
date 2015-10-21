@@ -1,9 +1,5 @@
 {
   "name": "plantingjs",
   "private": true,
-  "dependencies": {
-    "jquery": "~2.1.1",
-    "jquery-ui": "~1.11.4",
-    "backbone": "~1.2.1"
-  }
+  "dependencies": {}
 }

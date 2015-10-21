@@ -1,30 +1,29 @@
-(function (Core, Plant) {
-   
-   Plant.Model = Core.Model.extend({
-        defaults: {
-            x: null,
-            y: null,
-            scale: null,
-            layerIndex: null,
-            projection: 0,
-            width: 0,
-            height: 0,
-            userActivity: false
-        },
+var Core = require('core');
 
-        getProjection: function() {
+var PlantModel = Core.Model.extend({
+    defaults: {
+        x: null,
+        y: null,
+        scale: null,
+        layerIndex: null,
+        projection: 0,
+        width: 0,
+        height: 0,
+        userActivity: false
+    },
 
-            return this.manifesto()
-                    .getProjectionsFor(this.get('objectId'))[this.get('projection')];
-        },
+    getProjection: function() {
 
-        setProjection: function(at) {
-            var projections = this.get('projections');
+        return this.manifesto()
+            .getProjectionsFor(this.get('objectId'))[this.get('projection')];
+    },
 
-            at = at > projections.length ? 0 : at;
-            at = at < 0 ? projections.length : at;
-            this.set('projection', at);
-        }
-   });
+    setProjection: function(at) {
+        var projections = this.get('projections');
 
-} (Planting.module('core'), Planting.module('plant')) );
+        at = at > projections.length ? 0 : at;
+        at = at < 0 ? projections.length : at;
+        this.set('projection', at);
+    }
+});
+module.exports = PlantModel;

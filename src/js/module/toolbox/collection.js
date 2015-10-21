@@ -1,10 +1,7 @@
-(function(Core, Toolbox) {
+var Core = require('core');
+var ToolboxModel = require('./model');
 
-    Toolbox.Collection = Core.Collection.extend({
-        model: Toolbox.Model
-    });
-
-}(
-    Planting.module('core'),
-    Planting.module('toolbox')
-));
+var ToolboxCollection = Core.Collection.extend({
+    model: ToolboxModel
+});
+module.exports = ToolboxCollection;

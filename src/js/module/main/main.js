@@ -1,66 +1,70 @@
-(function(Core, Event, State, Main) {
+var _ = require('underscore');
+var Core = require('core');
+var Planting = require('planting');
+var MainViewDialog = require('module/main/dialog');
 
-    Main.View.Main = Core.View.extend({
-        toolbox: null,
-        map: null,
-        className: 'plantingjs-container',
-        template: _.template('\
-            <div class="plantingjs-proxy">\
-                <div class="plantingjs-startbtn">\
-                    <span class="icon-menu-hamburger"></span>\
-                     Start planting!\
-                </div>\
-                <div class="layers-menu"></div>\
-                <div class="plantingjs-toolbox"></div>\
-                <div class="plantingjs-overlay ui-droppable"></div>\
-                <div class="plantingjs-google"></div>\
-                <div class="plantingjs-dialog"></div>\
+var MainViewMain = Core.View.extend({
+    toolbox: null,
+    map: null,
+    className: 'plantingjs-container',
+    template: _.template('\
+        <div class="plantingjs-proxy">\
+            <div class="plantingjs-startbtn">\
+                <span class="icon-menu-hamburger"></span>\
+                 Start planting!\
             </div>\
-        '),
-        events: {
-            'click .plantingjs-startbtn': 'startPlanting'
-        },
+            <div class="layers-menu"></div>\
+            <div class="plantingjs-toolbox"></div>\
+            <div class="plantingjs-overlay ui-droppable"></div>\
+            <div class="plantingjs-google"></div>\
+            <div class="plantingjs-dialog"></div>\
+        </div>\
+    '),
+    events: {
+        'click .plantingjs-startbtn': 'startPlanting'
+    },
 
-        $proxy: null,
+    $proxy: null,
 
-        initialize: function(opts) {
-            this.render();
-            this.$proxy = this.$el.children();
-            this.dialog = new Main.View.Dialog({
-                el: this.el.querySelector('.plantingjs-dialog'),
-                app: this.app
-            });
-            this.app
-                .on(Event.VISIBLE_CHANGED, function(visible) {
-                    
-                    if(this.app.getState() !== State.VIEWER) {
+    initialize: function(opts) {
+        this.render();
+        this.$proxy = this.$el.children();
+        this.dialog = new MainViewDialog({
+            el: this.el.querySelector('.plantingjs-dialog'),
+            app: this.app
+        });
+        this.app
+            .on(Planting.Event.VISIBLE_CHANGED, function(visible) {
 
-                        this.$el.find('.plantingjs-startbtn').toggle(visible);
-                    }
-                }, this)
-                .on(Event.START_PLANTING, function() {
-                    this.$el.find('.plantingjs-startbtn').hide();
-                }, this)
-                .on(Event.STATE_CHANGED, function(state) {
-                    this.$el
-                        .children().attr('data-state', state);
-                }, this);
-        },
+                if(this.app.getState() !== Planting.State.VIEWER) {
 
-        render: function() {
+                    this.$el.find('.plantingjs-startbtn').toggle(visible);
+                }
+            }, this)
+            .on(Planting.Event.START_PLANTING, function() {
+                this.$el.find('.plantingjs-startbtn').hide();
+            }, this)
+            .on(Planting.Event.STATE_CHANGED, function(state) {
+                this.$el
+                    .children().attr('data-state', state);
+            }, this);
+    },
 
-            this.$el.html(this.template());
-        },
+    render: function() {
 
-        startPlanting: function() {
+        this.$el.html(this.template());
+    },
 
-            this.app.trigger(Event.START_PLANTING);
-        }
-    });
+    startPlanting: function() {
 
-}(
-    Planting.module('core'),
-    Planting.Event,
-    Planting.State,
-    Planting.module('main')
-));
+        this.app.trigger(Planting.Event.START_PLANTING);
+    }
+});
+
+var Main = {
+    View: {
+        Main: MainViewMain,
+        Dialog: MainViewDialog
+    }
+}
+module.exports = Main;

@@ -1,65 +1,64 @@
-(function (Core, Plant) {
-   
-   Plant.Collection = Core.Collection.extend({
-        model: Plant.Model,
-        layers: [],
+var _ = require('underscore');
+var Core = require('core');
+var PlantModel = require('./model');
 
-        initialize: function() {
 
-            this.on('add', this.setLayer, this)
-                .on('remove', this.removeLayer, this);
-        },
+var PlantCollection = Core.Collection.extend({
+    model: PlantModel,
+    layers: [],
 
-        setLayer: function(model) {
-            
-            var layerIndex = model.get('layerIndex');
+    initialize: function() {
 
-            if (_.isNull(layerIndex)) {
-                model.set('layerIndex', this.layers.length);
-                this.layers.push(model.cid);
+        this.on('add', this.setLayer, this)
+            .on('remove', this.removeLayer, this);
+    },
 
-            } else if (_.isNumber(layerIndex)) {
+    setLayer: function(model) {
 
-                this.layers.splice(layerIndex, 0, model.cid);
-            }
-        },
+        var layerIndex = model.get('layerIndex');
 
-        removeLayer: function(model) {
-            var layerIndex = model.get('layerIndex');
+        if (_.isNull(layerIndex)) {
+            model.set('layerIndex', this.layers.length);
+            this.layers.push(model.cid);
 
-            this.layers.splice(layerIndex, 1);
-            this.reindexModelsLayer();
-        },
+        } else if (_.isNumber(layerIndex)) {
 
-        moveLayer: function(newIndex, oldIndex) {
-
-            this.layers.splice(newIndex, 0, this.layers.splice(oldIndex, 1)[0]);
-            this.reindexModelsLayer();
-        },
-
-        reindexModelsLayer: function() {
-            
-            _.each(this.layers, function(modelCid, index) {
-                this.get(modelCid)
-                    .set('layerIndex', index);
-            }, this);
-        },
-
-        parse: function(object) {
-            var objectId = object.object;
-
-            _.extend(object, {
-                scale: object.width,
-                x: object.position.x,
-                y: object.position.y,
-                objectId: objectId
-            });
-
-            return object;
+            this.layers.splice(layerIndex, 0, model.cid);
         }
-   });
+    },
 
-} (
-    Planting.module('core'), 
-    Planting.module('plant')) 
-);
+    removeLayer: function(model) {
+        var layerIndex = model.get('layerIndex');
+
+        this.layers.splice(layerIndex, 1);
+        this.reindexModelsLayer();
+    },
+
+    moveLayer: function(newIndex, oldIndex) {
+
+        this.layers.splice(newIndex, 0, this.layers.splice(oldIndex, 1)[0]);
+        this.reindexModelsLayer();
+    },
+
+    reindexModelsLayer: function() {
+
+        _.each(this.layers, function(modelCid, index) {
+            this.get(modelCid)
+                .set('layerIndex', index);
+        }, this);
+    },
+
+    parse: function(object) {
+        var objectId = object.object;
+
+        _.extend(object, {
+            scale: object.width,
+            x: object.position.x,
+            y: object.position.y,
+            objectId: objectId
+        });
+
+        return object;
+    }
+});
+module.exports = PlantCollection;
