@@ -2,7 +2,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var Core = require('core');
 var PlantViewTools = require('module/plant/tools');
-var Planting = require('planting');
+var Const = require('const');
 
 var PlantViewObject = Core.View.extend({
     className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
@@ -105,7 +105,7 @@ var PlantViewObject = Core.View.extend({
 
     dragstart: function(e) {
 
-        if (this.app.getState() === Planting.State.VIEWER) {
+        if (this.app.getState() === Const.State.VIEWER) {
             e.preventDefault();
         }
     }

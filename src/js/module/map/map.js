@@ -1,18 +1,18 @@
 var Core = require('core');
-var Planting = require('planting');
+var Const = require('const');
 
 var MapView = Core.View.extend({
     map: null,
     panorama: null,
 
     initialize: function(obj) {
-        this.app.setState(Planting.State.MAP);
+        this.app.setState(Const.State.MAP);
         this.map = new google.maps.Map(this.el, this.getMapOptions());
         this.panorama = this.map.getStreetView();
         this.initializeMapEvents();
         this.app
-            .on(Planting.Event.START_PLANTING, this.disableUIElements, this)
-            .on(Planting.Event.START_PLANTING, this.storePanoCoords, this);
+            .on(Const.Event.START_PLANTING, this.disableUIElements, this)
+            .on(Const.Event.START_PLANTING, this.storePanoCoords, this);
     },
 
     initializeViewer: function(options) {
@@ -24,7 +24,7 @@ var MapView = Core.View.extend({
 
         google.maps.event.addListener(this.panorama, 'visible_changed', function() {
 
-            this.app.trigger(Planting.Event.VISIBLE_CHANGED, this.panorama.getVisible());
+            this.app.trigger(Const.Event.VISIBLE_CHANGED, this.panorama.getVisible());
         }.bind(this));
     },
 

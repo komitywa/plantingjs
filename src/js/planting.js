@@ -1,15 +1,16 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var EventEmitter = require('event-emitter');
+var Const = require('const');
+var SessionDataModel = require('session-data');
+var ManifestoDataModel = require('manifesto-data');
 
 function Planting(args) {
-    // TODO: we have circular imports - need to think how to change this.
-    var SessionDataModel = require('session-data');
-    var ManifestoDataModel = require('manifesto-data');
-
     var mapsLoader = this._initGoogleMaps(args.googleApiKey);
     var initDefer = $.Deferred();
-    this._initializeEventEmmiter();
+    
+    _.extend(this, EventEmitter());
     this._initializeHelpers();
     this.options = args;
     this.data = {
@@ -21,17 +22,13 @@ function Planting(args) {
             app: this
         })
     };
-    this.setState(Planting.State.INITING);
+    this.setState(Const.State.INITING);
     $.when(this.manifesto().fetch(), mapsLoader)
         .done(function() {
             this._initializeViews();
             initDefer.resolve();
         }.bind(this));
     this.initDefer = initDefer.promise();
-};
-
-Planting.prototype._initializeEventEmmiter = function() {
-    _.extend(this, _.clone(Backbone.Events));
 };
 
 Planting.prototype._initializeHelpers = function() {
@@ -51,7 +48,7 @@ Planting.prototype._initializeHelpers = function() {
             var prevState = this._state;
             
             this._state = state;
-            this.trigger(Planting.Event.STATE_CHANGED, this._state, prevState);
+            this.trigger(Const.Event.STATE_CHANGED, this._state, prevState);
 
             return this;
         },
@@ -138,7 +135,7 @@ Planting.prototype.initViewer = function(options) {
     this.initDefer
         .then(function() {
 
-            this.setState(Planting.State.VIEWER);
+            this.setState(Const.State.VIEWER);
             this.map.initializeViewer(panoOptions);
 
             if (objects &&
@@ -149,20 +146,4 @@ Planting.prototype.initViewer = function(options) {
         }.bind(this));
 };
 
-_.extend(Planting, {
-    State: {
-        INITING: 'initing',
-        MAP: 'map',
-        PLANTING: 'planting',
-        VIEWER: 'viewer'
-    },
-
-    Event: {
-        VISIBLE_CHANGED: 'visible_changed',
-        START_PLANTING: 'start_planting',
-        SAVE_REQUEST: 'save_request',
-        MANIFESTO_INITED: 'manifesto_inited',
-        STATE_CHANGED: 'state_changed'
-    }
-});
 module.exports = Planting;

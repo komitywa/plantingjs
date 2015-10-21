@@ -1,8 +1,8 @@
 var _ = require('underscore');
 var $ = require('jquery');
 var Core = require('core');
-var Planting = require('planting');
 var PlantViewObject = require('./object');
+var Const = require('const');
 
 var PlantViewOverlay = Core.View.extend({
     events: {
@@ -22,10 +22,10 @@ var PlantViewOverlay = Core.View.extend({
             accept: ".plantingjs-toolboxobject-draggable"
         });
         this.app
-            .on(Planting.Event.START_PLANTING, this._init, this)
-            .on(Planting.Event.STATE_CHANGED, function(state) {
+            .on(Const.Event.START_PLANTING, this._init, this)
+            .on(Const.Event.STATE_CHANGED, function(state) {
 
-                if(state === Planting.State.VIEWER) {
+                if(state === Const.State.VIEWER) {
                     this._init();
                 }
 

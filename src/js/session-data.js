@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var Core = require('core');
-var Planting = require('planting');
+var Const = require('const');
 var PlantCollection = require('module/plant/collection');
 
 var SessionDataModel = Core.Model.extend({
@@ -48,7 +48,7 @@ var SessionDataModel = Core.Model.extend({
     save: function() {
         var data = this.toJSON();
 
-        this.app.trigger(Planting.Event.SAVE_REQUEST, data);
+        this.app.trigger(Const.Event.SAVE_REQUEST, data);
 
         if (_.isFunction(this.app.options.onSave)) {
 
