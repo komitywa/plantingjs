@@ -130,13 +130,13 @@ gulp.task('watch', ['sass', 'connect'], function () {
 
     // watch for changes
     gulp.watch([
-        'src/*.html',
-        'src/js/**/*.js',
-        '.tmp/styles/**/*.css',
+        'dist/**/*.js',
+        'dist/**/*.css',
         'src/images/**/*',
         'src/objects/**/*',
     ]).on('change', $.livereload.changed);
 
+    gulp.watch('src/**/*.js', ['browserify']);
     gulp.watch('src/styles/**/*.scss', ['sass']);
     gulp.watch('bower.json', ['wiredep']);
 });
