@@ -34,6 +34,7 @@ gulp.task('tmp:browserify', ['clean:tmp'], function() {
                 file.contents = browserify({
                     entries: [file.path],
                     debug: true,
+                    standalone: 'Planting',
                     paths: ['./node_modules','./src/js/']
                 }).bundle();
             });
