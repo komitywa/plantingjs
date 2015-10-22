@@ -9,23 +9,20 @@ var MapView = Core.View.extend({
         this.app.setState(Const.State.MAP);
         this.map = new google.maps.Map(this.el, this.getMapOptions());
         this.panorama = this.map.getStreetView();
-        this.initializeMapEvents();
+
         this.app
             .on(Const.Event.START_PLANTING, this.disableUIElements, this)
             .on(Const.Event.START_PLANTING, this.storePanoCoords, this);
+        
+        google.maps.event.addListener(this.panorama, 'visible_changed', function() {
+
+            this.app.trigger(Const.Event.VISIBLE_CHANGED, this.panorama.getVisible());
+        }.bind(this));
     },
 
     initializeViewer: function(options) {
 
         this.panorama = new google.maps.StreetViewPanorama(this.el, options);
-    },
-
-    initializeMapEvents: function() {
-
-        google.maps.event.addListener(this.panorama, 'visible_changed', function() {
-
-            this.app.trigger(Const.Event.VISIBLE_CHANGED, this.panorama.getVisible());
-        }.bind(this));
     },
 
     getMapOptions: function() {
@@ -63,7 +60,6 @@ var MapView = Core.View.extend({
     }
 });
 
-var Map = {
+module.exports = {
     View: MapView
-}
-module.exports = Map;
+};

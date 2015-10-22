@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var EventEmitter = require('backbone').Events;
+var EventEmitter = _.clone(require('backbone').Events);
 
 module.exports = function(host) {
 
