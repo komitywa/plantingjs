@@ -1,5 +1,5 @@
 var Core = require('core');
-var Planting = require('planting');
+var Const = require('const');
 
 var ManifestoDataModel = Core.Model.extend({
 
@@ -13,7 +13,7 @@ var ManifestoDataModel = Core.Model.extend({
 
         this.on('fetch', function() {
 
-            this.app.trigger(Planting.EVENT.MANIFESTO_INITED, this);
+            this.app.trigger(Const.EVENT.MANIFESTO_INITED, this);
         }, this);
     },
 

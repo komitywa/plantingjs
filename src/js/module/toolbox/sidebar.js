@@ -1,9 +1,9 @@
 var _ = require('underscore');
 var $ = require('jquery');
-var Planting = require('planting');
 var Core = require('core');
 var ToolboxViewObject = require('./object');
 var ToolboxCollection = require('./collection');
+var Const = require('const');
 
 var ToolboxViewSidebar = Core.View.extend({
     className: 'plantingjs-toolbox',
@@ -33,7 +33,7 @@ var ToolboxViewSidebar = Core.View.extend({
                 app: this.app
             });
         }, this);
-        this.app.on(Planting.Event.START_PLANTING, function(visible) {
+        this.app.on(Const.Event.START_PLANTING, function(visible) {
             this.$el.show();
         }, this);
         this.render( this.objects );

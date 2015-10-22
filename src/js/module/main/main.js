@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var Core = require('core');
-var Planting = require('planting');
 var MainViewDialog = require('module/main/dialog');
+var Const = require('const');
 
 var MainViewMain = Core.View.extend({
     toolbox: null,
@@ -34,17 +34,17 @@ var MainViewMain = Core.View.extend({
             app: this.app
         });
         this.app
-            .on(Planting.Event.VISIBLE_CHANGED, function(visible) {
+            .on(Const.Event.VISIBLE_CHANGED, function(visible) {
 
-                if(this.app.getState() !== Planting.State.VIEWER) {
+                if(this.app.getState() !== Const.State.VIEWER) {
 
                     this.$el.find('.plantingjs-startbtn').toggle(visible);
                 }
             }, this)
-            .on(Planting.Event.START_PLANTING, function() {
+            .on(Const.Event.START_PLANTING, function() {
                 this.$el.find('.plantingjs-startbtn').hide();
             }, this)
-            .on(Planting.Event.STATE_CHANGED, function(state) {
+            .on(Const.Event.STATE_CHANGED, function(state) {
                 this.$el
                     .children().attr('data-state', state);
             }, this);
@@ -57,7 +57,7 @@ var MainViewMain = Core.View.extend({
 
     startPlanting: function() {
 
-        this.app.trigger(Planting.Event.START_PLANTING);
+        this.app.trigger(Const.Event.START_PLANTING);
     }
 });
 
