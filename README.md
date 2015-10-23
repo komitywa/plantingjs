@@ -17,7 +17,6 @@ Odpalać wszsytkie komendy w roocie projektu
 
 ```shell
 npm install
-bower install
 ```
 
 Windows miewa problemy ze ścieżkami unixowymi, więc warto także doinstalować Gulpa globalnie (na linuxie z sudo)

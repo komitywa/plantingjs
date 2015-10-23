@@ -3,7 +3,6 @@ node_js:
   - "0.12"
 install:
   - "npm install"
-  - "bower install"
 script:
   - "./node_modules/gulp/bin/gulp.js build"
 # Line below should be uncommented when issue #73
