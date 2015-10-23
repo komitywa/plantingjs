@@ -7,7 +7,6 @@ var SessionDataModel = require('session-data');
 var ManifestoDataModel = require('manifesto-data');
 
 function Planting(args) {
-    var mapsLoader = this._initGoogleMaps(args.googleApiKey);
     var initDefer = $.Deferred();
     
     _.extend(this, EventEmitter());
@@ -23,7 +22,8 @@ function Planting(args) {
         })
     };
     this.setState(Const.State.INITING);
-    $.when(this.manifesto().fetch(), mapsLoader)
+    this.manifesto()
+        .fetch()
         .done(function() {
             this._initializeViews();
             initDefer.resolve();
@@ -60,19 +60,6 @@ Planting.prototype._initializeHelpers = function() {
     });
 };
 
-Planting.prototype._initGoogleMaps = function(key) {
-    var defer = $.Deferred();
-
-    $.getScript('https://www.google.com/jsapi')
-        .then(function() {
-            google.load('maps', '3', {
-                other_params: 'key=' + key,
-                callback: defer.resolve.bind(defer)
-            });
-        });
-
-    return defer.promise();
-};
 Planting.prototype._initializeViews = function() {
     var Main = require('module/main/main');
     var Plant = require('module/plant/plant');
