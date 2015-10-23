@@ -22,4 +22,5 @@ def update():
     with cd('/var/www/plantingjs'):
         run('git pull')
         run('git checkout master')
+        run('npm install')
         run('gulp build')
