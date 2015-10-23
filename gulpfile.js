@@ -11,9 +11,6 @@ var concat = require('gulp-concat');
 // TODO: get rid off gulp-load-plugins as it doesn't work that well
 var $ = require('gulp-load-plugins')();
 
-gulp.task('bower', function() {
-    $.bower();
-});
 
 gulp.task('sass', function() {
     return gulp.src('src/styles/**/*.scss')
@@ -116,14 +113,6 @@ gulp.task('serve', ['build', 'connect', 'watch'], function () {
     require('opn')('http://localhost:9000');
 });
 
-// inject bower components
-gulp.task('wiredep', function () {
-    var wiredep = require('wiredep').stream;
-
-    gulp.src('src/*.html')
-        .pipe(wiredep())
-        .pipe(gulp.dest('src'));
-});
 
 gulp.task('watch', ['sass', 'connect'], function () {
     $.livereload.listen();
@@ -138,7 +127,6 @@ gulp.task('watch', ['sass', 'connect'], function () {
 
     gulp.watch('src/**/*.js', ['browserify']);
     gulp.watch('src/styles/**/*.scss', ['sass']);
-    gulp.watch('bower.json', ['wiredep']);
 });
 
 gulp.task('css:vendor', function() {
