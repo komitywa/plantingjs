@@ -15,9 +15,8 @@ var MapView = Core.View.extend({
 
         this.initializeMaps()
             .then(function(google) {
-                
                 this.map = new google.maps.Map(element, {
-                    scrollwheel: false,
+                    scrollwheel: this.app.options.scrollwheel || false,
                     center: new google.maps.LatLng(model.get('lat'), model.get('lng')),
                     zoom: model.get('zoom')
                 });
