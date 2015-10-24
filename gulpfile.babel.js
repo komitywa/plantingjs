@@ -1,13 +1,20 @@
-/* jshint node:true */
-'use strict';
-// generated on 2015-04-10 using generator-gulp-webapp 0.2.0
-var gulp = require('gulp');
-var browserify = require('browserify');
-var tap = require('gulp-tap');
-var gutil = require('gulp-util');
-var plumber = require('gulp-plumber');
-var sequence = require('gulp-sequence');
-var concat = require('gulp-concat');
+import babel from 'babel-core/register';
+import babelify from 'babelify';
+import browserify from 'browserify';
+import concat from 'gulp-concat';
+import gulp from 'gulp';
+import gutil from 'gulp-util';
+/*
+    We need to import in that way, because there's bug in isparta.
+    See: https://github.com/douglasduteil/isparta/pull/60
+*/
+import { Instrumenter } from 'isparta';
+import istanbul  from 'gulp-istanbul';
+import mocha from 'gulp-mocha';
+import plumber from 'gulp-plumber';
+import sequence from 'gulp-sequence';
+import tap from 'gulp-tap';
+
 // TODO: get rid off gulp-load-plugins as it doesn't work that well
 var $ = require('gulp-load-plugins')();
 
@@ -33,7 +40,8 @@ gulp.task('browserify', function() {
                     entries: [file.path],
                     debug: true,
                     standalone: 'Planting',
-                    paths: ['./node_modules','./src/js/']
+                    paths: ['./node_modules','./src/js/'],
+                    transform: [babelify]
                 }).bundle();
             });
         }))
@@ -136,7 +144,7 @@ gulp.task('css:vendor', function() {
         './node_modules/jquery-ui/themes/base/jquery.ui.dialog.css'
         ])
         .pipe(concat('vendor.css'))
-        .pipe(gulp.dest('./dist/styles/'));    
+        .pipe(gulp.dest('./dist/styles/'));
 });
 
 gulp.task('build', sequence(
@@ -152,21 +160,18 @@ gulp.task('default', ['clean:dist'], function () {
 });
 
 
-var istanbul = require('gulp-istanbul');
-// We'll use mocha in this example, but any test framework will work
-var mocha = require('gulp-mocha');
 
 gulp.task('pre-test', function () {
   return gulp.src(['src/**/*.js'])
     // Covering files
-    .pipe(istanbul({includeUntested: true}))
+    .pipe(istanbul({instrumenter: Instrumenter, includeUntested: true}))
     // Force `require` to return covered files
     .pipe(istanbul.hookRequire());
 });
 
 gulp.task('test', ['pre-test'], function () {
   return gulp.src(['test/*.js'])
-    .pipe(mocha())
+    .pipe(mocha({compilers: {js: babel}}))
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports());
 });
