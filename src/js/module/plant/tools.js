@@ -5,7 +5,7 @@ var Core = require('core');
 var EVENT_MOUSEDOWN = false;
 var PROJECTION_LENGTH = 10;
 
-PlantViewTools = Core.View.extend({
+var PlantViewTools = Core.View.extend({
     action: null,
     mouseDownEvent: null,
 

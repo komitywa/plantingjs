@@ -2,6 +2,7 @@ import babel from 'babel-core/register';
 import babelify from 'babelify';
 import browserify from 'browserify';
 import concat from 'gulp-concat';
+import eslint from 'gulp-eslint';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 /*
@@ -48,11 +49,21 @@ gulp.task('browserify', function() {
         .pipe(gulp.dest('./dist/js/'));
 });
 
-gulp.task('jshint', function () {
-    return gulp.src('src/js/**/*.js')
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.jshint.reporter('fail'));
+gulp.task('lint', function() {
+    return gulp.src(['src/js/**/*.js'])
+    .pipe(eslint({
+        ecmaFeatures: {modules: true},
+        env: {
+            es6: true,
+            browser: true,
+            node: true
+        },
+        parser: 'babel-eslint',
+        rules: {
+            "no-debugger": 2
+        }
+    }))
+    .pipe(eslint.format());
 });
 
 gulp.task('html', function () {

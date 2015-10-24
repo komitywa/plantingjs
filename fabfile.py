@@ -23,4 +23,4 @@ def update():
         run('git pull')
         run('git checkout master')
         run('npm install')
-        run('gulp build')
+        run('./node_modules/gulp/bin/gulp.js build')
