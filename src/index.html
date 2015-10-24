@@ -25,6 +25,19 @@
                 console.log(planting);
             };
 
+            function load_plant(url) {
+
+                return fetch(url)
+                    .then(function(res) {
+
+                        return res.json()
+                            .then(function(plant) {
+
+                                PlantingInstance.initViewer(plant);
+                            });
+                    });
+            }
+
             window.onload = function () {
                 PlantingInstance = new window.Planting( {
                     container:document.querySelector('.viewport'),
