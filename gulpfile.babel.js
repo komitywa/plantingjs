@@ -1,29 +1,38 @@
+import autoprefixer from 'gulp-autoprefixer';
 import babel from 'babel-core/register';
 import babelify from 'babelify';
 import browserify from 'browserify';
+import cache from 'gulp-cache';
+import csso from 'gulp-csso';
 import concat from 'gulp-concat';
 import eslint from 'gulp-eslint';
+import flatten from 'gulp-flatten';
+import filter from 'gulp-filter';
+import gif from 'gulp-if';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import imagemin from 'gulp-imagemin';
 /*
     We need to import in that way, because there's bug in isparta.
     See: https://github.com/douglasduteil/isparta/pull/60
 */
 import { Instrumenter } from 'isparta';
 import istanbul  from 'gulp-istanbul';
+import livereload from 'gulp-livereload';
+import minifyHtml from 'gulp-minify-html';
 import mocha from 'gulp-mocha';
 import plumber from 'gulp-plumber';
+import sass from 'gulp-sass';
 import sequence from 'gulp-sequence';
+import size from 'gulp-size';
 import tap from 'gulp-tap';
-
-// TODO: get rid off gulp-load-plugins as it doesn't work that well
-var $ = require('gulp-load-plugins')();
+import useref from 'gulp-useref';
 
 
 gulp.task('sass', function() {
     return gulp.src('src/styles/**/*.scss')
-        .pipe($.sass())
-        .pipe($.autoprefixer({browsers: ['last 1 version']}))
+        .pipe(sass())
+        .pipe(autoprefixer({browsers: ['last 1 version']}))
         .pipe(gulp.dest('./dist/styles'));
 });
 
@@ -67,20 +76,19 @@ gulp.task('lint', function() {
 });
 
 gulp.task('html', function () {
-    var assets = $.useref.assets({searchPath: '{.tmp,src}'});
-
+    var assets = useref.assets({searchPath: '{src}'});
     return gulp.src('src/*.html')
         .pipe(assets)
-        .pipe($.if('*.css', $.csso()))
+        .pipe(gif('*.css', csso()))
         .pipe(assets.restore())
-        .pipe($.useref())
-        .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
+        .pipe(useref())
+        .pipe(gif('*.html', minifyHtml({conditionals: true, loose: true})))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', function () {
     return gulp.src('src/images/**/*')
-        .pipe($.cache($.imagemin({
+        .pipe(cache(imagemin({
             progressive: true,
             interlaced: true
         })))
@@ -89,8 +97,8 @@ gulp.task('images', function () {
 
 gulp.task('fonts', function () {
     return gulp.src('src/fonts/**/*')
-        .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-        .pipe($.flatten())
+        .pipe(filter('**/*.{eot,svg,ttf,woff}'))
+        .pipe(flatten())
         .pipe(gulp.dest('dist/fonts'));
 });
 
@@ -101,14 +109,12 @@ gulp.task('extras', function () {
 
     return gulp.src([
         'src/*.*',
-        '!src/*.html',
-        'node_modules/apache-server-configs/dist/.htaccess'
+        '!src/*.html'
     ], {
         dot: true
     }).pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean:tmp', require('del').bind(null, ['.tmp']));
 gulp.task('clean:dist', require('del').bind(null, ['dist']));
 
 gulp.task('connect', function () {
@@ -134,7 +140,7 @@ gulp.task('serve', ['build', 'connect', 'watch'], function () {
 
 
 gulp.task('watch', ['sass', 'connect'], function () {
-    $.livereload.listen();
+    livereload.listen();
 
     // watch for changes
     gulp.watch([
@@ -142,7 +148,7 @@ gulp.task('watch', ['sass', 'connect'], function () {
         'dist/**/*.css',
         'src/images/**/*',
         'src/objects/**/*',
-    ]).on('change', $.livereload.changed);
+    ]).on('change', livereload.changed);
 
     gulp.watch('src/**/*.js', ['browserify']);
     gulp.watch('src/styles/**/*.scss', ['sass']);
@@ -162,7 +168,7 @@ gulp.task('build', sequence(
     'clean:dist',
     ['html', 'images', 'fonts', 'extras', 'browserify', 'css:vendor', 'sass'],
     function () {
-        return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+        return gulp.src('dist/**/*').pipe(size({title: 'build', gzip: true}));
     }
 ));
 
