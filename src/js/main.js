@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var Planting = require('planting');
+import Planting from 'planting';
 
 module.exports = Planting;
 
