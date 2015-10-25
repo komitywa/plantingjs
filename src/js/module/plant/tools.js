@@ -1,145 +1,141 @@
-var _ = require('underscore');
-var $ = require('jquery');
-var Core = require('core');
+import underscore from 'underscore';
+import jquery from 'jquery';
+import Core from 'core';
 
-var EVENT_MOUSEDOWN = false;
-var PROJECTION_LENGTH = 10;
+let EVENT_MOUSEDOWN = false;
+const PROJECTION_LENGTH = 10;
 
-var PlantViewTools = Core.View.extend({
-    action: null,
-    mouseDownEvent: null,
+const PlantViewTools = Core.View.extend({
+  action: null,
+  mouseDownEvent: null,
 
-    template: _.template('\
-        <span class="icon-trash"></span>\
-        <span class="icon-resize"></span>\
-        <div class="wrapper-rotate">\
-            <span class="icon-menu-left"> </span>\
-            <span class="degrees">0&deg;</span>\
-            <span class="icon-menu-right"></span>\
-            <span class="icon-loop"></span>\
-        </div>\
-    '),
+  template: underscore.template('\n' +
+      '<span class="icon-trash"></span>\n' +
+      '<span class="icon-resize"></span>\n' +
+      '<div class="wrapper-rotate">\n' +
+          '<span class="icon-menu-left"> </span>\n' +
+          '<span class="degrees">0&deg;</span>\n' +
+          '<span class="icon-menu-right"></span>\n' +
+          '<span class="icon-loop"></span>\n' +
+      '</div>\n' +
+  ''),
 
-    events: {
-        'click .icon-trash': 'removeObject',
-        'mousedown .icon-resize': 'resizeObject',
-        'mousedown .icon-loop': 'rotateObject'
-    },
+  events: {
+    'click .icon-trash': 'removeObject',
+    'mousedown .icon-resize': 'resizeObject',
+    'mousedown .icon-loop': 'rotateObject',
+  },
 
-    initialize: function(opts) {
-        this.render();
-        this.parentView = opts.parent;
-        this.model
-            .on('change:userActivity', function(model, userActivity) {
-                this.$el.toggleClass('user-active', userActivity);
-            }, this);
-    },
+  initialize: function initialize(opts) {
+    this.render();
+    this.parentView = opts.parent;
+    this.model
+      .on('change:userActivity', function(model, userActivity) {
+        this.$el.toggleClass('user-active', userActivity);
+      }, this);
+  },
 
-    render: function() {
-        this.$el.html(this.template());
-    },
+  render: function render() {
+    this.$el.html(this.template());
+  },
 
-    removeObject: function() {
-        this.model.collection.remove(this.model);
-    },
+  removeObject: function removeObject() {
+    this.model.collection.remove(this.model);
+  },
 
-    resizeObject: function(e) {
-        EVENT_MOUSEDOWN = true;
-        $('body').addClass('noselect resize');
-        var plantedObject = this.parentView.$el,
-            scale = this.model.get('scale'),
-            cssScale,
-            resizeOnDrag,
-            finishResizing,
-            buttonX = $(e.target).offset().left;
-        var self = this;
+  resizeObject: function resizeObject(ev) {
+    const plantedObject = this.parentView.$el;
+    const scale = this.model.get('scale');
+    let cssScale;
+    let resizeOnDrag;
+    let finishResizing;
+    const buttonX = jquery(ev.target).offset().left;
+    const self = this;
 
-        var h = this.parentView.$img.height();
-        var w = this.parentView.$img.width();
+    EVENT_MOUSEDOWN = true;
+    jquery('body').addClass('noselect resize');
+    plantedObject.addClass('plantingjs-active-object');
 
-        plantedObject.addClass('plantingjs-active-object');
+    resizeOnDrag = function(evt) {
+      if (!EVENT_MOUSEDOWN) return;
+      if (plantedObject.hasClass('plantingjs-active-object')) {
+        const buttonCursorDistance = buttonX - evt.pageX;
 
-        resizeOnDrag = function (e) {
-            if (!EVENT_MOUSEDOWN) return;
-            if (plantedObject.hasClass('plantingjs-active-object')) {
-                var buttonCursorDistance = buttonX - e.pageX;
-
-                if (buttonCursorDistance === 0) {
-                    cssScale = scale;
-                } else if (buttonCursorDistance < 0) {
-                    cssScale = scale - Math.abs(buttonCursorDistance / 100);
-                } else if (buttonCursorDistance > 0) {
-                    cssScale = scale + buttonCursorDistance / 100;
-                }
-
-                if (cssScale > 0.2) {
-                    self.model.set('scale', cssScale);
-                }
-            }
-        };
-        finishResizing = function (e) {
-            var plantedObjectContainer = plantedObject;
-            if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-                $('body').removeClass('noselect resize');
-                plantedObjectContainer.removeClass('plantingjs-active-object');
-                $(document).off('mousemove', resizeOnDrag);
-                $(document).off('mouseup', finishResizing);
-                EVENT_MOUSEDOWN = false;
-            }
-        };
-
-        $(document).on('mousemove', resizeOnDrag);
-        $(document).on('mouseup', finishResizing);
-    },
-
-    rotateObject: function(e) {
-        EVENT_MOUSEDOWN = true;
-        $('body').addClass('noselect rotate');
-
-        var plantedObject = this.parentView.$el;
-        var plantedObjectProjections = this.model.get('projections');
-        var newProjection = this.model.get('currentProjection');
-        var buttonX = $(e.target).offset().left;
-        var self = this;
-
-        plantedObject.addClass('plantingjs-active-object');
-
-        function rotateOnMove(e) {
-            if (!EVENT_MOUSEDOWN) return;
-            if (plantedObject.hasClass('plantingjs-active-object')) {
-                var currentProjection = self.model.get('currentProjection');
-                var buttonCursorDistance = e.pageX - buttonX;
-
-                var projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % PROJECTION_LENGTH) / PROJECTION_LENGTH;
-                projectionsToRotate %= plantedObjectProjections.length;
-                if (buttonCursorDistance > 0) {
-                    currentProjection += projectionsToRotate;
-                    currentProjection %= plantedObjectProjections.length;
-                } else if (buttonCursorDistance < 0) {
-                    if (currentProjection <= projectionsToRotate) {
-                        currentProjection += plantedObjectProjections.length;
-                    }
-                    currentProjection -= projectionsToRotate;
-                    currentProjection--;
-                }
-                newProjection = currentProjection;
-                self.model.set('currentProjection', newProjection);
-            }
+        if (buttonCursorDistance === 0) {
+          cssScale = scale;
+        } else if (buttonCursorDistance < 0) {
+          cssScale = scale - Math.abs(buttonCursorDistance / 100);
+        } else if (buttonCursorDistance > 0) {
+          cssScale = scale + buttonCursorDistance / 100;
         }
 
-        function finishRotation(e) {
-            var plantedObjectContainer = plantedObject;
-            if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-                $(document).off('mousemove', rotateOnMove);
-                $(document).off('mouseup', finishRotation);
-                $('body').removeClass('noselect rotate');
-                plantedObjectContainer.removeClass('plantingjs-active-object');
-                EVENT_MOUSEDOWN = false;
-            }
+        if (cssScale > 0.2) {
+          self.model.set('scale', cssScale);
         }
+      }
+    };
+    finishResizing = function() {
+      const plantedObjectContainer = plantedObject;
+      if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
+        jquery('body').removeClass('noselect resize');
+        plantedObjectContainer.removeClass('plantingjs-active-object');
+        jquery(document).off('mousemove', resizeOnDrag);
+        jquery(document).off('mouseup', finishResizing);
+        EVENT_MOUSEDOWN = false;
+      }
+    };
 
-        $(document).on('mousemove', rotateOnMove);
-        $(document).on('mouseup', finishRotation);
-    },
+    jquery(document).on('mousemove', resizeOnDrag);
+    jquery(document).on('mouseup', finishResizing);
+  },
+
+  rotateObject: function(ev) {
+    const plantedObject = this.parentView.$el;
+    const plantedObjectProjections = this.model.get('projections');
+    let newProjection = this.model.get('currentProjection');
+    const buttonX = jquery(ev.target).offset().left;
+    const self = this;
+
+    EVENT_MOUSEDOWN = true;
+    jquery('body').addClass('noselect rotate');
+    plantedObject.addClass('plantingjs-active-object');
+
+    function rotateOnMove(evt) {
+      let currentProjection = self.model.get('currentProjection');
+      const buttonCursorDistance = evt.pageX - buttonX;
+      let projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % PROJECTION_LENGTH) / PROJECTION_LENGTH;
+      if (!EVENT_MOUSEDOWN) return;
+      if (plantedObject.hasClass('plantingjs-active-object')) {
+        projectionsToRotate %= plantedObjectProjections.length;
+        if (buttonCursorDistance > 0) {
+          currentProjection += projectionsToRotate;
+          currentProjection %= plantedObjectProjections.length;
+        } else if (buttonCursorDistance < 0) {
+          if (currentProjection <= projectionsToRotate) {
+            currentProjection += plantedObjectProjections.length;
+          }
+          currentProjection -= projectionsToRotate;
+          currentProjection--;
+        }
+        newProjection = currentProjection;
+        self.model.set('currentProjection', newProjection);
+      }
+    }
+
+    function finishRotation() {
+      const plantedObjectContainer = plantedObject;
+      if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
+        jquery(document).off('mousemove', rotateOnMove);
+        jquery(document).off('mouseup', finishRotation);
+        jquery('body').removeClass('noselect rotate');
+        plantedObjectContainer.removeClass('plantingjs-active-object');
+        EVENT_MOUSEDOWN = false;
+      }
+    }
+
+    jquery(document).on('mousemove', rotateOnMove);
+    jquery(document).on('mouseup', finishRotation);
+  },
 });
+
 module.exports = PlantViewTools;
