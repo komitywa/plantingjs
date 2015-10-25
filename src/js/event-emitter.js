@@ -1,7 +1,33 @@
-var _ = require('underscore');
-var EventEmitter = _.clone(require('backbone').Events);
+import _ from 'underscore';
+import { Events } from 'backbone';
 
-module.exports = function(host) {
+const EventEmitter = _.clone(Events);
 
-    return _.clone(EventEmitter);
-};
+export default class {
+
+    constructor() {
+
+        this.eventEmitter = _.clone(EventEmitter);
+    }
+
+    on(...args) {
+
+        this.eventEmitter.on.apply(this.eventEmitter, args);
+
+        return this;
+    }
+
+    off(...args) {
+
+        this.eventEmitter.off.apply(this.eventEmitter, args);
+
+        return this;
+    }
+
+    trigger(...args) {
+
+        this.eventEmitter.trigger.apply(this.eventEmitter, args);
+
+        return this;
+    }
+}
