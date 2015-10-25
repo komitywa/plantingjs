@@ -1,13 +1,13 @@
-var _ = require('underscore');
-var $ = require('jquery');
-var Core = require('core');
-var ToolboxViewObject = require('./object');
-var ToolboxCollection = require('./collection');
-var Const = require('const');
+import underscore from 'underscore';
+import jquery from 'jquery';
+import Core from 'core';
+import ToolboxViewObject from './object';
+import ToolboxCollection from './collection';
+import Const from 'const';
 
 var ToolboxViewSidebar = Core.View.extend({
     className: 'plantingjs-toolbox',
-    template: _.template('\
+    template: underscore.template('\
         <div class="plantingjs-toolbox-toggle"></div>\
         <div class="plantingjs-savebtn">SAVE</div>\
         <div class="plantingjs-toolboxobject-container"></div>\
@@ -17,9 +17,9 @@ var ToolboxViewSidebar = Core.View.extend({
     },
 
     initialize: function(obj) {
-        var objectsIds = _.range(this.manifesto().getCopy('toolboxobjects').length);
+        var objectsIds = underscore.range(this.manifesto().getCopy('toolboxobjects').length);
 
-        this.collection = new ToolboxCollection(_.map(objectsIds, function(objectId) {
+        this.collection = new ToolboxCollection(underscore.map(objectsIds, function(objectId) {
             return {
                 objectId: objectId
             };
@@ -40,7 +40,7 @@ var ToolboxViewSidebar = Core.View.extend({
     },
 
     render: function( objects ) {
-        var $template = $('<div />').append(this.template());
+        var $template = jquery('<div />').append(this.template());
         var $list = $template.find('.plantingjs-toolboxobject-container');
 
         objects.forEach(function(object) {
@@ -58,4 +58,5 @@ var ToolboxViewSidebar = Core.View.extend({
         this.$el.hide();
     }
 });
+
 module.exports = ToolboxViewSidebar;

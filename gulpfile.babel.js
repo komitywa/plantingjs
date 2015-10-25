@@ -198,18 +198,7 @@ gulp.task('reserve', function (cb) {
 /* Running ESLint on source */
 gulp.task('lint', function() {
     return gulp.src(['./src/js/**/*.js'])
-    .pipe(eslint({
-        ecmaFeatures: {modules: true},
-        env: {
-            es6: true,
-            browser: true,
-            node: true
-        },
-        parser: 'babel-eslint',
-        rules: {
-            "no-debugger": 2
-        }
-    }))
+    .pipe(eslint())
     .pipe(eslint.format());
 });
 /* End of running ESLint on source */

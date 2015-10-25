@@ -17,6 +17,8 @@
     "connect": "^3.0.1",
     "connect-livereload": "^0.5.0",
     "del": "^0.1.0",
+    "eslint-config-airbnb": "^0.1.0",
+    "eslint-plugin-react": "^3.6.3",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^1.0.1",
     "gulp-cache": "^0.2.2",
