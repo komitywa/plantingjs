@@ -14,12 +14,11 @@ import LayersManager from 'module/layers-manager/layers-manager';
 export default class extends EventEmitter {
 
     constructor(options) {
-        var initDefer = $.Deferred();
+        let initDefer = $.Deferred();
         
         super(options);
-
+        this._state = null;
         this.options = options;
-        this._initializeHelpers();
         this.data = {
             session: new SessionDataModel(null, {
                 app: this
@@ -32,40 +31,36 @@ export default class extends EventEmitter {
         this.setState(Const.State.INITING);
         this.manifesto()
             .fetch()
-            .done(function() {
+            .done(() => {
                 this._initializeViews();
                 initDefer.resolve();
-            }.bind(this));
+            });
         this.initDefer = initDefer.promise();
     }
 
-    _initializeHelpers() {
-        _.extend(this, {
-            _state: null,
+    session() {
 
-            session: function() {
+        return this.data.session;
+    }
 
-                return this.data.session;
-            },
-            manifesto: function() {
+    manifesto() {
 
-                return this.data.manifesto;
-            },
+        return this.data.manifesto;
+    }
 
-            setState: function(state) {
-                var prevState = this._state;
-                
-                this._state = state;
-                this.trigger(Const.Event.STATE_CHANGED, this._state, prevState);
+    setState(state) {
 
-                return this;
-            },
+        var prevState = this._state;
+        
+        this._state = state;
+        this.trigger(Const.Event.STATE_CHANGED, this._state, prevState);
 
-            getState: function() {
+        return this;
+    }
 
-                return this._state;
-            }
-        });
+    getState() {
+
+        return this._state;
     }
     
     _initializeViews() {
@@ -98,13 +93,15 @@ export default class extends EventEmitter {
     
     initPlant(objects) {
         this.main.dialog.close();
-        _.each(objects, function(object) {
+        _.each(objects, (object) => {
 
-            this.session().objects().add(object, {
-                parse: true,
-                app: this
-            });
-        }, this);
+            this.session()
+                .objects()
+                .add(object, {
+                    parse: true,
+                    app: this
+                });
+        });
     }
 
     initViewer(options) {
@@ -122,7 +119,7 @@ export default class extends EventEmitter {
         var objects = options.objects;
 
         this.initDefer
-            .then(function() {
+            .then(() => {
 
                 this.setState(Const.State.VIEWER);
                 this.map.initializeViewer(panoOptions);
@@ -132,6 +129,6 @@ export default class extends EventEmitter {
 
                     this.initPlant(objects);
                 }
-            }.bind(this));
+            });
     };
 }
