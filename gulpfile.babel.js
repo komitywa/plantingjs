@@ -5,6 +5,8 @@ import browserify from 'browserify';
 import cache from 'gulp-cache';
 import csso from 'gulp-csso';
 import concat from 'gulp-concat';
+import connect from 'connect';
+import connectLivereload from 'connect-livereload';
 import del from 'del';
 import eslint from 'gulp-eslint';
 import flatten from 'gulp-flatten';
@@ -12,6 +14,7 @@ import filter from 'gulp-filter';
 import gif from 'gulp-if';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import http from 'http';
 import imagemin from 'gulp-imagemin';
 /*
     We need to import in that way, because there's bug in isparta.
@@ -22,9 +25,12 @@ import istanbul  from 'gulp-istanbul';
 import livereload from 'gulp-livereload';
 import minifyHtml from 'gulp-minify-html';
 import mocha from 'gulp-mocha';
+import opn from 'opn';
 import plumber from 'gulp-plumber';
 import sass from 'gulp-sass';
 import sequence from 'run-sequence';
+import serveStatic from 'serve-static';
+import serveIndex from 'serve-index';
 import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
@@ -144,6 +150,47 @@ gulp.task('buildsize', function () {
 });
 
 
+/* Serve assets using development webserver */
+gulp.task('connect', function () {
+    var app = connect()
+        .use(connectLivereload({port: 35729}))
+        .use(serveStatic('./dist'))
+        .use(serveStatic('./src'))
+        .use('/node_modules', serveStatic('./node_modules'))
+        .use(serveIndex('./src'));
+
+    http.createServer(app)
+        .listen(9000)
+        .on('listening', function () {
+            console.log('Started connect web server on http://localhost:9000');
+        });
+});
+
+gulp.task('watch', function () {
+    livereload.listen();
+
+    // watch for changes
+    gulp.watch([
+        'dist/**/*.js',
+        'dist/**/*.css',
+        'src/images/**/*',
+        'src/objects/**/*',
+    ]).on('change', livereload.changed);
+
+    gulp.watch('src/**/*.js', ['js']);
+    gulp.watch('src/styles/**/*.scss', ['css:main']);
+});
+
+
+gulp.task('openbrowser', function () {
+    opn('http://localhost:9000');
+});
+
+gulp.task('serve', function () {
+    return sequence('build', 'connect', 'watch', 'openbrowser');
+});
+
+
 /* Running ESLint on source */
 gulp.task('lint', function() {
     return gulp.src(['./src/js/**/*.js'])
@@ -177,46 +224,3 @@ gulp.task('test', ['test:setup'], function () {
     .pipe(istanbul.writeReports());
 });
 /* End of running unittests with coverage */
-
-
-
-gulp.task('connect', function () {
-    var serveStatic = require('serve-static');
-    var serveIndex = require('serve-index');
-    var app = require('connect')()
-        .use(require('connect-livereload')({port: 35729}))
-        .use(serveStatic('dist'))
-        .use(serveStatic('src'))
-        .use('/node_modules', serveStatic('node_modules'))
-        .use(serveIndex('src'));
-
-    require('http').createServer(app)
-        .listen(9000)
-        .on('listening', function () {
-            console.log('Started connect web server on http://localhost:9000');
-        });
-});
-
-gulp.task('serve', ['build', 'connect', 'watch'], function () {
-    require('opn')('http://localhost:9000');
-});
-
-
-gulp.task('watch', ['css:main', 'connect'], function () {
-    livereload.listen();
-
-    // watch for changes
-    gulp.watch([
-        'dist/**/*.js',
-        'dist/**/*.css',
-        'src/images/**/*',
-        'src/objects/**/*',
-    ]).on('change', livereload.changed);
-
-    gulp.watch('src/**/*.js', ['js']);
-    gulp.watch('src/styles/**/*.scss', ['css:main']);
-});
-
-
-
-
