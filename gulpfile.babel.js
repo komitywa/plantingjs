@@ -8,6 +8,7 @@ import concat from 'gulp-concat';
 import connect from 'connect';
 import connectLivereload from 'connect-livereload';
 import del from 'del';
+import domain from 'domain';
 import eslint from 'gulp-eslint';
 import flatten from 'gulp-flatten';
 import filter from 'gulp-filter';
@@ -65,7 +66,7 @@ gulp.task('js', function () {
     return gulp.src('./src/js/main.js')
         .pipe(plumber())
         .pipe(tap(function(file) {
-            var d = require('domain').create();
+            var d = domain.create();
             d.on('error', function(err) {
                 gutil.log(
                     gutil.colors.red("Browserify compile error:"),
@@ -134,11 +135,12 @@ gulp.task('extras', function () {
 
 
 /* Building whole library */
-gulp.task('build', function () {
+gulp.task('build', function (cb) {
     return sequence(
         'clean',
         ['html', 'js', 'css', 'fonts', 'extras'],
-        'buildsize'
+        'buildsize',
+        cb
     )
 });
 /* End of building whole library */
@@ -150,7 +152,7 @@ gulp.task('buildsize', function () {
 });
 
 
-/* Serve assets using development webserver */
+/* Serving assets using development webserver */
 gulp.task('connect', function () {
     var app = connect()
         .use(connectLivereload({port: 35729}))
@@ -165,31 +167,33 @@ gulp.task('connect', function () {
             console.log('Started connect web server on http://localhost:9000');
         });
 });
+/* End of serving assets using development webserver */
 
+
+/* Watching for changes in sources */
 gulp.task('watch', function () {
     livereload.listen();
-
-    // watch for changes
-    gulp.watch([
-        'dist/**/*.js',
-        'dist/**/*.css',
-        'src/images/**/*',
-        'src/objects/**/*',
-    ]).on('change', livereload.changed);
-
-    gulp.watch('src/**/*.js', ['js']);
-    gulp.watch('src/styles/**/*.scss', ['css:main']);
+    return gulp.watch('./src/**/*', ['reserve']);
 });
+/* End of watching for changes in sources */
 
 
+/* Opening browser pointing to library */
 gulp.task('openbrowser', function () {
     opn('http://localhost:9000');
 });
 
-gulp.task('serve', function () {
-    return sequence('build', 'connect', 'watch', 'openbrowser');
+/* Refreshing opened browser with new code */
+gulp.task('refreshbrowser', function () { return livereload.changed(); });
+
+/* Continous serving new version of library with watching for changes */
+gulp.task('serve', function (cb) {
+    return sequence('build', 'connect', 'watch', 'openbrowser', cb);
 });
 
+gulp.task('reserve', function (cb) {
+    return sequence('build', 'refreshbrowser', cb);
+});
 
 /* Running ESLint on source */
 gulp.task('lint', function() {
