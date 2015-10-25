@@ -5,6 +5,7 @@ import browserify from 'browserify';
 import cache from 'gulp-cache';
 import csso from 'gulp-csso';
 import concat from 'gulp-concat';
+import del from 'del';
 import eslint from 'gulp-eslint';
 import flatten from 'gulp-flatten';
 import filter from 'gulp-filter';
@@ -23,26 +24,48 @@ import minifyHtml from 'gulp-minify-html';
 import mocha from 'gulp-mocha';
 import plumber from 'gulp-plumber';
 import sass from 'gulp-sass';
-import sequence from 'gulp-sequence';
+import sequence from 'run-sequence';
 import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
 
 
-gulp.task('sass', function() {
-    return gulp.src('src/styles/**/*.scss')
-        .pipe(sass())
-        .pipe(autoprefixer({browsers: ['last 1 version']}))
-        .pipe(gulp.dest('./dist/styles'));
+/* Default task */
+gulp.task('default', function () {
+    gulp.start('build');
 });
 
-gulp.task('browserify', function() {
+
+/* Removing whole ./dist directory */
+gulp.task('clean', del.bind(null, './dist'));
+
+
+/* Building HTML */
+gulp.task('html', function () {
+    var assets = useref.assets({searchPath: '{src}'});
+    return gulp.src('./src/*.html')
+        .pipe(assets)
+        .pipe(gif('*.css', csso()))
+        .pipe(assets.restore())
+        .pipe(useref())
+        .pipe(gif('*.html', minifyHtml({conditionals: true, loose: true})))
+        .pipe(gulp.dest('./dist'));
+});
+/* End of building HTML */
+
+
+/* Building JS */
+gulp.task('js', function () {
     return gulp.src('./src/js/main.js')
         .pipe(plumber())
         .pipe(tap(function(file) {
             var d = require('domain').create();
             d.on('error', function(err) {
-                gutil.log(gutil.colors.red("Browserify compile error:"), err.message, "\n\t", gutil.colors.cyan("in file"), file.path);
+                gutil.log(
+                    gutil.colors.red("Browserify compile error:"),
+                    err.message, "\n\t",
+                    gutil.colors.cyan("in file"), file.path
+                );
                 gutil.beep();
             });
             d.run(function () {
@@ -57,9 +80,73 @@ gulp.task('browserify', function() {
         }))
         .pipe(gulp.dest('./dist/js/'));
 });
+/* End of building JS */
 
+
+/* Building CSS */
+gulp.task('css:main', function () {
+    return gulp.src('./src/styles/**/*.scss')
+        .pipe(sass())
+        .pipe(autoprefixer({browsers: ['last 1 version']}))
+        .pipe(gulp.dest('./dist/styles'));
+});
+
+gulp.task('css:vendor', function () {
+    return gulp.src([
+        './node_modules/jquery-ui/themes/base/jquery-ui.css',
+        './node_modules/jquery-ui/themes/base/jquery.ui.dialog.css'
+        ])
+        .pipe(concat('vendor.css'))
+        .pipe(gulp.dest('./dist/styles/'));
+});
+
+gulp.task('css', ['css:vendor', 'css:main']);
+/* End of building CSS */
+
+
+/* Building fonts */
+gulp.task('fonts', function () {
+    return gulp.src('./src/fonts/**/*')
+        .pipe(filter('**/*.{eot,svg,ttf,woff}'))
+        .pipe(flatten())
+        .pipe(gulp.dest('./dist/fonts'));
+});
+/* End of building fonts */
+
+
+/* Building extras */
+gulp.task('extras', function () {
+    gulp.src('./src/objects/**/*').pipe(gulp.dest('./dist/objects'));
+    return gulp.src([
+        './src/*.*',
+        '!./src/*.html'
+    ], {
+        dot: true
+    }).pipe(gulp.dest('./dist'));
+});
+/* End of building extras */
+
+
+/* Building whole library */
+gulp.task('build', function () {
+    return sequence(
+        'clean',
+        ['html', 'js', 'css', 'fonts', 'extras'],
+        'buildsize'
+    )
+});
+/* End of building whole library */
+
+
+/* Showing size of build */
+gulp.task('buildsize', function () {
+    return gulp.src('./dist/**/*').pipe(size({title: 'build', gzip: true}));
+});
+
+
+/* Running ESLint on source */
 gulp.task('lint', function() {
-    return gulp.src(['src/js/**/*.js'])
+    return gulp.src(['./src/js/**/*.js'])
     .pipe(eslint({
         ecmaFeatures: {modules: true},
         env: {
@@ -74,48 +161,24 @@ gulp.task('lint', function() {
     }))
     .pipe(eslint.format());
 });
+/* End of running ESLint on source */
 
-gulp.task('html', function () {
-    var assets = useref.assets({searchPath: '{src}'});
-    return gulp.src('src/*.html')
-        .pipe(assets)
-        .pipe(gif('*.css', csso()))
-        .pipe(assets.restore())
-        .pipe(useref())
-        .pipe(gif('*.html', minifyHtml({conditionals: true, loose: true})))
-        .pipe(gulp.dest('dist'));
+
+/* Running unittests with coverage */
+gulp.task('test:setup', function () {
+    return gulp.src(['src/**/*.js'])
+    .pipe(istanbul({instrumenter: Instrumenter, includeUntested: true}))
+    .pipe(istanbul.hookRequire());
 });
 
-gulp.task('images', function () {
-    return gulp.src('src/images/**/*')
-        .pipe(cache(imagemin({
-            progressive: true,
-            interlaced: true
-        })))
-        .pipe(gulp.dest('dist/images'));
+gulp.task('test', ['test:setup'], function () {
+    return gulp.src(['test/*.js'])
+    .pipe(mocha({compilers: {js: babel}}))
+    .pipe(istanbul.writeReports());
 });
+/* End of running unittests with coverage */
 
-gulp.task('fonts', function () {
-    return gulp.src('src/fonts/**/*')
-        .pipe(filter('**/*.{eot,svg,ttf,woff}'))
-        .pipe(flatten())
-        .pipe(gulp.dest('dist/fonts'));
-});
 
-gulp.task('extras', function () {
-    gulp.src([
-        'src/objects/**/*'
-    ]).pipe(gulp.dest('dist/objects'));
-
-    return gulp.src([
-        'src/*.*',
-        '!src/*.html'
-    ], {
-        dot: true
-    }).pipe(gulp.dest('dist'));
-});
-
-gulp.task('clean:dist', require('del').bind(null, ['dist']));
 
 gulp.task('connect', function () {
     var serveStatic = require('serve-static');
@@ -139,7 +202,7 @@ gulp.task('serve', ['build', 'connect', 'watch'], function () {
 });
 
 
-gulp.task('watch', ['sass', 'connect'], function () {
+gulp.task('watch', ['css:main', 'connect'], function () {
     livereload.listen();
 
     // watch for changes
@@ -150,45 +213,10 @@ gulp.task('watch', ['sass', 'connect'], function () {
         'src/objects/**/*',
     ]).on('change', livereload.changed);
 
-    gulp.watch('src/**/*.js', ['browserify']);
-    gulp.watch('src/styles/**/*.scss', ['sass']);
-});
-
-gulp.task('css:vendor', function() {
-    
-    return gulp.src([
-        './node_modules/jquery-ui/themes/base/jquery-ui.css',
-        './node_modules/jquery-ui/themes/base/jquery.ui.dialog.css'
-        ])
-        .pipe(concat('vendor.css'))
-        .pipe(gulp.dest('./dist/styles/'));
-});
-
-gulp.task('build', sequence(
-    'clean:dist',
-    ['html', 'images', 'fonts', 'extras', 'browserify', 'css:vendor', 'sass'],
-    function () {
-        return gulp.src('dist/**/*').pipe(size({title: 'build', gzip: true}));
-    }
-));
-
-gulp.task('default', ['clean:dist'], function () {
-    gulp.start('build');
+    gulp.watch('src/**/*.js', ['js']);
+    gulp.watch('src/styles/**/*.scss', ['css:main']);
 });
 
 
 
-gulp.task('pre-test', function () {
-  return gulp.src(['src/**/*.js'])
-    // Covering files
-    .pipe(istanbul({instrumenter: Instrumenter, includeUntested: true}))
-    // Force `require` to return covered files
-    .pipe(istanbul.hookRequire());
-});
 
-gulp.task('test', ['pre-test'], function () {
-  return gulp.src(['test/*.js'])
-    .pipe(mocha({compilers: {js: babel}}))
-    // Creating the reports after tests ran
-    .pipe(istanbul.writeReports());
-});
