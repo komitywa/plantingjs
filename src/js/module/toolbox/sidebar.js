@@ -1,11 +1,11 @@
 import underscore from 'underscore';
 import jquery from 'jquery';
-import Core from 'core';
+import { View } from 'core';
 import ToolboxViewObject from './object';
 import ToolboxCollection from './collection';
 import Const from 'const';
 
-var ToolboxViewSidebar = Core.View.extend({
+var ToolboxViewSidebar = View.extend({
     className: 'plantingjs-toolbox',
     template: underscore.template('\
         <div class="plantingjs-toolbox-toggle"></div>\
