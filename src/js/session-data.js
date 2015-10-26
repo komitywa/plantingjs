@@ -1,59 +1,55 @@
-var _ = require('underscore');
-var Core = require('core');
-var Const = require('const');
-var PlantCollection = require('module/plant/collection');
+import underscore from 'underscore';
+import { Model } from 'core';
+import Const from 'const';
+import PlantCollection from 'module/plant/collection';
 
-var SessionDataModel = Core.Model.extend({
+export default Model.extend({
 
-    ignoreObjectValues: [
-        'userActivity',
-        'projections'
-    ],
-    defaults: {
-        lat: null,
-        lng: null,
-        zoom: null,
-        heading: null,
-        pitch: 0
-    },
+  ignoreObjectValues: [
+    'userActivity',
+    'projections',
+  ],
+  defaults: {
+    lat: null,
+    lng: null,
+    zoom: null,
+    heading: null,
+    pitch: 0,
+  },
 
-    _objectsCollection: null,
+  _objectsCollection: null,
 
-    constructor: function(data, options) {
+  constructor(data, options) {
+    this._objectsCollection = new PlantCollection(null, {
+      app: options.app,
+    });
+    Model.call(this, data, options);
+  },
 
-        this._objectsCollection = new PlantCollection(null, {
-            app: options.app
-        });
-        Core.Model.call(this, data, options);
-    },
+  objects() {
+    return this._objectsCollection;
+  },
 
-    objects: function() {
+  setPanoCoords(data) {
+    this.set(data);
+  },
 
-        return this._objectsCollection;
-    },
+  toJSON() {
+    const objects = this.objects().toJSON();
 
-    setPanoCoords: function(data) {
+    return underscore.extend(Model.prototype.toJSON.call(this), {
+      objects: underscore.omit(objects, this.ignoreObjectValues),
+    });
+  },
 
-        this.set(data);
-    },
+  save() {
+    const data = this.toJSON();
 
-    toJSON: function() {
-        var objects = this.objects().toJSON();
+    this.app.trigger(Const.Event.SAVE_REQUEST, data);
 
-        return _.extend(Core.Model.prototype.toJSON.call(this), {
-            objects: _.omit(objects, this.ignoreObjectValues)
-        });
-    },
-
-    save: function() {
-        var data = this.toJSON();
-
-        this.app.trigger(Const.Event.SAVE_REQUEST, data);
-
-        if (_.isFunction(this.app.options.onSave)) {
-
-            this.app.options.onSave.call(this, data);
-        }
+    if (underscore.isFunction(this.app.options.onSave)) {
+      this.app.options.onSave.call(this, data);
     }
+  },
 });
-module.exports = SessionDataModel;
+

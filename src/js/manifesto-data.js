@@ -1,26 +1,22 @@
-var Core = require('core');
-var Const = require('const');
+import { Model } from 'core';
+import Const from 'const';
 
-var ManifestoDataModel = Core.Model.extend({
+export default Model.extend({
 
-    constructor: function(data, options) {
+  constructor(data, options) {
+    this.url = options.url;
+    Model.call(this, data, options);
+  },
 
-        this.url = options.url;
-        Core.Model.call(this, data, options);
-    },
+  initialize() {
+    this.on('fetch', () => {
+      this.app.trigger(Const.EVENT.MANIFESTO_INITED, this);
+    }, this);
+  },
 
-    initialize: function() {
+  getProjectionsFor(objectId) {
+    const toolboxobjects = this.get('toolboxobjects')[objectId];
 
-        this.on('fetch', function() {
-
-            this.app.trigger(Const.EVENT.MANIFESTO_INITED, this);
-        }, this);
-    },
-
-    getProjectionsFor: function(objectId) {
-        var toolboxobjects = this.get('toolboxobjects')[objectId];
-
-        return toolboxobjects.projections;
-    }
+    return toolboxobjects.projections;
+  },
 });
-module.exports = ManifestoDataModel;

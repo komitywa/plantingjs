@@ -1,64 +1,52 @@
-var Backbone = require('backbone');
-var _ = require('underscore');
+import Backbone from 'backbone';
+import underscore from 'underscore';
 
-var coreMembers = {
-    app: null,
+const coreMembers = {
+  app: null,
+  session() {
+    return this.app.data.session;
+  },
 
-    session: function() {
-
-        return this.app.data.session;
-    },
-
-    manifesto: function() {
-
-        return this.app.data.manifesto;
-    }
+  manifesto() {
+    return this.app.data.manifesto;
+  },
 };
 
 function _setContext(options) {
-
-    if (_.isObject(options) &&
-        _.has(options, 'app')) {
-
-        this.app = options.app;
-    }
+  if (underscore.isObject(options) && underscore.has(options, 'app')) {
+    this.app = options.app;
+  }
 }
 
-var Core = {};
-
-Core.View = Backbone.View.extend(
-    _.extend({
-
-        constructor: function(options) {
-            _setContext.call(this, options);
-            Backbone.View.call(this, options);
-        }
+export const View = Backbone.View.extend(
+    underscore.extend({
+      constructor(options) {
+        _setContext.call(this, options);
+        Backbone.View.call(this, options);
+      },
     }, coreMembers)
 );
 
-Core.Model = Backbone.Model.extend(
-    _.extend({
+export const Model = Backbone.Model.extend(
+    underscore.extend({
+      constructor(modelAttrs, options) {
+        _setContext.call(this, options);
+        Backbone.Model.call(this, modelAttrs, options);
+      },
 
-        constructor: function(modelAttrs, options) {
-            _setContext.call(this, options);
-            Backbone.Model.call(this, modelAttrs, options);
-        },
+      getCopy() {
+        const data = Backbone.Model.prototype.get.apply(this, arguments);
 
-        getCopy: function() {
-            var data = Backbone.Model.prototype.get.apply(this, arguments);
-
-            return _.map(data, _.clone);
-        }
+        return underscore.map(data, underscore.clone);
+      },
     }, coreMembers)
 );
 
-Core.Collection = Backbone.Collection.extend(
-    _.extend({
-
-        constructor: function(models, options) {
-            _setContext.call(this, options);
-            Backbone.Collection.call(this, models, options);
-        }
+export const Collection = Backbone.Collection.extend(
+    underscore.extend({
+      constructor(models, options) {
+        _setContext.call(this, options);
+        Backbone.Collection.call(this, models, options);
+      },
     }, coreMembers)
 );
-module.exports = Core;
