@@ -1,9 +1,10 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { Model } from 'core';
 import Const from 'const';
 import PlantCollection from 'module/plant/collection';
 
-const SessionDataModel = Core.Model.extend({
+export default Model.extend({
+
   ignoreObjectValues: [
     'userActivity',
     'projections',
@@ -18,30 +19,30 @@ const SessionDataModel = Core.Model.extend({
 
   _objectsCollection: null,
 
-  constructor: function(data, options) {
+  constructor(data, options) {
     this._objectsCollection = new PlantCollection(null, {
       app: options.app,
     });
-    Core.Model.call(this, data, options);
+    Model.call(this, data, options);
   },
 
-  objects: function() {
+  objects() {
     return this._objectsCollection;
   },
 
-  setPanoCoords: function(data) {
+  setPanoCoords(data) {
     this.set(data);
   },
 
-  toJSON: function() {
+  toJSON() {
     const objects = this.objects().toJSON();
 
-    return underscore.extend(Core.Model.prototype.toJSON.call(this), {
+    return underscore.extend(Model.prototype.toJSON.call(this), {
       objects: underscore.omit(objects, this.ignoreObjectValues),
     });
   },
 
-  save: function() {
+  save() {
     const data = this.toJSON();
 
     this.app.trigger(Const.Event.SAVE_REQUEST, data);
@@ -51,4 +52,3 @@ const SessionDataModel = Core.Model.extend({
     }
   },
 });
-module.exports = SessionDataModel;
