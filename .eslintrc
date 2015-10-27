@@ -6,8 +6,5 @@
         'browser': true,
         'node': true
     },
-    'parser': 'babel-eslint',
-    'rules': {
-        'no-debugger': 2
-    }
+    'parser': 'babel-eslint'
 }

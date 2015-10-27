@@ -16,7 +16,6 @@ export default Model.extend({
 
   getProjectionsFor(objectId) {
     const toolboxobjects = this.get('toolboxobjects')[objectId];
-
     return toolboxobjects.projections;
   },
 });

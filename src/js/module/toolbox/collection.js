@@ -1,7 +1,8 @@
-var Core = require('core');
-var ToolboxModel = require('./model');
+import { Collection } from 'core';
+import ToolboxModel from './model';
 
-var ToolboxCollection = Core.Collection.extend({
-    model: ToolboxModel
+const ToolboxCollection = Collection.extend({
+  model: ToolboxModel,
 });
+
 module.exports = ToolboxCollection;

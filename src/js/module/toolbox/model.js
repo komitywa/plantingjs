@@ -1,4 +1,4 @@
-var PlantModel = require('module/plant/model');
+const PlantModel = require('module/plant/model');
 
-var ToolboxModel = PlantModel.extend({});
+const ToolboxModel = PlantModel.extend({});
 module.exports = ToolboxModel;

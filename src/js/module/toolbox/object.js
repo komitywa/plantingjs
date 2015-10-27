@@ -1,47 +1,43 @@
-var _ = require('underscore');
-var Core = require('core');
+import underscore from 'underscore';
+import { View } from 'core';
 
-var ToolboxViewObject = Core.View.extend({
-    className: 'plantingjs-toolboxobject-item',
-    template: _.template('\
-        <div class="plantingjs-toolboxobject-prototype">\
-            <img src="<%= projectionUrl %>">\
-        \</div>\
-        <div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\
-            <img src="<%= projectionUrl %>">\
-        </div>\
-        '),
+const ToolboxViewObject = View.extend({
+  className: 'plantingjs-toolboxobject-item',
+  template: underscore.template('\n' +
+      '<div class="plantingjs-toolboxobject-prototype">\n' +
+          '<img src="<%= projectionUrl %>">\n' +
+      '</div>\n' +
+      '<div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\n' +
+          '<img src="<%= projectionUrl %>">\n' +
+      '</div>\n' +
+      ''),
 
-    events: {
-        'dragstart': 'attachData'
-    },
+  events: {
+    'dragstart': 'attachData',
+  },
 
-    initialize: function() {
-        var $img;
+  initialize: function() {
+    this.render();
+    this.$el.find('.plantingjs-toolboxobject-draggable')
+      .draggable({
+        containment: '.plantingjs-overlay',
+        helper: 'clone',
+        appendTo: '.plantingjs-overlay',
+        zIndex: 1000,
+      });
+  },
 
-        this.render();
-        $img = this.$el.find('img').first();
-        this.$el.find('.plantingjs-toolboxobject-draggable')
-            .draggable({
-                containment: ".plantingjs-overlay" ,
-                helper: 'clone',
-                appendTo: '.plantingjs-overlay',
-                zIndex: 1000
-            });
-    },
+  render: function() {
+    this.$el
+      .html(this.template({
+        projectionUrl: this.model.getProjection(),
+      }))
+      .attr('data-cid', this.model.cid);
+  },
 
-    render: function() {
-
-        this.$el
-            .html(this.template({
-                projectionUrl: this.model.getProjection()
-            }))
-            .attr('data-cid', this.model.cid);
-    },
-
-    attachData: function() {
-        this.$el.find('.plantingjs-toolboxobject-draggable')
-            .data('model', this.model.clone().toJSON());
-    }
+  attachData: function() {
+    this.$el.find('.plantingjs-toolboxobject-draggable')
+      .data('model', this.model.clone().toJSON());
+  },
 });
 module.exports = ToolboxViewObject;
