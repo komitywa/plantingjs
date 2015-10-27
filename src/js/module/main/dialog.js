@@ -1,8 +1,8 @@
 import jquery from 'jquery';
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 
-const MainViewDialog = Core.View.extend({
+const MainViewDialog = View.extend({
   template: underscore.template('\n' +
       '<ul>\n' +
           '<li>Wybierz na mapie miejsce do wysadzania.</li>\n' +

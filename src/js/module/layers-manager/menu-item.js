@@ -1,7 +1,7 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 
-const LayersManagerViewItem = Core.View.extend({
+const LayersManagerViewItem = View.extend({
   className: 'plantingjs-layer-item',
   template: underscore.template('\n' +
       '<div class="plantingjs-layer-col plantingjs-layer-info">\n' +

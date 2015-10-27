@@ -1,7 +1,7 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 
-const ToolboxViewObject = Core.View.extend({
+const ToolboxViewObject = View.extend({
   className: 'plantingjs-toolboxobject-item',
   template: underscore.template('\n' +
       '<div class="plantingjs-toolboxobject-prototype">\n' +

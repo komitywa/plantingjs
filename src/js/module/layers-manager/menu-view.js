@@ -1,8 +1,8 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 import LayersManagerViewItem from './menu-item';
 
-const LayersManagerViewMenu = Core.View.extend({
+const LayersManagerViewMenu = View.extend({
   className: 'layers-menu',
   items: [],
 

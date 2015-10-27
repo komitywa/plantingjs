@@ -1,6 +1,6 @@
-import Core from 'core';
+import { Model } from 'core';
 
-const PlantModel = Core.Model.extend({
+const PlantModel = Model.extend({
   defaults: {
     x: null,
     y: null,

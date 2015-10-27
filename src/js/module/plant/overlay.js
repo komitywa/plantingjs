@@ -1,10 +1,10 @@
 import underscore from 'underscore';
 import jquery from 'jquery';
-import Core from 'core';
+import { View } from 'core';
 import PlantViewObject from './object';
 import Const from 'const';
 
-const PlantViewOverlay = Core.View.extend({
+const PlantViewOverlay = View.extend({
   events: {
     'drop': 'plantObject',
   },

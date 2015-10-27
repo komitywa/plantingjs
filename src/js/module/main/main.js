@@ -1,9 +1,9 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 import MainViewDialog from 'module/main/dialog';
 import Const from 'const';
 
-const MainViewMain = Core.View.extend({
+const MainViewMain = View.extend({
   toolbox: null,
   map: null,
   className: 'plantingjs-container',

@@ -1,9 +1,9 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { Collection } from 'core';
 import PlantModel from './model';
 
 
-const PlantCollection = Core.Collection.extend({
+const PlantCollection = Collection.extend({
   model: PlantModel,
   layers: [],
 

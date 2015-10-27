@@ -1,7 +1,7 @@
-import Core from 'core';
+import { Collection } from 'core';
 import ToolboxModel from './model';
 
-const ToolboxCollection = Core.Collection.extend({
+const ToolboxCollection = Collection.extend({
   model: ToolboxModel,
 });
 

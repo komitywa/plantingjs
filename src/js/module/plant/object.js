@@ -1,9 +1,9 @@
 import underscore from 'underscore';
-import Core from 'core';
+import { View } from 'core';
 import PlantViewTools from 'module/plant/tools';
 import Const from 'const';
 
-const PlantViewObject = Core.View.extend({
+const PlantViewObject = View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
   template: underscore.template('\n' +
       '<img src="<%= projectionUrl %>" />\n' +

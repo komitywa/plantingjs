@@ -1,8 +1,8 @@
-import Core from 'core';
+import { View } from 'core';
 import Const from 'const';
 import GoogleMaps from 'google-maps';
 
-const MapView = Core.View.extend({
+const MapView = View.extend({
   map: null,
   panorama: null,
 

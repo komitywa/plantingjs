@@ -1,11 +1,11 @@
 import underscore from 'underscore';
 import jquery from 'jquery';
-import Core from 'core';
+import { View } from 'core';
 
 let EVENT_MOUSEDOWN = false;
 const PROJECTION_LENGTH = 10;
 
-const PlantViewTools = Core.View.extend({
+const PlantViewTools = View.extend({
   action: null,
   mouseDownEvent: null,
 
