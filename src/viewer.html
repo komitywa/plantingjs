@@ -1,47 +1,52 @@
 <!doctype html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>plantingjs</title>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+        <title>plantingjs</title>
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- build:css styles/vendor.css -->
-    <!-- endbuild -->
-
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-
-  </head>
-  <body>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc">
-    </script>
-    <div id="viewport" class="viewport">
-    </div>
-
-    <!-- build:js js/vendor.js -->
-    <!-- endbuild -->
-
-        <!-- build:js js/planting.js -->
-        <script src="js/plantingjs-core.js"></script>
-        <script src="js/planting/planting-main.js"></script>
-        <script src="js/planting/planting-handlers.js"></script>
-        <script src="js/planting/planting-downloaders.js"></script>
-        <script src="js/planting/planting-save.js"></script>
+        <!-- build:css styles/vendor.css -->
+        <link rel="stylesheet" href="node_modules/jquery-ui/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="node_modules/jquery-ui/themes/base/jquery.ui.dialog.css">
         <!-- endbuild -->
 
-        <script>
-          var plantingJSInstance;
+        <!-- build:css styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
 
-          $(document).ready(
-              function () {
-                plantingJSInstance = new PlantingJS({});
-                plantingJSInstance.initViewer($("#viewport"), "/forview.json");
-              }
-          );
+    </head>
+    <body>
+        <div id="viewport" class="viewport"></div>
+        <script src="js/main.js"></script>
+        <script>
+            function simple_save_callback(planting) {
+                console.log(planting);
+            };
+
+            function load_plant(url) {
+
+                return fetch(url)
+                    .then(function(res) {
+
+                        return res.json()
+                            .then(function(plant) {
+
+                                PlantingInstance.initViewer(plant);
+                            });
+                    });
+            }
+
+            window.onload = function () {
+                PlantingInstance = new window.Planting( {
+                    container:document.querySelector('.viewport'),
+                    manifestoUrl: '/manifesto.json',
+                    googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc',
+                    onSave: simple_save_callback
+                });
+              load_plant('/forview.json');
+            };
         </script>
-</body>
+    </body>
 </html>

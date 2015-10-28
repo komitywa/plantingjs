@@ -2,6 +2,7 @@ import { View } from 'core';
 import Const from 'const';
 import GoogleMaps from 'google-maps';
 
+
 const MapView = View.extend({
   map: null,
   panorama: null,
@@ -37,7 +38,15 @@ const MapView = View.extend({
   },
 
   initializeViewer: function(options) {
-    this.panorama = new google.maps.StreetViewPanorama(this.el, options);
+    const element = this.el;
+
+    this.app.setState(Const.State.VIEWER);
+    GoogleMaps.KEY = this.app.options.googleApiKey;
+
+    this.initializeMaps()
+      .then(function(google) {
+        this.map = new google.maps.StreetViewPanorama(element, options);
+      }.bind(this));
   },
 
   getDisableUIOptions: function() {
