@@ -181,12 +181,20 @@ gulp.task('openbrowser', function() {
   opn('http://localhost:9000');
 });
 
+gulp.task('openbrowser:viewer', function() {
+  opn('http://localhost:9000/viewer.html');
+});
+
 /* Refreshing opened browser with new code */
 gulp.task('refreshbrowser', function() { return livereload.changed(); });
 
 /* Continous serving new version of library with watching for changes */
 gulp.task('serve', function(cb) {
   return sequence('build', 'connect', 'watch', 'openbrowser', cb);
+});
+
+gulp.task('serve:viewer', function(cb) {
+  return sequence('build', 'connect', 'watch', 'openbrowser:viewer', cb);
 });
 
 gulp.task('reserve', function(cb) {
@@ -197,7 +205,8 @@ gulp.task('reserve', function(cb) {
 gulp.task('lint', function() {
   return gulp.src(['./src/js/**/*.js'])
     .pipe(eslint())
-    .pipe(eslint.format());
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 /* End of running ESLint on source */
 
