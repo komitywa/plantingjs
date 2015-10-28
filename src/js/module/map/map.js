@@ -1,6 +1,7 @@
 import { View } from 'core';
 import Const from 'const';
 import GoogleMaps from 'google-maps';
+import jquery from 'jquery';
 
 const MapView = View.extend({
   map: null,
@@ -37,7 +38,18 @@ const MapView = View.extend({
   },
 
   initializeViewer: function(options) {
-    this.panorama = new google.maps.StreetViewPanorama(this.el, options);
+    const defer = jquery.Deferred();
+    let google;
+    debugger;
+    google = jquery.getScript('https://www.google.com/jsapi')
+        .then(function() {
+          google.load('maps', '3', {
+            other_params: 'key=' + this.app.options.googleApiKey,
+            callback: defer.resolve.bind(defer),
+          });
+        });
+
+    this.panorama = new defer.promise().maps.StreetViewPanorama(this.el, options);
   },
 
   getDisableUIOptions: function() {
