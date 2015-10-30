@@ -1,16 +1,8 @@
-import underscore from 'underscore';
 import { View } from 'core';
 
 const ToolboxViewObject = View.extend({
   className: 'plantingjs-toolboxobject-item',
-  template: underscore.template('\n' +
-      '<div class="plantingjs-toolboxobject-prototype">\n' +
-          '<img src="<%= projectionUrl %>">\n' +
-      '</div>\n' +
-      '<div class="plantingjs-toolboxobject-draggable ui-draggable ui-draggable-handle"">\n' +
-          '<img src="<%= projectionUrl %>">\n' +
-      '</div>\n' +
-      ''),
+  template: require('./object.hbs'),
 
   events: {
     'dragstart': 'attachData',

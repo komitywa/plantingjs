@@ -1,4 +1,3 @@
-import underscore from 'underscore';
 import { View } from 'core';
 import MainViewDialog from 'module/main/dialog';
 import Const from 'const';
@@ -7,19 +6,7 @@ const MainViewMain = View.extend({
   toolbox: null,
   map: null,
   className: 'plantingjs-container',
-  template: underscore.template('\n' +
-      '<div class="plantingjs-proxy">\n' +
-          '<div class="plantingjs-startbtn">\n' +
-              '<span class="icon-menu-hamburger"></span>\n' +
-               'Start planting!\n' +
-          '</div>\n' +
-          '<div class="layers-menu"></div>\n' +
-          '<div class="plantingjs-toolbox"></div>\n' +
-          '<div class="plantingjs-overlay ui-droppable"></div>\n' +
-          '<div class="plantingjs-google"></div>\n' +
-          '<div class="plantingjs-dialog"></div>\n' +
-      '</div>\n' +
-  ''),
+  template: require('./main.hbs'),
   events: {
     'click .plantingjs-startbtn': 'startPlanting',
   },

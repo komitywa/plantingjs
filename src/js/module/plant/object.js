@@ -5,10 +5,7 @@ import Const from 'const';
 
 const PlantViewObject = View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
-  template: underscore.template('\n' +
-      '<img src="<%= projectionUrl %>" />\n' +
-      '<div class="plantingjs-plantedobject-tools">\</div>\n' +
-  ''),
+  template: require('./object.hbs'),
 
   events: {
     'dragstart': 'dragstart',

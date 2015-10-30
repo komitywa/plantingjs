@@ -1,4 +1,3 @@
-import underscore from 'underscore';
 import jquery from 'jquery';
 import { View } from 'core';
 
@@ -9,16 +8,7 @@ const PlantViewTools = View.extend({
   action: null,
   mouseDownEvent: null,
 
-  template: underscore.template('\n' +
-      '<span class="icon-trash"></span>\n' +
-      '<span class="icon-resize"></span>\n' +
-      '<div class="wrapper-rotate">\n' +
-          '<span class="icon-menu-left"> </span>\n' +
-          '<span class="degrees">0&deg;</span>\n' +
-          '<span class="icon-menu-right"></span>\n' +
-          '<span class="icon-loop"></span>\n' +
-      '</div>\n' +
-  ''),
+  template: require('./tools.hbs'),
 
   events: {
     'click .icon-trash': 'removeObject',

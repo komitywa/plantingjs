@@ -1,16 +1,8 @@
 import jquery from 'jquery';
-import underscore from 'underscore';
 import { View } from 'core';
 
 const MainViewDialog = View.extend({
-  template: underscore.template('\n' +
-      '<ul>\n' +
-          '<li>Wybierz na mapie miejsce do wysadzania.</li>\n' +
-          '<li>Przejdź do Google Street View - przeciągnij żółtego ludzika z lewego górnego rogu i upuść na wybrane miejsce.</li>\n' +
-          '<li>Kliknij przycisk "Start planning".</li>\n' +
-          '<li>Z panelu po prawej wybieraj elementy do wysadzania.</li>\n' +
-      '</ul>\n' +
-  ''),
+  template: require('./dialog.hbs'),
 
   title: 'Pierwszy raz z planting',
   dialogOptions: {
