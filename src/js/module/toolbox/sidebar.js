@@ -7,11 +7,7 @@ import Const from 'const';
 
 const ToolboxViewSidebar = View.extend({
   className: 'plantingjs-toolbox',
-  template: underscore.template('\n' +
-      '<div class="plantingjs-toolbox-toggle"></div>\n' +
-      '<div class="plantingjs-savebtn">SAVE</div>\n' +
-      '<div class="plantingjs-toolboxobject-container"></div>\n' +
-  ''),
+  template: require('./sidebar.hbs'),
   events: {
     'click .plantingjs-savebtn': 'onSave',
   },

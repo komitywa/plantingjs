@@ -1,17 +1,9 @@
-import underscore from 'underscore';
 import { View } from 'core';
+
 
 const LayersManagerViewItem = View.extend({
   className: 'plantingjs-layer-item',
-  template: underscore.template('\n' +
-      '<div class="plantingjs-layer-col plantingjs-layer-info">\n' +
-          '<span><%= cid %></span>\n' +
-      '</div>\n' +
-      '<div class="plantingjs-layer-col plantingjs-layer-arrows">\n' +
-          '<button class="plantingjs-layer-item-up js-dir-up">UP</button>\n' +
-          '<button class="plantingjs-layer-item-down js-dir-down">DOWN</button>\n' +
-      '</div>\n' +
-  ''),
+  template: require('./menu-items.hbs'),
 
   events: {
     'click .js-dir-down': 'moveDown',

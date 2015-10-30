@@ -14,6 +14,7 @@ import filter from 'gulp-filter';
 import gif from 'gulp-if';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import hbsfy from 'hbsfy';
 import http from 'http';
 /*
     We need to import in that way, because there's bug in isparta.
@@ -79,7 +80,7 @@ gulp.task('js', function() {
           debug: true,
           standalone: 'Planting',
           paths: ['./node_modules', './src/js/'],
-          transform: [babelify],
+          transform: [hbsfy, babelify],
         }).bundle();
       });
     }))
