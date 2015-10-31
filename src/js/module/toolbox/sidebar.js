@@ -14,10 +14,19 @@ const ToolboxViewSidebar = View.extend({
 
   initialize: function initialize() {
     const objectsIds = underscore.range(this.manifesto().getCopy('toolboxobjects').length);
+    const objectsProjs = underscore.map(this.manifesto().getCopy('toolboxobjects'), function(object) {
+      return object.projections;
+    });
+    const objectsData = underscore.zip(objectsIds, objectsProjs);
 
-    this.collection = new ToolboxCollection(underscore.map(objectsIds, function(objectId) {
-      return {objectId: objectId};
+    this.collection = new ToolboxCollection(underscore.map(objectsData, function(objectData) {
+      return {
+        objectId: objectData[0],
+        projections: objectData[1],
+        currentProjection: 0,
+      };
     }), {app: this.app});
+
     this.objects = this.collection.map(function(toolboxObjectModel) {
       return new ToolboxViewObject({
         model: toolboxObjectModel,

@@ -14,7 +14,7 @@ const PlantModel = Model.extend({
 
   getProjection: function() {
     return this.manifesto()
-      .getProjectionsFor(this.get('objectId'))[this.get('projection')];
+      .getProjectionsFor(this.get('objectId'))[this.get('currentProjection')];
   },
 
   setProjection: function(at_) {
