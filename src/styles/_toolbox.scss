@@ -1,0 +1,20 @@
+.plantingjs-toolbox {
+    z-index: 999;
+    display:none;
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+    width: 320px;
+    background-color: #fff;
+}
+
+.plantingjs-toolbox-toggle {
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+}
+
+.plantingjs-toolbox-hide {
+    width: 0;
+}
