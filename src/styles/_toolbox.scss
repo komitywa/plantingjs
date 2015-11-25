@@ -4,17 +4,19 @@
     position: absolute;
     top: 5px;
     bottom: 5px;
-    right: 5px;
+    left: 5px;
     width: 320px;
     background-color: #fff;
+
+    &-toggle {
+        position: absolute;
+        right: 0;
+        background-color: #fff;
+    }
+
+    &-hide {
+        width: 0;
+    }
 }
 
-.plantingjs-toolbox-toggle {
-    position: absolute;
-    right: 0;
-    background-color: #fff;
-}
 
-.plantingjs-toolbox-hide {
-    width: 0;
-}
