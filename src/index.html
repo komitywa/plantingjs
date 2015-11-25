@@ -38,6 +38,16 @@
                     });
             }
 
+            function load_streetview(url) {
+                return fetch(url).then(function(response) {
+                    return response.json()
+                        .then(function(responseData) {
+                            PlantingInstance.initStreetview(responseData);
+                        });
+                });
+            }
+
+
             window.onload = function () {
                 PlantingInstance = new window.Planting( {
                     container:document.querySelector('.viewport'),
@@ -45,6 +55,7 @@
                     googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc',
                     onSave: simple_save_callback
                 });
+                // load_plant('/forview.json');
             }
         </script>
     </body>

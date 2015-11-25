@@ -57,6 +57,10 @@ const ToolboxViewSidebar = View.extend({
   hide: function hide() {
     this.$el.hide();
   },
+
+  show() {
+    this.$el.show();
+  },
 });
 
 module.exports = ToolboxViewSidebar;
