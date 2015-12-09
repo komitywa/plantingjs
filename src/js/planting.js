@@ -121,4 +121,19 @@ export default class extends EventEmitter {
         }
       });
   }
+
+  initStreetview({ lat, lng, heading, pitch, zoom }) {
+    const panoOptions = {
+      position: { lat, lng },
+      pov: { heading, pitch, zoom },
+    };
+
+    this.main.dialog.close();
+    this.initDefer
+      .then(() => {
+        this.map.initializeViewer(panoOptions);
+        this.toolbox.show();
+        this.setState(Const.State.PLANTING);
+      });
+  }
 }
