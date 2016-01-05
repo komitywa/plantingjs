@@ -1,11 +1,11 @@
-import underscore from 'underscore';
+import { clone } from 'underscore';
 import { Events } from 'backbone';
 
-const EventEmitter = underscore.clone(Events);
+const EventEmitter = clone(Events);
 
 export default class {
     constructor() {
-      this.eventEmitter = underscore.clone(EventEmitter);
+      this.eventEmitter = clone(EventEmitter);
     }
 
     on(...args) {
