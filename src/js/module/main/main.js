@@ -1,6 +1,7 @@
 import { View } from 'core';
 import MainViewDialog from 'module/main/dialog';
 import Const from 'const';
+import Button from '../component/button';
 
 const MainViewMain = View.extend({
   toolbox: null,
@@ -15,7 +16,19 @@ const MainViewMain = View.extend({
 
   initialize: function() {
     this.render();
+    this.submit = new Button({
+      defaults: {
+        modifier: 'finish-session',
+        label: 'zrobione!',
+        visible: false
+      },
+      app: this.app,
+      events: {
+        'click': this.onClickSubmit
+      }
+    });
     this.$proxy = this.$el.children();
+    this.$proxy.append(this.submit.$el);
     this.dialog = new MainViewDialog({
       el: this.el.querySelector('.plantingjs-dialog'),
       app: this.app,
@@ -28,6 +41,7 @@ const MainViewMain = View.extend({
       }, this)
       .on(Const.Event.START_PLANTING, function() {
         this.$el.find('.plantingjs-startbtn').hide();
+        this.submit.model.set('visible', true);
       }, this)
       .on(Const.Event.STATE_CHANGED, function(state) {
         this.$el
@@ -42,6 +56,15 @@ const MainViewMain = View.extend({
   startPlanting: function() {
     this.app.trigger(Const.Event.START_PLANTING);
   },
+
+  onClickSubmit(event) {
+    /**
+     * @todo
+     * Show submit popup. For now just save session.
+     */
+    event.preventDefault();
+    this.session().save();
+  }
 });
 
 const Main = {

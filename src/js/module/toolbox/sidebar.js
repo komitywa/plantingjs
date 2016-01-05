@@ -8,9 +8,6 @@ import Const from 'const';
 const ToolboxViewSidebar = View.extend({
   className: 'plantingjs-toolbox',
   template: require('./sidebar.hbs'),
-  events: {
-    'click .plantingjs-savebtn': 'onSave',
-  },
 
   initialize: function initialize() {
     const objectsIds = underscore.range(this.manifesto().getCopy('toolboxobjects').length);
@@ -47,11 +44,6 @@ const ToolboxViewSidebar = View.extend({
       $list.append(object.$el);
     });
     this.$el.append($template);
-  },
-
-  onSave: function onSave() {
-    this.session()
-      .save();
   },
 
   hide: function hide() {
