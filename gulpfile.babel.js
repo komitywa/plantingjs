@@ -220,7 +220,7 @@ gulp.task('test:setup', function() {
 });
 
 gulp.task('test', ['test:setup'], function() {
-  return gulp.src(['test/*.js'])
+  return gulp.src(['test/*.js', '!test/env'])
     .pipe(mocha({compilers: {js: babel}}))
     .pipe(istanbul.writeReports());
 });

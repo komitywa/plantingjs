@@ -6,7 +6,7 @@
   "license": "MIT",
   "author": {
     "name": "Komitywa",
-    "email" : "komitywapoznan@gmail.com",
+    "email": "komitywapoznan@gmail.com",
     "url": "http://komitywa.org"
   },
   "private": true,
@@ -56,5 +56,8 @@
     "wiredep": "^2.0.0",
     "google-maps": "^3.1.0",
     "handlebars": "^4.0.4"
+  },
+  "devDependencies": {
+    "jsdom": "^7.2.2"
   }
 }
