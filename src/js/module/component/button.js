@@ -23,8 +23,6 @@ export default View.extend({
 
     this.className = classes.join(' ');
     View.call(this, args);
-
-    window.ButtonTest = this;
   },
 
   initialize() {
