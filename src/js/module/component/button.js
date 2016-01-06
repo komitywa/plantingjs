@@ -1,13 +1,12 @@
 import { View } from '../../core';
 import Template from './button.hbs';
 import { Model } from 'backbone';
-import { isFunction } from 'underscore';
 
 export default View.extend({
   tagName: 'a',
   template: Template,
   attributes: {
-    href: '#'
+    href: '#',
   },
 
   constructor(args) {
@@ -39,8 +38,4 @@ export default View.extend({
         .html(view)
         .toggleClass('hidden', !this.model.get('visible'));
   },
-
-  onClick(event) {
-    console.log(this);
-  }
 });

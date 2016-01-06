@@ -20,12 +20,12 @@ const MainViewMain = View.extend({
       defaults: {
         modifier: 'finish-session',
         label: 'zrobione!',
-        visible: false
+        visible: false,
       },
       app: this.app,
       events: {
-        'click': this.onClickSubmit
-      }
+        'click': this.onClickSubmit,
+      },
     });
     this.$proxy = this.$el.children();
     this.$proxy.append(this.submit.$el);
@@ -64,7 +64,7 @@ const MainViewMain = View.extend({
      */
     event.preventDefault();
     this.session().save();
-  }
+  },
 });
 
 const Main = {
