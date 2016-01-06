@@ -15,7 +15,7 @@ export default View.extend({
 
     const modifier = this.model.get('modifier');
     const blockName = 'plantingjs-component-button';
-    let classes = [`${blockName}`];
+    const classes = [`${blockName}`];
 
     if (modifier) {
       classes.push(`${blockName}-${modifier}`);
