@@ -23,9 +23,9 @@ const MainViewMain = View.extend({
         visible: false,
       },
       app: this.app,
-      events: {
-        'click': this.onClickSubmit,
-      },
+    });
+    this.submit.delegateEvents({
+      click: this.onClickSubmit,
     });
     this.$proxy = this.$el.children();
     this.$proxy.append(this.submit.$el);
