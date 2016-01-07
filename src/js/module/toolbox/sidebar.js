@@ -1,11 +1,15 @@
 import { chain, range, map } from 'underscore';
 import jquery from 'jquery';
-import { View } from 'core';
+import { View, Collection } from 'core';
 import ToolboxObject from './sidebar-object';
-import ToolboxCollection from './collection';
+import ToolboxModel from '../plant/model';
 import { Event } from 'const';
 
-const ToolboxViewSidebar = View.extend({
+export const ToolboxCollection = Collection.extend({
+  model: ToolboxModel,
+});
+
+export default View.extend({
   className: 'plantingjs-toolbox',
   template: require('./sidebar.hbs'),
 
@@ -43,5 +47,3 @@ const ToolboxViewSidebar = View.extend({
     this.$el.show();
   },
 });
-
-module.exports = ToolboxViewSidebar;
