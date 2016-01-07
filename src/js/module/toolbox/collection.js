@@ -1,8 +1,6 @@
 import { Collection } from 'core';
-import ToolboxModel from './model';
+import ToolboxModel from '../plant/model';
 
-const ToolboxCollection = Collection.extend({
+export default Collection.extend({
   model: ToolboxModel,
 });
-
-module.exports = ToolboxCollection;

@@ -2,15 +2,14 @@ import { View } from 'core';
 
 export default View.extend({
   className: 'plantingjs-toolboxobject-item',
-  template: require('./object.hbs'),
+  template: require('./sidebar-object.hbs'),
   events: {
     'dragstart': 'attachData',
   },
 
   initialize() {
     this.render();
-    this.$el
-      .find('.plantingjs-toolboxobject-draggable')
+    this.$el.find('.plantingjs-toolboxobject-draggable')
       .draggable({
         containment: '.plantingjs-overlay',
         helper: 'clone',
@@ -20,10 +19,9 @@ export default View.extend({
   },
 
   render() {
+    const projectionUrl = this.model.getProjection();
     this.$el
-      .html(this.template({
-        projectionUrl: this.model.getProjection(),
-      }))
+      .html(this.template({ projectionUrl }))
       .attr('data-cid', this.model.cid);
   },
 

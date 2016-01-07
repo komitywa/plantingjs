@@ -1,7 +1,7 @@
 import { chain, range, map } from 'underscore';
 import jquery from 'jquery';
 import { View } from 'core';
-import ToolboxViewObject from './object';
+import ToolboxObject from './sidebar-object';
 import ToolboxCollection from './collection';
 import { Event } from 'const';
 
@@ -18,7 +18,7 @@ const ToolboxViewSidebar = View.extend({
       .value();
 
     this.collection = new ToolboxCollection(objectsData, { app: this.app });
-    this.objects = this.collection.map(model => new ToolboxViewObject({ model, app: this.app }));
+    this.objects = this.collection.map(model => new ToolboxObject({ model, app: this.app }));
     this.app.on(Event.START_PLANTING, () => {
       this.$el.show();
     });
