@@ -21,6 +21,20 @@
 
     &-list {
         padding: 0;
+
+        &:hover {
+            .plantingjs-toolbox-item {
+                .plantingjs-toolbox-image {
+                    opacity: .7;
+                }
+
+                &:hover {
+                    .plantingjs-toolbox-image {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
     }
 
     &-item {
@@ -32,6 +46,7 @@
     &-image {
         display: block;
         margin: 0 auto;
+        transition: opacity $default-transition;
     }
 }
 
