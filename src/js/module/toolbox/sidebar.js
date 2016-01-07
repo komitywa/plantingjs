@@ -1,47 +1,36 @@
-import underscore from 'underscore';
+import { chain, range, map } from 'underscore';
 import jquery from 'jquery';
 import { View } from 'core';
 import ToolboxViewObject from './object';
 import ToolboxCollection from './collection';
-import Const from 'const';
+import { Event } from 'const';
 
 const ToolboxViewSidebar = View.extend({
   className: 'plantingjs-toolbox',
   template: require('./sidebar.hbs'),
 
   initialize: function initialize() {
-    const objectsIds = underscore.range(this.manifesto().getCopy('toolboxobjects').length);
-    const objectsProjs = underscore.map(this.manifesto().getCopy('toolboxobjects'), function(object) {
-      return object.projections;
-    });
-    const objectsData = underscore.zip(objectsIds, objectsProjs);
+    const objectsIds = range(this.manifesto().getCopy('toolboxobjects').length);
+    const objectsProjs = map(this.manifesto().getCopy('toolboxobjects'), ({ projections }) => projections);
+    const objectsData = chain(objectsIds)
+      .zip(objectsProjs)
+      .map(([ objectId, projections ]) => ({ objectId, projections, currentProjection: 0 }))
+      .value();
 
-    this.collection = new ToolboxCollection(underscore.map(objectsData, function(objectData) {
-      return {
-        objectId: objectData[0],
-        projections: objectData[1],
-        currentProjection: 0,
-      };
-    }), {app: this.app});
-
-    this.objects = this.collection.map(function(toolboxObjectModel) {
-      return new ToolboxViewObject({
-        model: toolboxObjectModel,
-        app: this.app,
-      });
-    }, this);
-    this.app.on(Const.Event.START_PLANTING, function() {
+    this.collection = new ToolboxCollection(objectsData, { app: this.app });
+    this.objects = this.collection.map(model => new ToolboxViewObject({ model, app: this.app }));
+    this.app.on(Event.START_PLANTING, () => {
       this.$el.show();
-    }, this);
-    this.render( this.objects );
+    });
+    this.render(this.objects);
   },
 
   render: function render(objects) {
     const $template = jquery('<div />').append(this.template());
     const $list = $template.find('.plantingjs-toolboxobject-container');
 
-    objects.forEach(function(object) {
-      $list.append(object.$el);
+    objects.forEach(({ $el }) => {
+      $list.append($el);
     });
     this.$el.append($template);
   },
