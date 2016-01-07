@@ -1,16 +1,16 @@
 import { View } from 'core';
 
-const ToolboxViewObject = View.extend({
+export default View.extend({
   className: 'plantingjs-toolboxobject-item',
   template: require('./object.hbs'),
-
   events: {
     'dragstart': 'attachData',
   },
 
-  initialize: function() {
+  initialize() {
     this.render();
-    this.$el.find('.plantingjs-toolboxobject-draggable')
+    this.$el
+      .find('.plantingjs-toolboxobject-draggable')
       .draggable({
         containment: '.plantingjs-overlay',
         helper: 'clone',
@@ -19,7 +19,7 @@ const ToolboxViewObject = View.extend({
       });
   },
 
-  render: function() {
+  render() {
     this.$el
       .html(this.template({
         projectionUrl: this.model.getProjection(),
@@ -27,9 +27,10 @@ const ToolboxViewObject = View.extend({
       .attr('data-cid', this.model.cid);
   },
 
-  attachData: function() {
-    this.$el.find('.plantingjs-toolboxobject-draggable')
-      .data('model', this.model.clone().toJSON());
+  attachData() {
+    const modelData = this.model.clone().toJSON();
+    this.$el
+      .find('.plantingjs-toolboxobject-draggable')
+      .data('model', modelData);
   },
 });
-module.exports = ToolboxViewObject;
