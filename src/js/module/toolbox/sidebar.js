@@ -1,19 +1,18 @@
 import { chain, range, map } from 'underscore';
 import jquery from 'jquery';
 import { View, Collection } from 'core';
-import ToolboxObject from './sidebar-object';
+// import ToolboxObject from './sidebar-object';
 import ToolboxModel from '../plant/model';
+import template from './sidebar.hbs';
 import { Event } from 'const';
-
-export const ToolboxCollection = Collection.extend({
-  model: ToolboxModel,
-});
 
 export default View.extend({
   className: 'plantingjs-toolbox',
-  template: require('./sidebar.hbs'),
+  events: {
+    'dragstart .plantingjs-toolboxobject-draggable': 'onDragStart',
+  },
 
-  initialize: function initialize() {
+  initialize() {
     const objectsIds = range(this.manifesto().getCopy('toolboxobjects').length);
     const objectsProjs = map(this.manifesto().getCopy('toolboxobjects'), ({ projections }) => projections);
     const objectsData = chain(objectsIds)
@@ -21,29 +20,57 @@ export default View.extend({
       .map(([ objectId, projections ]) => ({ objectId, projections, currentProjection: 0 }))
       .value();
 
-    this.collection = new ToolboxCollection(objectsData, { app: this.app });
-    this.objects = this.collection.map(model => new ToolboxObject({ model, app: this.app }));
+    this.collection = new Collection(objectsData, {
+      model: ToolboxModel,
+      app: this.app,
+    });
+    this.render();
     this.app.on(Event.START_PLANTING, () => {
       this.$el.show();
     });
-    this.render(this.objects);
   },
 
-  render: function render(objects) {
-    const $template = jquery('<div />').append(this.template());
-    const $list = $template.find('.plantingjs-toolboxobject-container');
+  render() {
+    let objects = this.collection.map((model) => {
+      const {
+        projections: [image],
+        objectId,
+      } = model.attributes;
+      const cid = model.cid;
 
-    objects.forEach(({ $el }) => {
-      $list.append($el);
+      return { image, objectId, cid };
     });
-    this.$el.append($template);
+
+    objects = objects.concat(objects, objects, objects);
+    this.$el.html(template({ objects }));
+    this.makeObjectsDraggable();
   },
 
-  hide: function hide() {
+  hide() {
     this.$el.hide();
   },
 
   show() {
     this.$el.show();
+  },
+
+  makeObjectsDraggable() {
+    const config = {
+      containment: '.plantingjs-overlay',
+      helper: 'clone',
+      appendTo: '.plantingjs-overlay',
+      zIndex: 1000,
+    };
+
+    this.$el.find('.plantingjs-toolboxobject-draggable')
+      .draggable(config);
+  },
+
+  onDragStart(el) {
+    const $el = jquery(el.currentTarget);
+    const cid = $el.data('cid');
+    const model = this.collection.get(cid).clone();
+
+    $el.data('model', model.toJSON());
   },
 });

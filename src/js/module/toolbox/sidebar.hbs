@@ -1,2 +1,12 @@
 <div class="plantingjs-toolbox-toggle"></div>
-<div class="plantingjs-toolboxobject-container"></div>
+<div class="plantingjs-toolboxobject-container">
+    <ul class="plantingjs-toolbox-list">
+        {{#each objects}}
+        <li class="plantingjs-toolbox-item">
+            <div class="plantingjs-toolboxobject-draggable" data-cid="{{this.cid}}">
+                <img class="plantingjs-toolbox-image" src="{{this.image}}" alt="">
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>

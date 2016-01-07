@@ -1,10 +1,11 @@
+
 .plantingjs-toolbox {
     z-index: 999;
     display:none;
     position: absolute;
-    top: 5px;
-    bottom: 5px;
-    left: 5px;
+    top: 0;
+    bottom: 0;
+    left: 0;
     width: $toolbox-width;
     background-color: #fff;
 
@@ -17,6 +18,39 @@
     &-hide {
         width: 0;
     }
+
+    &-list {
+        padding: 0;
+    }
+
+    &-item {
+        display: block;
+        margin: 0;
+        border-bottom: 1px solid $tertiary-color;
+    }
+
+    &-image {
+        display: block;
+        margin: 0 auto;
+    }
 }
 
+.plantingjs-toolboxobject-container {
+    height: 100%;
+    overflow: auto;
+}
+.plantingjs-toolboxobject-item {
+    position: relative;
+    margin-bottom: 2px;
+    min-height: 100px;
+    background: #fafafa;
+}
 
+.plantingjs-toolboxobject-prototype {
+
+}
+// .plantingjs-toolboxobject-draggable {
+//     position: absolute;
+//     top: 0px;
+//     left: 0px;
+// }
