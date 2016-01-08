@@ -4,7 +4,7 @@ $default-button-padding: 10px;
 
 .plantingjs-component {
     &-button {
-        background: $primary-color;
+        background: #fff;
         padding: $default-button-padding;
         opacity: .8;
         transition: opacity $default-transition;
@@ -41,7 +41,7 @@ $default-button-padding: 10px;
                 position: absolute;
                 top: 0;
                 left: ($finish-button-circle-size * 0.5 / -1);
-                background: $secondary-color;
+                background: $primary-color;
                 height: $finish-button-circle-size;
                 width: $finish-button-circle-size;
             }

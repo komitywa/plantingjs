@@ -1,13 +1,23 @@
+$toolbox-width: 180px;
 
 .plantingjs-toolbox {
     z-index: 999;
-    display:none;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     width: $toolbox-width;
     background-color: #fff;
+    transform: translateX(-100%);
+    transition: transform $default-transition;
+
+    .is-planting & {
+        transform: translateX(-80%);
+    }
+
+    &.is-user-active {
+        transform: translateX(0);
+    }
 
     &-toggle {
         position: absolute;
@@ -25,7 +35,7 @@
         &:hover {
             .plantingjs-toolbox-item {
                 .plantingjs-toolbox-image {
-                    opacity: .7;
+                    opacity: .8;
                 }
 
                 &:hover {
@@ -40,7 +50,7 @@
     &-item {
         display: block;
         margin: 0;
-        border-bottom: 1px solid $tertiary-color;
+        border-bottom: 1px solid $secondary-color;
     }
 
     &-image {
@@ -48,12 +58,14 @@
         margin: 0 auto;
         transition: opacity $default-transition;
     }
+
+    &-container {
+        box-shadow: $default-shadow;
+        height: 100%;
+        overflow: auto;
+    }
 }
 
-.plantingjs-toolboxobject-container {
-    height: 100%;
-    overflow: auto;
-}
 .plantingjs-toolboxobject-item {
     position: relative;
     margin-bottom: 2px;

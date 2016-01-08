@@ -6,11 +6,18 @@ import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';
 import { Event } from 'const';
 
+const USER_ACTIVE_CLASS = 'is-user-active';
+const ACTIVITY_TIMEOUT_VALUE = 1500;
+
 export default View.extend({
   className: 'plantingjs-toolbox',
   events: {
-    'dragstart .plantingjs-toolboxobject-draggable': 'onDragStart',
+    'dragstart .js-draggable-object': 'onDragStart',
+    'mouseenter': 'onMouseEnter',
+    'mouseleave': 'onMouseLeave',
   },
+  userActivityTimeout: null,
+  mouseOver: false,
 
   initialize() {
     const objectsIds = range(this.manifesto().getCopy('toolboxobjects').length);
@@ -26,7 +33,7 @@ export default View.extend({
     });
     this.render();
     this.app.on(Event.START_PLANTING, () => {
-      this.$el.show();
+      this.renewUserActivity(ACTIVITY_TIMEOUT_VALUE * 2);
     });
   },
 
@@ -46,23 +53,15 @@ export default View.extend({
     this.makeObjectsDraggable();
   },
 
-  hide() {
-    this.$el.hide();
-  },
-
-  show() {
-    this.$el.show();
-  },
-
   makeObjectsDraggable() {
     const config = {
       containment: '.plantingjs-overlay',
       helper: 'clone',
       appendTo: '.plantingjs-overlay',
-      zIndex: 1000,
+      zIndex: 10000,
     };
 
-    this.$el.find('.plantingjs-toolboxobject-draggable')
+    this.$el.find('.js-draggable-object')
       .draggable(config);
   },
 
@@ -72,5 +71,30 @@ export default View.extend({
     const model = this.collection.get(cid).clone();
 
     $el.data('model', model.toJSON());
+  },
+
+  onMouseEnter() {
+    this.mouseOver = true;
+    this.renewUserActivity();
+  },
+
+  onMouseLeave() {
+    this.mouseOver = false;
+    this.renewUserActivity();
+  },
+
+  renewUserActivity(timeout = ACTIVITY_TIMEOUT_VALUE) {
+    this.$el
+      .toggleClass(USER_ACTIVE_CLASS, true);
+    clearTimeout(this.userActivityTimeout);
+    this.userActivityTimeout = setTimeout(() => {
+      if (this.mouseOver) {
+        this.renewUserActivity();
+        return;
+      }
+
+      this.$el
+        .toggleClass(USER_ACTIVE_CLASS, false);
+    }, timeout);
   },
 });
