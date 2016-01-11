@@ -1,7 +1,6 @@
 import { chain, range, map } from 'underscore';
 import jquery from 'jquery';
 import { View, Collection } from 'core';
-// import ToolboxObject from './sidebar-object';
 import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';
 import { Event } from 'const';
@@ -84,8 +83,7 @@ export default View.extend({
   },
 
   renewUserActivity(timeout = ACTIVITY_TIMEOUT_VALUE) {
-    this.$el
-      .toggleClass(USER_ACTIVE_CLASS, true);
+    this.$el.toggleClass(USER_ACTIVE_CLASS, true);
     clearTimeout(this.userActivityTimeout);
     this.userActivityTimeout = setTimeout(() => {
       if (this.mouseOver) {
@@ -93,8 +91,7 @@ export default View.extend({
         return;
       }
 
-      this.$el
-        .toggleClass(USER_ACTIVE_CLASS, false);
+      this.$el.toggleClass(USER_ACTIVE_CLASS, false);
     }, timeout);
   },
 });
