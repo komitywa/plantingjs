@@ -1,4 +1,4 @@
-import jquery from 'jquery';
+import { Deferred as deferredObject } from 'jquery';
 import underscore from 'underscore';
 import EventEmitter from 'event-emitter';
 import Const from 'const';
@@ -12,7 +12,7 @@ import LayersManager from 'module/layers-manager/layers-manager';
 
 export default class extends EventEmitter {
   constructor(options) {
-    const initDefer = jquery.Deferred();  // eslint-disable-line new-cap
+    const initDefer = deferredObject();
 
     super(options);
     this._state = null;

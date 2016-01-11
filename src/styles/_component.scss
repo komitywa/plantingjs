@@ -1,0 +1,50 @@
+$finish-button-bottom-spacing: 20px;
+$finish-button-circle-size: 50px;
+$default-button-padding: 10px;
+
+.plantingjs-component {
+    &-button {
+        background: $primary-color;
+        padding: $default-button-padding;
+        opacity: .8;
+        transition: opacity $default-transition;
+        /**
+         * @todo
+         * This is a temporary fix. The magic number represents increased 
+         * `.plantingjs-overlay` z-index value
+         */
+        z-index: 101;
+
+        &.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &-finish-session {
+            color: #000;
+            position: absolute;
+            right: 0;
+            bottom: $finish-button-bottom-spacing;
+            padding: 0 $default-button-padding;
+            padding-left: $default-button-padding * 3;
+            box-sizing: border-box;
+            height: $finish-button-circle-size;
+            line-height: $finish-button-circle-size;
+
+            &:before {
+                content: '';
+                border-radius: $finish-button-circle-size / 2;
+                position: absolute;
+                top: 0;
+                left: ($finish-button-circle-size * 0.5 / -1);
+                background: $secondary-color;
+                height: $finish-button-circle-size;
+                width: $finish-button-circle-size;
+            }
+        }   
+    }
+}
