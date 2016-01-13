@@ -3,7 +3,7 @@ import MainViewDialog from 'module/main/dialog';
 import Const from 'const';
 import Button from '../component/button';
 
-const IS_PLANTING_CLASS = 'is-planting';
+const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 
 const MainViewMain = View.extend({
   toolbox: null,

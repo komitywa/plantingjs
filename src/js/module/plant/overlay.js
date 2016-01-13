@@ -19,7 +19,7 @@ const PlantViewOverlay = View.extend({
         collection.each(this.addObject, this);
       }, this);
     this.$el.droppable({
-      accept: '.js-draggable-object',
+      accept: '.plantingjs-js-draggable-object',
     });
     this.app
       .on(Const.Event.START_PLANTING, this._init, this)

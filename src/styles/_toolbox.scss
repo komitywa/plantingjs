@@ -11,11 +11,11 @@ $toolbox-width: 180px;
     transform: translateX(-100%);
     transition: transform $default-transition;
 
-    .is-planting & {
+    .plantingjs-is-planting & {
         transform: translateX(-80%);
     }
 
-    &.is-user-active {
+    &.plantingjs-is-user-active {
         transform: translateX(0);
     }
 
@@ -72,12 +72,3 @@ $toolbox-width: 180px;
     min-height: 100px;
     background: #fafafa;
 }
-
-.plantingjs-toolboxobject-prototype {
-
-}
-// .plantingjs-toolboxobject-draggable {
-//     position: absolute;
-//     top: 0px;
-//     left: 0px;
-// }

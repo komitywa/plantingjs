@@ -1,17 +1,17 @@
-import { chain, range, map } from 'underscore';
+import { chain, range } from 'underscore';
 import jquery from 'jquery';
-import { View, Collection } from 'core';
+import { Collection, View } from 'core';
 import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';
 import { Event } from 'const';
 
-const USER_ACTIVE_CLASS = 'is-user-active';
+const USER_ACTIVE_CLASS = 'plantingjs-is-user-active';
 const ACTIVITY_TIMEOUT_VALUE = 1500;
 
 export default View.extend({
   className: 'plantingjs-toolbox',
   events: {
-    'dragstart .js-draggable-object': 'onDragStart',
+    'dragstart .plantingjs-js-draggable-object': 'onDragStart',
     'mouseenter': 'onMouseEnter',
     'mouseleave': 'onMouseLeave',
   },
@@ -20,7 +20,9 @@ export default View.extend({
 
   initialize() {
     const objectsIds = range(this.manifesto().getCopy('toolboxobjects').length);
-    const objectsProjs = map(this.manifesto().getCopy('toolboxobjects'), ({ projections }) => projections);
+    const objectsProjs = this.manifesto()
+      .getCopy('toolboxobjects')
+      .map(({ projections }) => projections);
     const objectsData = chain(objectsIds)
       .zip(objectsProjs)
       .map(([ objectId, projections ]) => ({ objectId, projections, currentProjection: 0 }))
@@ -37,7 +39,7 @@ export default View.extend({
   },
 
   render() {
-    let objects = this.collection.map((model) => {
+    const objects = this.collection.map((model) => {
       const {
         projections: [image],
         objectId,
@@ -47,7 +49,6 @@ export default View.extend({
       return { image, objectId, cid };
     });
 
-    objects = objects.concat(objects, objects, objects);
     this.$el.html(template({ objects }));
     this.makeObjectsDraggable();
   },
@@ -60,7 +61,7 @@ export default View.extend({
       zIndex: 10000,
     };
 
-    this.$el.find('.js-draggable-object')
+    this.$el.find('.plantingjs-js-draggable-object')
       .draggable(config);
   },
 
