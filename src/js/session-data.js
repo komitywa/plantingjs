@@ -1,5 +1,5 @@
 import underscore from 'underscore';
-import { Model } from 'core';
+import { Model } from './core';
 import Const from './const';
 import PlantCollection from './module/plant/collection';
 

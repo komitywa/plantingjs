@@ -1,7 +1,7 @@
 const LayersManager = {
   View: {
-    Item: require('module/layers-manager/menu-item'),
-    Menu: require('module/layers-manager/menu-view'),
+    Item: require('./menu-item'),
+    Menu: require('./menu-view'),
   },
 };
 
