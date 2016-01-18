@@ -1,5 +1,5 @@
 import jquery from 'jquery';
-import { View } from 'core';
+import { View } from '../../core';
 
 const MainViewDialog = View.extend({
   template: require('./dialog.hbs'),

@@ -1,5 +1,5 @@
 import underscore from 'underscore';
-import { View } from 'core';
+import { View } from '../../core';
 import LayersManagerViewItem from './menu-item';
 
 const LayersManagerViewMenu = View.extend({

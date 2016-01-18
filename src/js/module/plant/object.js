@@ -1,7 +1,7 @@
 import underscore from 'underscore';
-import { View } from 'core';
-import PlantViewTools from 'module/plant/tools';
-import Const from 'const';
+import { View } from '../../core';
+import PlantViewTools from '../plant/tools';
+import Const from '../../const';
 
 const PlantViewObject = View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',

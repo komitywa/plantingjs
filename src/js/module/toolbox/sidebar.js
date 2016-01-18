@@ -1,12 +1,14 @@
 import { chain, range } from 'underscore';
 import jquery from 'jquery';
-import { Collection, View } from 'core';
+import { Collection, View } from '../../core';
 import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';
-import { Event } from 'const';
+import { Event } from '../../const';
+
 
 const USER_ACTIVE_CLASS = 'plantingjs-is-user-active';
 const ACTIVITY_TIMEOUT_VALUE = 1500;
+
 
 export default View.extend({
   className: 'plantingjs-toolbox',
@@ -25,7 +27,8 @@ export default View.extend({
       .map(({ projections }) => projections);
     const objectsData = chain(objectsIds)
       .zip(objectsProjs)
-      .map(([ objectId, projections ]) => ({ objectId, projections, currentProjection: 0 }))
+      .map(([ objectId, projections ]) => (
+        { objectId, projections, currentProjection: 0 }))
       .value();
 
     this.collection = new Collection(objectsData, {

@@ -1,8 +1,8 @@
 import underscore from 'underscore';
 import jquery from 'jquery';
-import { View } from 'core';
+import { View } from '../../core';
 import PlantViewObject from './object';
-import Const from 'const';
+import Const from '../../const';
 
 const PlantViewOverlay = View.extend({
   events: {

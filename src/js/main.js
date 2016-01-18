@@ -1,3 +1,3 @@
-import Planting from 'planting';
+import Planting from './planting';
 
 export default Planting;

@@ -1,5 +1,5 @@
 import underscore from 'underscore';
-import { Collection } from 'core';
+import { Collection } from '../../core';
 import PlantModel from './model';
 
 

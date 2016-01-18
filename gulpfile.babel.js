@@ -79,7 +79,6 @@ gulp.task('js', function() {
           entries: [file.path],
           debug: true,
           standalone: 'Planting',
-          paths: ['./node_modules', './src/js/'],
           transform: [hbsfy, babelify],
         }).bundle();
       });
