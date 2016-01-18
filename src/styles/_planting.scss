@@ -69,30 +69,6 @@
     box-shadow: 0px 0px 20px white;
 }
 
-.plantingjs-toolboxobject-container {
-    position: absolute;
-    top: 30px;
-    bottom: 0px;
-    right: 0;
-    left: 0;
-    overflow: auto;
-}
-.plantingjs-toolboxobject-item {
-    position: relative;
-    margin-bottom: 2px;
-    min-height: 100px;
-    background: #fafafa;
-}
-
-.plantingjs-toolboxobject-prototype {
-
-}
-.plantingjs-toolboxobject-draggable {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
 .plantingjs-hidden {
     display: none;
 }

@@ -1,58 +1,101 @@
-import underscore from 'underscore';
+import { chain, range } from 'underscore';
 import jquery from 'jquery';
-import { View } from '../../core';
-import ToolboxViewObject from './object';
-import ToolboxCollection from './collection';
-import Const from '../../const';
+import { Collection, View } from '../../core';
+import ToolboxModel from '../plant/model';
+import template from './sidebar.hbs';
+import { Event } from '../../const';
 
-const ToolboxViewSidebar = View.extend({
+
+const USER_ACTIVE_CLASS = 'plantingjs-is-user-active';
+const ACTIVITY_TIMEOUT_VALUE = 1500;
+
+
+export default View.extend({
   className: 'plantingjs-toolbox',
-  template: require('./sidebar.hbs'),
+  events: {
+    'dragstart .plantingjs-js-draggable-object': 'onDragStart',
+    'mouseenter': 'onMouseEnter',
+    'mouseleave': 'onMouseLeave',
+  },
+  userActivityTimeout: null,
+  mouseOver: false,
 
-  initialize: function initialize() {
-    const objectsIds = underscore.range(this.manifesto().getCopy('toolboxobjects').length);
-    const objectsProjs = underscore.map(this.manifesto().getCopy('toolboxobjects'), function(object) {
-      return object.projections;
+  initialize() {
+    const objectsIds = range(this.manifesto().getCopy('toolboxobjects').length);
+    const objectsProjs = this.manifesto()
+      .getCopy('toolboxobjects')
+      .map(({ projections }) => projections);
+    const objectsData = chain(objectsIds)
+      .zip(objectsProjs)
+      .map(([ objectId, projections ]) => (
+        { objectId, projections, currentProjection: 0 }))
+      .value();
+
+    this.collection = new Collection(objectsData, {
+      model: ToolboxModel,
+      app: this.app,
     });
-    const objectsData = underscore.zip(objectsIds, objectsProjs);
-
-    this.collection = new ToolboxCollection(underscore.map(objectsData, function(objectData) {
-      return {
-        objectId: objectData[0],
-        projections: objectData[1],
-        currentProjection: 0,
-      };
-    }), {app: this.app});
-
-    this.objects = this.collection.map(function(toolboxObjectModel) {
-      return new ToolboxViewObject({
-        model: toolboxObjectModel,
-        app: this.app,
-      });
-    }, this);
-    this.app.on(Const.Event.START_PLANTING, function() {
-      this.$el.show();
-    }, this);
-    this.render( this.objects );
-  },
-
-  render: function render(objects) {
-    const $template = jquery('<div />').append(this.template());
-    const $list = $template.find('.plantingjs-toolboxobject-container');
-
-    objects.forEach(function(object) {
-      $list.append(object.$el);
+    this.render();
+    this.app.on(Event.START_PLANTING, () => {
+      this.renewUserActivity(ACTIVITY_TIMEOUT_VALUE * 2);
     });
-    this.$el.append($template);
   },
 
-  hide: function hide() {
-    this.$el.hide();
+  render() {
+    const objects = this.collection.map((model) => {
+      const {
+        projections: [image],
+        objectId,
+      } = model.attributes;
+      const cid = model.cid;
+
+      return { image, objectId, cid };
+    });
+
+    this.$el.html(template({ objects }));
+    this.makeObjectsDraggable();
   },
 
-  show() {
-    this.$el.show();
+  makeObjectsDraggable() {
+    const config = {
+      containment: '.plantingjs-overlay',
+      helper: 'clone',
+      appendTo: '.plantingjs-overlay',
+      zIndex: 10000,
+    };
+
+    this.$el.find('.plantingjs-js-draggable-object')
+      .draggable(config);
+  },
+
+  onDragStart(el) {
+    const $el = jquery(el.currentTarget);
+    const cid = $el.data('cid');
+    const model = this.collection.get(cid).clone();
+
+    $el.data('model', model.toJSON());
+  },
+
+  onMouseEnter() {
+    this.mouseOver = true;
+    this.renewUserActivity();
+  },
+
+  onMouseLeave() {
+    this.mouseOver = false;
+    this.renewUserActivity();
+  },
+
+  renewUserActivity(timeout = ACTIVITY_TIMEOUT_VALUE) {
+    this.$el.toggleClass(USER_ACTIVE_CLASS, true);
+    clearTimeout(this.userActivityTimeout);
+    this.userActivityTimeout = setTimeout(() => {
+      if (this.mouseOver) {
+        this.renewUserActivity();
+        return;
+      }
+
+      this.$el.toggleClass(USER_ACTIVE_CLASS, false);
+    }, timeout);
   },
 });
-
-module.exports = ToolboxViewSidebar;

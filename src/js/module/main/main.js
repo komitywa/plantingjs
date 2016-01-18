@@ -3,6 +3,8 @@ import MainViewDialog from './dialog';
 import Const from '../../const';
 import Button from '../component/button';
 
+const IS_PLANTING_CLASS = 'plantingjs-is-planting';
+
 const MainViewMain = View.extend({
   toolbox: null,
   map: null,
@@ -41,6 +43,7 @@ const MainViewMain = View.extend({
       }, this)
       .on(Const.Event.START_PLANTING, function() {
         this.$el.find('.plantingjs-startbtn').hide();
+        this.$el.toggleClass(IS_PLANTING_CLASS, true);
         this.submit.model.set('visible', true);
       }, this)
       .on(Const.Event.STATE_CHANGED, function(state) {

@@ -6,9 +6,10 @@ import SessionDataModel from './session-data';
 import ManifestoDataModel from './manifesto-data';
 import Main from './module/main/main';
 import Plant from './module/plant/plant';
-import Toolbox from './module/toolbox/toolbox';
+import Sidebar from './module/toolbox/sidebar';
 import Map from './module/map/map';
 import LayersManager from './module/layers-manager/layers-manager';
+
 
 export default class extends EventEmitter {
   constructor(options) {
@@ -68,7 +69,7 @@ export default class extends EventEmitter {
       collection: this.session().objects(),
       app: this,
     });
-    this.toolbox = new Toolbox.View.Sidebar({
+    this.toolbox = new Sidebar({
       el: this.main.el.querySelector('.plantingjs-toolbox'),
       app: this,
     });
