@@ -1,5 +1,5 @@
-import { View } from 'core';
-import Const from 'const';
+import { View } from '../../core';
+import Const from '../../const';
 import GoogleMaps from 'google-maps';
 
 

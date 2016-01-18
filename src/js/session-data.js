@@ -1,7 +1,7 @@
 import underscore from 'underscore';
 import { Model } from 'core';
-import Const from 'const';
-import PlantCollection from 'module/plant/collection';
+import Const from './const';
+import PlantCollection from './module/plant/collection';
 
 export default Model.extend({
 

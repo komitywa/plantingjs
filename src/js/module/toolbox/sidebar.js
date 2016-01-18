@@ -1,9 +1,9 @@
 import underscore from 'underscore';
 import jquery from 'jquery';
-import { View } from 'core';
+import { View } from '../../core';
 import ToolboxViewObject from './object';
 import ToolboxCollection from './collection';
-import Const from 'const';
+import Const from '../../const';
 
 const ToolboxViewSidebar = View.extend({
   className: 'plantingjs-toolbox',

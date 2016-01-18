@@ -1,10 +1,10 @@
 const Plant = {
-  Collection: require('module/plant/collection'),
-  Model: require('module/plant/model'),
+  Collection: require('./collection'),
+  Model: require('./model'),
   View: {
-    Object: require('module/plant/object'),
-    Tools: require('module/plant/tools'),
-    Overlay: require('module/plant/overlay'),
+    Object: require('./object'),
+    Tools: require('./tools'),
+    Overlay: require('./overlay'),
   },
 };
 

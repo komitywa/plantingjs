@@ -1,4 +1,4 @@
-import { View } from 'core';
+import { View } from '../../core';
 
 const ToolboxViewObject = View.extend({
   className: 'plantingjs-toolboxobject-item',

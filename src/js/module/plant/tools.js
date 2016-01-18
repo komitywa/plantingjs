@@ -1,5 +1,5 @@
 import jquery from 'jquery';
-import { View } from 'core';
+import { View } from '../../core';
 
 let EVENT_MOUSEDOWN = false;
 const PROJECTION_LENGTH = 10;

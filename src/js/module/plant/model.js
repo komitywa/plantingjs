@@ -1,4 +1,4 @@
-import { Model } from 'core';
+import { Model } from '../../core';
 
 const PlantModel = Model.extend({
   defaults: {

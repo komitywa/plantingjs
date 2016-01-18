@@ -1,6 +1,6 @@
-import { View } from 'core';
-import MainViewDialog from 'module/main/dialog';
-import Const from 'const';
+import { View } from '../../core';
+import MainViewDialog from './dialog';
+import Const from '../../const';
 import Button from '../component/button';
 
 const MainViewMain = View.extend({

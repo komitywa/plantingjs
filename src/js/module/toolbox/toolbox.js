@@ -1,9 +1,9 @@
 const Toolbox = {
-  Collection: require('module/toolbox/collection'),
-  Model: require('module/toolbox/model'),
+  Collection: require('./collection'),
+  Model: require('./model'),
   View: {
-    Object: require('module/toolbox/object'),
-    Sidebar: require('module/toolbox/sidebar'),
+    Object: require('./object'),
+    Sidebar: require('./sidebar'),
   },
 };
 

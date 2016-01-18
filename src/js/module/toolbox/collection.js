@@ -1,4 +1,4 @@
-import { Collection } from 'core';
+import { Collection } from '../../core';
 import ToolboxModel from './model';
 
 const ToolboxCollection = Collection.extend({
