@@ -1,7 +1,7 @@
 import { View } from '../../core';
 import MainViewDialog from './dialog';
 import Const from '../../const';
-import Button from '../component/button';
+import Button from '../components/button';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 
