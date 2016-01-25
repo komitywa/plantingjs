@@ -4,7 +4,7 @@ import Button from '../component/button';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 
-const MainViewMain = View.extend({
+export default View.extend({
   toolbox: null,
   map: null,
   className: 'plantingjs-container',
@@ -64,11 +64,3 @@ const MainViewMain = View.extend({
     this.session().save();
   },
 });
-
-const Main = {
-  View: {
-    Main: MainViewMain,
-  },
-};
-
-module.exports = Main;
