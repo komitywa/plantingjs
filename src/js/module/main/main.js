@@ -12,7 +12,6 @@ export default View.extend({
   events: {
     'click .plantingjs-startbtn': 'startPlanting',
   },
-
   $proxy: null,
 
   initialize() {
