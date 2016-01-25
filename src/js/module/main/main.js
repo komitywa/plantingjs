@@ -18,16 +18,11 @@ export default View.extend({
   initialize() {
     this.render();
     this.submit = new Button({
-      defaults: {
-        modifier: 'finish-session',
-        label: 'zrobione!',
-        visible: false,
-      },
-      app: this.app,
+      modifier: 'finish-session',
+      label: 'zrobione!',
+      visible: false,
     });
-    this.submit.delegateEvents({
-      click: this.onClickSubmit,
-    });
+    this.submit.on('click', this.onClickSubmit, this);
     this.$proxy = this.$el.children();
     this.$proxy.append(this.submit.$el);
     this.app
