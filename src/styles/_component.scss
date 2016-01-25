@@ -16,8 +16,7 @@ $default-button-padding: 10px;
         z-index: 101;
 
         &.hidden {
-            opacity: 0;
-            pointer-events: none;
+            display: none;
         }
 
         &:hover {
@@ -46,5 +45,11 @@ $default-button-padding: 10px;
                 width: $finish-button-circle-size;
             }
         }   
+
+        &-start-button {
+            position: absolute;
+            top: 0;
+            left: 50%;
+        }
     }
 }

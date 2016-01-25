@@ -3,37 +3,45 @@ import Const from '../../const';
 import Button from '../component/button';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
+const SUBMIT_BUTTON_INIT_VALUES = {
+  modifier: 'finish-session',
+  label: 'zrobione!',
+  visible: false,
+};
+const START_BUTTON_INIT_VALUES = {
+  modifier: 'start-button',
+  label: 'start planting!',
+  visible: false,
+};
 
 export default View.extend({
   toolbox: null,
   map: null,
   className: 'plantingjs-container',
   template: require('./main.hbs'),
-  events: {
-    'click .plantingjs-startbtn': 'startPlanting',
-  },
-
   $proxy: null,
+
+  constructor(...args) {
+    this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
+    this.start = new Button(START_BUTTON_INIT_VALUES);
+    View.call(this, ...args);
+  },
 
   initialize() {
     this.render();
-    this.submit = new Button({
-      modifier: 'finish-session',
-      label: 'zrobione!',
-      visible: false,
-    });
     this.submit.on('click', this.onClickSubmit, this);
+    this.start.on('click', this.onClickStartButton, this);
     this.$proxy = this.$el.children();
-    this.$proxy.append(this.submit.$el);
+    this.$proxy.append(this.submit.$el, this.start.$el);
     this.app
       .on(Const.Event.VISIBLE_CHANGED, (visible) => {
         if (this.app.getState() !== Const.State.VIEWER) {
-          this.$el.find('.plantingjs-startbtn').toggle(visible);
+          this.start.model.set({ visible });
         }
       })
       .on(Const.Event.START_PLANTING, () => {
-        this.$el.find('.plantingjs-startbtn').hide();
         this.$el.toggleClass(IS_PLANTING_CLASS, true);
+        this.start.model.set('visible', false);
         this.submit.model.set('visible', true);
       })
       .on(Const.Event.STATE_CHANGED, (state) => {
@@ -46,8 +54,9 @@ export default View.extend({
     this.$el.html(this.template());
   },
 
-  startPlanting() {
-    this.app.trigger(Const.Event.START_PLANTING);
+  onClickStartButton() {
+    this.app.options.onSelectPano('test');
+    // this.app.trigger(Const.Event.START_PLANTING);
   },
 
   onClickSubmit(event) {
