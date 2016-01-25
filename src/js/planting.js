@@ -1,4 +1,5 @@
 import { Deferred as deferredObject } from 'jquery';
+import 'jquery-ui';
 import underscore from 'underscore';
 import EventEmitter from './event-emitter';
 import Const from './const';

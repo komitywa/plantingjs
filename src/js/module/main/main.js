@@ -1,5 +1,4 @@
 import { View } from '../../core';
-import MainViewDialog from './dialog';
 import Const from '../../const';
 import Button from '../component/button';
 
@@ -31,10 +30,6 @@ const MainViewMain = View.extend({
     });
     this.$proxy = this.$el.children();
     this.$proxy.append(this.submit.$el);
-    this.dialog = new MainViewDialog({
-      el: this.el.querySelector('.plantingjs-dialog'),
-      app: this.app,
-    });
     this.app
       .on(Const.Event.VISIBLE_CHANGED, function(visible) {
         if (this.app.getState() !== Const.State.VIEWER) {
@@ -73,7 +68,6 @@ const MainViewMain = View.extend({
 const Main = {
   View: {
     Main: MainViewMain,
-    Dialog: MainViewDialog,
   },
 };
 
