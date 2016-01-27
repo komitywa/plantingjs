@@ -5,7 +5,7 @@ import EventEmitter from './event-emitter';
 import Const from './const';
 import SessionDataModel from './session-data';
 import ManifestoDataModel from './manifesto-data';
-import Main from './module/main/main';
+import MainView from './module/main/main';
 import Plant from './module/plant/plant';
 import Sidebar from './module/toolbox/sidebar';
 import Map from './module/map/map';
@@ -60,7 +60,7 @@ export default class extends EventEmitter {
   }
 
   _initializeViews() {
-    this.main = new Main.View.Main({
+    this.main = new MainView({
       el: this.options.container,
       manifesto: this.manifesto().toJSON(),
       app: this,
