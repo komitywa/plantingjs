@@ -1,6 +1,5 @@
-import { View } from '../../core';
 import Template from './button.hbs';
-import { Model } from 'backbone';
+import { Model, View } from 'backbone';
 
 export default View.extend({
   tagName: 'a',
@@ -8,12 +7,13 @@ export default View.extend({
   attributes: {
     href: '#',
   },
+  events: {
+    'click': 'proxyEvent',
+  },
 
-  constructor(args) {
-    const defaults = {...args.defaults};
-    this.model = new Model(defaults);
+  constructor({ modifier, label, visible = true, ...args }) {
+    this.model = new Model({ modifier, label, visible });
 
-    const modifier = this.model.get('modifier');
     const blockName = 'plantingjs-component-button';
     const classes = [`${blockName}`];
 
@@ -35,5 +35,9 @@ export default View.extend({
     this.$el
         .html(view)
         .toggleClass('hidden', !this.model.get('visible'));
+  },
+
+  proxyEvent(event) {
+    this.trigger(event.type, event);
   },
 });

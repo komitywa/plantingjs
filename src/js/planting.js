@@ -1,10 +1,11 @@
 import { Deferred as deferredObject } from 'jquery';
+import 'jquery-ui';
 import underscore from 'underscore';
 import EventEmitter from './event-emitter';
 import Const from './const';
 import SessionDataModel from './session-data';
 import ManifestoDataModel from './manifesto-data';
-import Main from './modules/main/main';
+import MainView from './modules/main/main';
 import Plant from './modules/plant/plant';
 import Sidebar from './modules/toolbox/sidebar';
 import Map from './modules/map/map';
@@ -59,7 +60,7 @@ export default class extends EventEmitter {
   }
 
   _initializeViews() {
-    this.main = new Main.View.Main({
+    this.main = new MainView({
       el: this.options.container,
       manifesto: this.manifesto().toJSON(),
       app: this,

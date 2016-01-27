@@ -22,9 +22,7 @@ describe('Button Component', () => {
   it('initializes', () => {
     const Button = require('../src/js/modules/components/button');
 
-    button = new Button({
-      defaults: buttonValues,
-    });
+    button = new Button(buttonValues);
   });
 
   it('has proper label', () => {
@@ -58,12 +56,8 @@ describe('Button Component', () => {
     strictEqual(button.$el.hasClass('hidden'), true);
   });
 
-  it('allows to bind dom events', (done) => {
-    button.delegateEvents({
-      click: () => {
-        done();
-      },
-    });
+  it('emits click event', (done) => {
+    button.on('click', () => done());
 
     setTimeout(() => {
       button.el.click();
