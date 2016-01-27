@@ -46,7 +46,8 @@ $default-button-padding: 10px;
             }
         }   
 
-        &-start-button {
+        &-start-planting-button,
+        &-select-pano-button {
             position: absolute;
             top: 0;
             left: 50%;

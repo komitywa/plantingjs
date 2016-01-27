@@ -1,6 +1,7 @@
 import { View } from '../../core';
 import Const from '../../const';
 import Button from '../component/button';
+import { isFunction } from 'underscore';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 const SUBMIT_BUTTON_INIT_VALUES = {
@@ -9,8 +10,13 @@ const SUBMIT_BUTTON_INIT_VALUES = {
   visible: false,
 };
 const START_BUTTON_INIT_VALUES = {
-  modifier: 'start-button',
+  modifier: 'start-planting-button',
   label: 'start planting!',
+  visible: false,
+};
+const SELECT_PANO_INIT_VALUES = {
+  modifier: 'select-pano-button',
+  label: 'wybierz',
   visible: false,
 };
 
@@ -24,17 +30,34 @@ export default View.extend({
   },
   $proxy: null,
 
-  constructor(...args) {
-    this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
-    this.start = new Button(START_BUTTON_INIT_VALUES);
-    View.call(this, ...args);
-  },
-
   initialize() {
     this.render();
-    this.submit.on('click', this.onClickSubmit, this);
-    this.start.on('click', this.onClickStartButton, this);
     this.$proxy = this.$el.children();
+    this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
+    this.submit.on('click', this.onClickSubmit, this);
+
+    const { selectPanoMode } = this.app.options;
+
+    if (selectPanoMode) {
+      this.start = new Button(SELECT_PANO_INIT_VALUES);
+      this.start.on('click', () => {
+        const { onSelectPano } = this.app.options;
+        const panoData = this.manifesto()
+          .pick('lat', 'lng', 'pitch', 'heading');
+
+        if (isFunction(onSelectPano)) {
+          onSelectPano(panoData);
+        } else {
+          throw Error('onSelectPano must be a function');
+        }
+      });
+    } else {
+      this.start = new Button(START_BUTTON_INIT_VALUES);
+      this.start.on('click', () => {
+        this.app.trigger(Const.Event.START_PLANTING);
+      });
+    }
+
     this.$proxy.append(this.submit.$el, this.start.$el);
     this.app
       .on(Const.Event.VISIBLE_CHANGED, (visible) => {
@@ -55,11 +78,6 @@ export default View.extend({
 
   render() {
     this.$el.html(this.template());
-  },
-
-  onClickStartButton() {
-    this.app.options.onSelectPano('test');
-    // this.app.trigger(Const.Event.START_PLANTING);
   },
 
   onClickSubmit(event) {
