@@ -1,6 +1,6 @@
 import { View } from '../../core';
 import Const from '../../const';
-import Button from '../component/button';
+import Button from '../components/button';
 import { isFunction } from 'underscore';
 
 
