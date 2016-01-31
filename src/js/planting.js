@@ -5,11 +5,11 @@ import EventEmitter from './event-emitter';
 import Const from './const';
 import SessionDataModel from './session-data';
 import ManifestoDataModel from './manifesto-data';
-import MainView from './module/main/main';
-import Plant from './module/plant/plant';
-import Sidebar from './module/toolbox/sidebar';
-import MapView from './module/map/map';
-import LayersManager from './module/layers-manager/layers-manager';
+import MainView from './modules/main/main';
+import Plant from './modules/plant/plant';
+import Sidebar from './modules/toolbox/sidebar';
+import MapView from './modules/map/map';
+import LayersManager from './modules/layers-manager/layers-manager';
 
 
 export default class extends EventEmitter {

@@ -20,7 +20,7 @@ describe('Button Component', () => {
   let button;
 
   it('initializes', () => {
-    const Button = require('../src/js/module/component/button');
+    const Button = require('../src/js/modules/components/button');
 
     button = new Button(buttonValues);
   });

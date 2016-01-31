@@ -1,7 +1,8 @@
 import { View } from '../../core';
 import Const from '../../const';
-import Button from '../component/button';
+import Button from '../components/button';
 import { isFunction } from 'underscore';
+
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 const SUBMIT_BUTTON_INIT_VALUES = {
