@@ -8,7 +8,7 @@ import ManifestoDataModel from './manifesto-data';
 import MainView from './modules/main/main';
 import Plant from './modules/plant/plant';
 import Sidebar from './modules/toolbox/sidebar';
-import Map from './modules/map/map';
+import MapView from './modules/map/map';
 import LayersManager from './modules/layers-manager/layers-manager';
 
 
@@ -74,7 +74,7 @@ export default class extends EventEmitter {
       el: this.main.el.querySelector('.plantingjs-toolbox'),
       app: this,
     });
-    this.map = new Map.View({
+    this.map = new MapView({
       el: this.main.el.querySelector('.plantingjs-google'),
       model: this.manifesto(),
       app: this,
