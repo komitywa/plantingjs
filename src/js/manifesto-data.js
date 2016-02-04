@@ -1,5 +1,4 @@
 import { Model } from './core';
-import Const from './const';
 
 export default Model.extend({
   constructor(data, options) {

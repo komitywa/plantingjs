@@ -49,8 +49,9 @@ export default View.extend({
     const lat = position.lat();
     const lng = position.lng();
     const { heading, pitch } = this.panorama.getPov();
+    const zoom = this.panorama.getZoom() || 1;
 
-    this.model.set({ lat, lng, heading, pitch });
+    this.model.set({ lat, lng, heading, pitch, zoom });
   },
 
   initializeMaps() {
