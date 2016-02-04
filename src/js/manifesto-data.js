@@ -7,12 +7,6 @@ export default Model.extend({
     Model.call(this, data, options);
   },
 
-  initialize() {
-    this.on('fetch', () => {
-      this.app.trigger(Const.EVENT.MANIFESTO_INITED, this);
-    }, this);
-  },
-
   getProjectionsFor(objectId) {
     const toolboxobjects = this.get('toolboxobjects')[objectId];
     return toolboxobjects.projections;
