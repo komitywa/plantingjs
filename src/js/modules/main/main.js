@@ -12,7 +12,7 @@ const SUBMIT_BUTTON_INIT_VALUES = {
 };
 const START_BUTTON_INIT_VALUES = {
   modifier: 'start-planting-button',
-  label: 'start planting!',
+  label: 'zacznij wysadzać!',
   visible: false,
 };
 const SELECT_PANO_INIT_VALUES = {
@@ -44,7 +44,7 @@ export default View.extend({
       this.start.on('click', () => {
         const { onSelectPano } = this.app.options;
         const panoData = this.manifesto()
-          .pick('lat', 'lng', 'pitch', 'heading');
+          .pick('lat', 'lng', 'pitch', 'heading', 'zoom');
 
         if (isFunction(onSelectPano)) {
           onSelectPano(panoData);
