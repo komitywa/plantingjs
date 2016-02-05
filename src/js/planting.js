@@ -87,7 +87,6 @@ export default class extends EventEmitter {
   }
 
   initPlant(objects) {
-    this.main.dialog.close();
     underscore.each(objects, (object) => {
       this.session()
         .objects()
@@ -130,7 +129,6 @@ export default class extends EventEmitter {
       pov: { heading, pitch, zoom },
     };
 
-    this.main.dialog.close();
     this.initDefer
       .then(() => {
         this.map.initializeViewer(panoOptions);
