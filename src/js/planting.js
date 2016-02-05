@@ -131,8 +131,9 @@ export default class extends EventEmitter {
 
     this.initDefer
       .then(() => {
+        this.setState(Const.State.PLANTING);
         this.map.initializeViewer(panoOptions);
-        this.app.trigger(Const.Event.START_PLANTING);
+        this.trigger(Const.Event.START_PLANTING);
       });
   }
 }
