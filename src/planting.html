@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    <title>viewer</title>
+    <title>planting</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
     <!-- build:css styles/vendor.css -->
@@ -20,42 +20,25 @@
     <div id="viewport" class="viewport"></div>
     <script src="js/main.js"></script>
     <script>
+      function on_planting_save(planting) {
+        console.log(planting);
+      };
+
       window.onload = function () {
         PlantingInstance = new window.Planting( {
           container: document.querySelector('.viewport'),
           manifestoUrl: '/manifesto.json',
           googleApiKey: 'AIzaSyD9fmhpMCKGM6BCMtsnn05GfxEK77jRHjc',
+          onSave: on_planting_save,
         });
-
-        PlantingInstance.initViewer({
-          "manifesto": "/manifesto.json",
-          "lat": 52.403526,
-          "lng": 16.911023999999998,
-          "heading": -74.81401617250674,
-          "pitch": 2.474393530997305,
-          "zoom": 1,
-          "objects": [
-            {
-              "object": 0,
-              "projection": 0,
-              "width": 0.08086253369272237,
-              "position": {
-                "x": 0.20053908355795147,
-                "y": 0.022371967654986523
-              }
-            },
-            {
-              "object": 0,
-              "projection": 4,
-              "width": 0.08086253369272237,
-              "position": {
-                "x": 0.6204851752021563,
-                "y": 0.03153638814016173
-              }
-            }
-          ]
+        PlantingInstance.initStreetview({
+          lat: 52.39415760108498,
+          lng: 16.895237417304088,
+          heading: 0.0,
+          pitch: 0.0,
+          zoom: 1.0,
         });
-      };
+      }
     </script>
   </body>
 </html>

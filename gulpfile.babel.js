@@ -177,8 +177,12 @@ gulp.task('watch', function() {
 
 
 /* Opening browser pointing to library */
-gulp.task('openbrowser', function() {
-  opn('http://localhost:9000');
+gulp.task('openbrowser:planting', function() {
+  opn('http://localhost:9000/planting.html');
+});
+
+gulp.task('openbrowser:campaign', function() {
+  opn('http://localhost:9000/campaign.html');
 });
 
 gulp.task('openbrowser:viewer', function() {
@@ -189,12 +193,21 @@ gulp.task('openbrowser:viewer', function() {
 gulp.task('refreshbrowser', function() { return livereload.changed(); });
 
 /* Continous serving new version of library with watching for changes */
-gulp.task('serve', function(cb) {
-  return sequence('build', 'connect', 'watch', 'openbrowser', cb);
+gulp.task('serve:planting', function(cb) {
+  return sequence('build', 'connect', 'watch', 'openbrowser:planting', cb);
+});
+
+gulp.task('serve:campaign', function(cb) {
+  return sequence('build', 'connect', 'watch', 'openbrowser:campaign', cb);
 });
 
 gulp.task('serve:viewer', function(cb) {
   return sequence('build', 'connect', 'watch', 'openbrowser:viewer', cb);
+});
+
+gulp.task('serve', function(cb) {
+  return sequence('build', 'connect', 'watch', ['openbrowser:planting',
+    'openbrowser:campaign', 'openbrowser:viewer'], cb);
 });
 
 gulp.task('reserve', function(cb) {
