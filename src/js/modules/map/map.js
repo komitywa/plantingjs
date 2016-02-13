@@ -40,8 +40,10 @@ export default View.extend({
           .addListener('pov_changed', () => this.storeMapData());
       });
     this.app
-      .on(Const.Event.START_PLANTING, this.disableUIElements, this)
-      .on(Const.Event.START_PLANTING, this.storePanoCoords, this);
+      .on(Const.Event.START_PLANTING, () => {
+        this.disableUIElements();
+        this.storePanoCoords();
+      });
   },
 
   storeMapData() {
@@ -61,10 +63,9 @@ export default View.extend({
   initializeViewer(options) {
     const element = this.el;
 
-    this.app.setState(Const.State.VIEWER);
     GoogleMaps.KEY = this.app.options.googleApiKey;
 
-    this.initializeMaps()
+    return this.initializeMaps()
       .then((google) => {
         this.map = new google.maps.StreetViewPanorama(element, options);
       });

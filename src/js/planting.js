@@ -132,9 +132,12 @@ export default class extends EventEmitter {
     this.initDefer
       .then(() => {
         this.setState(Const.State.PLANTING);
-        this.map.initializeViewer(panoOptions);
         this.data.session.setPanoCoords({ lat, lng, heading, pitch, zoom });
-        this.trigger(Const.Event.START_PLANTING);
+        this.map
+          .initializeViewer(panoOptions)
+          .then(() => {
+            this.trigger(Const.Event.START_PLANTING);
+          });
       });
   }
 }
