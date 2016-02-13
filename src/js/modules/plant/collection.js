@@ -43,13 +43,10 @@ const PlantCollection = Collection.extend({
   },
 
   parse: function(object) {
-    const objectId = object.object;
-
     underscore.extend(object, {
-      scale: object.width,
       x: object.position.x,
       y: object.position.y,
-      objectId: objectId,
+      objectId: object.object,
     });
 
     return object;
