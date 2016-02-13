@@ -89,7 +89,7 @@ const PlantViewOverlay = View.extend({
     const model = ui.draggable.data('model');
     const newModel = underscore.extend(model, {
       x: ui.position.left / this.width(),
-      y: ui.position.top / (this.height() * 2) / this.width(),
+      y: (ui.position.top - (this.height() / 2)) / this.width(),
     });
 
     this.collection.add(newModel, {
