@@ -5,10 +5,8 @@ import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';
 import { Event } from '../../const';
 
-
 const USER_ACTIVE_CLASS = 'plantingjs-is-user-active';
 const ACTIVITY_TIMEOUT_VALUE = 1500;
-
 
 export default View.extend({
   className: 'plantingjs-toolbox',

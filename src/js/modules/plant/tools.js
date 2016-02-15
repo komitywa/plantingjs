@@ -4,7 +4,7 @@ import { View } from '../../core';
 let EVENT_MOUSEDOWN = false;
 const PROJECTION_LENGTH = 10;
 
-const PlantViewTools = View.extend({
+export default View.extend({
   action: null,
   mouseDownEvent: null,
 
@@ -128,4 +128,3 @@ const PlantViewTools = View.extend({
   },
 });
 
-module.exports = PlantViewTools;

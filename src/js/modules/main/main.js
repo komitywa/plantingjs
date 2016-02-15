@@ -3,7 +3,6 @@ import Const from '../../const';
 import Button from '../components/button';
 import { isFunction } from 'underscore';
 
-
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 const SUBMIT_BUTTON_INIT_VALUES = {
   modifier: 'finish-session',

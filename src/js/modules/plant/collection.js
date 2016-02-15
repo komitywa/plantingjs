@@ -2,8 +2,7 @@ import underscore from 'underscore';
 import { Collection } from '../../core';
 import PlantModel from './model';
 
-
-const PlantCollection = Collection.extend({
+export default Collection.extend({
   model: PlantModel,
   layers: [],
 
@@ -52,4 +51,3 @@ const PlantCollection = Collection.extend({
     return object;
   },
 });
-module.exports = PlantCollection;

@@ -4,7 +4,7 @@ import { View } from '../../core';
 import PlantViewObject from './object';
 import Const from '../../const';
 
-const PlantViewOverlay = View.extend({
+export default View.extend({
   events: {
     'drop': 'plantObject',
   },
@@ -106,4 +106,3 @@ const PlantViewOverlay = View.extend({
   },
 });
 
-module.exports = PlantViewOverlay;
