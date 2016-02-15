@@ -37,7 +37,7 @@ export default Model.extend({
     const objects = this.objects().toJSON();
 
     return lodash.extend(Model.prototype.toJSON.call(this), {
-      objects: underscore.omit(objects, this.ignoreObjectValues),
+      objects: lodash.omit(objects, this.ignoreObjectValues),
     });
   },
 
@@ -46,7 +46,7 @@ export default Model.extend({
 
     this.app.trigger(Const.Event.SAVE_REQUEST, data);
 
-    if (underscore.isFunction(this.app.options.onSave)) {
+    if (lodash.isFunction(this.app.options.onSave)) {
       this.app.options.onSave.call(this, data);
     }
   },
