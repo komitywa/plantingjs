@@ -8,6 +8,7 @@
     },
     'parser': 'babel-eslint',
     'rules': {
-        'max-len': [1, 100]
+        'max-len': [1, 80]
+        comma-dangle: [1]
     }
 }
