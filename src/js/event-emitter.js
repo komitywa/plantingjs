@@ -1,4 +1,4 @@
-import { clone } from 'underscore';
+import { clone } from 'lodash';
 import { Events } from 'backbone';
 
 const EventEmitter = clone(Events);

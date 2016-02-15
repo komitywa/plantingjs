@@ -1,6 +1,6 @@
 import { Deferred as deferredObject } from 'jquery';
 import 'jquery-ui';
-import underscore from 'underscore';
+import lodash from 'lodash';
 import EventEmitter from './event-emitter';
 import Const from './const';
 import SessionDataModel from './session-data';
@@ -87,7 +87,7 @@ export default class extends EventEmitter {
   }
 
   initPlant(objects) {
-    underscore.each(objects, (object) => {
+    lodash.each(objects, (object) => {
       this.session()
         .objects()
         .add(object, {

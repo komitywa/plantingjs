@@ -1,4 +1,4 @@
-import underscore from 'underscore';
+import lodash from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
@@ -21,7 +21,7 @@ export default View.extend({
     this.render();
     this.$img
         .one('load', function() {
-          if (underscore.isNull(this.model.get('scale'))) {
+          if (lodash.isNull(this.model.get('scale'))) {
             this.model.set('scale', this.$img.width() / this.overlay.width());
           }
           this.resize();

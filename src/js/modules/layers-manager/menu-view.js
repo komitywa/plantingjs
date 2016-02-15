@@ -1,4 +1,4 @@
-import underscore from 'underscore';
+import lodash from 'lodash';
 import { View } from '../../core';
 import LayersManagerViewItem from './menu-item';
 
@@ -31,7 +31,7 @@ export default View.extend({
   },
 
   removeItem: function(model) {
-    const viewIndex = underscore.findIndex(this.items, function(item) {
+    const viewIndex = lodash.findIndex(this.items, function(item) {
       return item.model.cid === model.cid;
     });
     const view = this.items[viewIndex];

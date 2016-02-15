@@ -1,4 +1,4 @@
-import underscore from 'underscore';
+import lodash from 'lodash';
 import { Model } from './core';
 import Const from './const';
 import PlantCollection from './modules/plant/collection';
@@ -36,7 +36,7 @@ export default Model.extend({
   toJSON() {
     const objects = this.objects().toJSON();
 
-    return underscore.extend(Model.prototype.toJSON.call(this), {
+    return lodash.extend(Model.prototype.toJSON.call(this), {
       objects: underscore.omit(objects, this.ignoreObjectValues),
     });
   },
