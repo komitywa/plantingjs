@@ -5,17 +5,17 @@ import { isFunction } from 'underscore';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
 const SUBMIT_BUTTON_INIT_VALUES = {
-  modifier: 'finish-session',
+  modifier: 'accept',
   label: 'zrobione!',
   visible: false,
 };
 const START_BUTTON_INIT_VALUES = {
-  modifier: 'start-planting-button',
+  modifier: 'accept',
   label: 'zacznij wysadzać!',
   visible: false,
 };
 const SELECT_PANO_INIT_VALUES = {
-  modifier: 'select-pano-button',
+  modifier: 'accept',
   label: 'wybierz',
   visible: false,
 };
