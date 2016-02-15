@@ -1,4 +1,4 @@
-import underscore from 'underscore';
+import lodash from 'lodash';
 import jquery from 'jquery';
 import { View } from '../../core';
 import PlantViewObject from './object';
@@ -52,7 +52,7 @@ export default View.extend({
   removeObject: function(object) {
     object.tools.remove();
     object.remove();
-    this.objects = underscore.without(this.objects, underscore.findWhere(this.objects, {
+    this.objects = lodash.without(this.objects, lodash.findWhere(this.objects, {
       cid: object.cid,
     }));
   },
@@ -87,7 +87,7 @@ export default View.extend({
 
   plantObject: function(ev, ui) {
     const model = ui.draggable.data('model');
-    const newModel = underscore.extend(model, {
+    const newModel = lodash.extend(model, {
       x: ui.position.left / this.width(),
       y: (ui.position.top - (this.height() / 2)) / this.width(),
     });

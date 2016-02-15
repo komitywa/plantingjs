@@ -1,4 +1,4 @@
-import { chain, range } from 'underscore';
+import { chain, range } from 'lodash';
 import jquery from 'jquery';
 import { Collection, View } from '../../core';
 import ToolboxModel from '../plant/model';
