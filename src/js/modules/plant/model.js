@@ -1,6 +1,6 @@
 import { Model } from '../../core';
 
-const PlantModel = Model.extend({
+export default Model.extend({
   defaults: {
     x: null,
     y: null,
@@ -26,4 +26,3 @@ const PlantModel = Model.extend({
     this.set('projection', at);
   },
 });
-module.exports = PlantModel;

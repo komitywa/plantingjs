@@ -3,7 +3,7 @@ import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
 
-const PlantViewObject = View.extend({
+export default View.extend({
   className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
   template: require('./object.hbs'),
 
@@ -95,4 +95,3 @@ const PlantViewObject = View.extend({
     }
   },
 });
-module.exports = PlantViewObject;

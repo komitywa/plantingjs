@@ -1,7 +1,6 @@
 import { View } from '../../core';
 
-
-const LayersManagerViewItem = View.extend({
+export default View.extend({
   className: 'plantingjs-layer-item',
   template: require('./menu-items.hbs'),
 
@@ -57,4 +56,3 @@ const LayersManagerViewItem = View.extend({
     this.model.set('userActivity', false);
   },
 });
-module.exports = LayersManagerViewItem;

@@ -6,10 +6,10 @@ import Const from './const';
 import SessionDataModel from './session-data';
 import ManifestoDataModel from './manifesto-data';
 import MainView from './modules/main/main';
-import Plant from './modules/plant/plant';
+import PlantOverlayView from './modules/plant/overlay';
 import Sidebar from './modules/toolbox/sidebar';
 import MapView from './modules/map/map';
-import LayersManager from './modules/layers-manager/layers-manager';
+import LayersManagerView from './modules/layers-manager/menu-view';
 
 
 export default class extends EventEmitter {
@@ -65,7 +65,7 @@ export default class extends EventEmitter {
       manifesto: this.manifesto().toJSON(),
       app: this,
     });
-    this.overlay = new Plant.View.Overlay({
+    this.overlay = new PlantOverlayView({
       el: this.main.el.querySelector('.plantingjs-overlay'),
       collection: this.session().objects(),
       app: this,
@@ -79,7 +79,7 @@ export default class extends EventEmitter {
       model: this.manifesto(),
       app: this,
     });
-    this.layersManager = new LayersManager.View.Menu({
+    this.layersManager = new LayersManagerView({
       $parent: this.main.$proxy,
       collection: this.session().objects(),
       app: this,

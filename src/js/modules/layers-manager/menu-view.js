@@ -2,7 +2,7 @@ import underscore from 'underscore';
 import { View } from '../../core';
 import LayersManagerViewItem from './menu-item';
 
-const LayersManagerViewMenu = View.extend({
+export default View.extend({
   className: 'layers-menu',
   items: [],
 
@@ -43,5 +43,3 @@ const LayersManagerViewMenu = View.extend({
     this.items.splice(viewIndex, 1);
   },
 });
-
-module.exports = LayersManagerViewMenu;

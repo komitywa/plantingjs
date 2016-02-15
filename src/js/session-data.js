@@ -4,7 +4,6 @@ import Const from './const';
 import PlantCollection from './modules/plant/collection';
 
 export default Model.extend({
-
   ignoreObjectValues: [
     'userActivity',
     'projections',
