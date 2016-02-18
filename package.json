@@ -4,6 +4,11 @@
   "homepage": "http://plantingjs.org",
   "bugs": "https://github.com/komitywa/plantingjs/issues",
   "license": "MIT",
+  "scripts": {
+    "serve": "./node_modules/.bin/gulp serve",
+    "build": "./node_modules/.bin/gulp build",
+    "test": "./node_modules/.bin/gulp test"
+  },
   "author": {
     "name": "Komitywa",
     "email": "komitywapoznan@gmail.com",
