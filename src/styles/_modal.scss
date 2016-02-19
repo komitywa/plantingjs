@@ -1,0 +1,24 @@
+.plantingjs-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  &.hidden {
+    display: none;
+    
+    .plantingjs-modal-inner {
+      opacity: 0;
+    }
+  }
+
+  &-inner {
+    background: #4A4A4A;
+    opacity: .7;
+    width: 100%;
+    height: 100%;
+    transition: opacity $default-transition;
+  }
+}
