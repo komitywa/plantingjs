@@ -7,6 +7,7 @@
   "scripts": {
     "serve": "./node_modules/.bin/gulp serve",
     "build": "./node_modules/.bin/gulp build",
+    "lint": "./node_modules/.bin/gulp lint",
     "test": "./node_modules/.bin/gulp test"
   },
   "author": {
