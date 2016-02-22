@@ -1,5 +1,4 @@
 import { Deferred as deferredObject } from 'jquery';
-import { View } from 'backbone';
 import 'jquery-ui';
 import lodash from 'lodash';
 import EventEmitter from './event-emitter';
