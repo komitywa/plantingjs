@@ -1,4 +1,5 @@
 import { Deferred as deferredObject } from 'jquery';
+import { View } from 'backbone';
 import 'jquery-ui';
 import lodash from 'lodash';
 import EventEmitter from './event-emitter';
@@ -143,10 +144,12 @@ export default class extends EventEmitter {
 
   modal(BackboneView) {
     const modalInstance = new ModalView({
-      childView: new BackboneView({ app: this }) });
-    const $modalHolder = this.main.$.find('plantingjs-modal');
+      childView: new BackboneView({ app: this }),
+      el: this.main.getModal(),
+    });
 
-    console.log($modalHolder);
     return modalInstance;
   }
 }
+
+window.TestView = View.extend({});
