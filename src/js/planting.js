@@ -19,6 +19,7 @@ export default class extends EventEmitter {
 
     super(options);
     this._state = null;
+    this.visibleModal = null;
     this.options = options;
     this.data = {
       session: new SessionDataModel(null, {
@@ -142,14 +143,17 @@ export default class extends EventEmitter {
       });
   }
 
-  modal(BackboneView) {
-    const modalInstance = new ModalView({
-      childView: new BackboneView({ app: this }),
+  modal(ChildView) {
+    if (this.visibleModal) {
+      this.visibleModal.remove();
+      this.visibleModal = null;
+    }
+
+    this.visibleModal = new ModalView({
+      childView: new ChildView({ app: this }),
       el: this.main.getModal(),
     });
 
-    return modalInstance;
+    return this.visibleModal;
   }
 }
-
-window.TestView = View.extend({});
