@@ -34,7 +34,22 @@ import serveIndex from 'serve-index';
 import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
+import compileHandlebars from 'gulp-compile-handlebars';
+import { existsSync, readFileSync } from 'fs';
 
+const settings = (() => {
+  let settings = {};
+  const settingsPath = './settings.json';
+
+  if (existsSync(settingsPath)) {
+    settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
+  }
+
+  return settings;
+}());
+const DEFAULT_SETTINGS = {
+  googleApiKey: 'You need to specify Google API Key'
+};
 
 /* Default task */
 gulp.task('default', function() {
@@ -50,6 +65,7 @@ gulp.task('clean', del.bind(null, './dist'));
 gulp.task('html', function() {
   const assets = useref.assets({searchPath: '{src}'});
   return gulp.src('./src/*.html')
+    .pipe(compileHandlebars(Object.assign({}, DEFAULT_SETTINGS, settings)))
     .pipe(assets)
     .pipe(gif('*.css', csso()))
     .pipe(assets.restore())
