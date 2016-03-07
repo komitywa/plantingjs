@@ -19,7 +19,7 @@ const SELECT_PANO_INIT_VALUES = {
   label: 'wybierz',
   visible: false,
 };
-const MODAL_SELECTOR = '.plantingjs-modal';
+const MODAL_CLASS = 'plantingjs-modal';
 
 export default View.extend({
   toolbox: null,
@@ -91,6 +91,6 @@ export default View.extend({
   },
 
   getModal() {
-    return this.$el.find(MODAL_SELECTOR);
+    return this.$el.find(`.${MODAL_CLASS}`);
   },
 });
