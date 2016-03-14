@@ -36,6 +36,10 @@ export default View.extend({
     this.$proxy = this.$el.children();
     this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
     this.submit.on('click', this.onClickSubmit, this);
+    this.session().objects().on('add remove', (model, collection) => {
+      const showSubmitButton = collection.length > 0;
+      this.submit.model.set('visible', showSubmitButton);
+    });
 
     const { selectPanoMode } = this.app.options;
 
@@ -69,7 +73,6 @@ export default View.extend({
       .on(Const.Event.START_PLANTING, () => {
         this.$el.toggleClass(IS_PLANTING_CLASS, true);
         this.start.model.set('visible', false);
-        this.submit.model.set('visible', true);
       })
       .on(Const.Event.STATE_CHANGED, (state) => {
         this.$el

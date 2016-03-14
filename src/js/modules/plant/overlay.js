@@ -52,7 +52,7 @@ export default View.extend({
   removeObject: function(object) {
     object.tools.remove();
     object.remove();
-    this.objects = lodash.without(this.objects, lodash.findWhere(this.objects, {
+    this.objects = lodash.without(this.objects, lodash.find(this.objects, {
       cid: object.cid,
     }));
   },
