@@ -10,7 +10,7 @@ import PlantOverlayView from './modules/plant/overlay';
 import Sidebar from './modules/toolbox/sidebar';
 import MapView from './modules/map/map';
 import LayersManagerView from './modules/layers-manager/menu-view';
-
+import ModalView from './modules/components/modal';
 
 export default class extends EventEmitter {
   constructor(options) {
@@ -18,6 +18,7 @@ export default class extends EventEmitter {
 
     super(options);
     this._state = null;
+    this.visibleModal = null;
     this.options = options;
     this.data = {
       session: new SessionDataModel(null, {
@@ -139,5 +140,19 @@ export default class extends EventEmitter {
             this.trigger(Const.Event.START_PLANTING);
           });
       });
+  }
+
+  modal(ChildView) {
+    if (this.visibleModal) {
+      this.visibleModal.remove();
+      this.visibleModal = null;
+    }
+
+    this.visibleModal = new ModalView({
+      childView: new ChildView({ app: this }),
+      el: this.main.getModal(),
+    });
+
+    return this.visibleModal;
   }
 }
