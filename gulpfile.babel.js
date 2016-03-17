@@ -2,13 +2,15 @@ import autoprefixer from 'gulp-autoprefixer';
 import babel from 'babel-core/register';
 import babelify from 'babelify';
 import browserify from 'browserify';
-import csso from 'gulp-csso';
+import compileHandlebars from 'gulp-compile-handlebars';
 import concat from 'gulp-concat';
 import connect from 'connect';
 import connectLivereload from 'connect-livereload';
+import csso from 'gulp-csso';
 import del from 'del';
 import domain from 'domain';
 import eslint from 'gulp-eslint';
+import { existsSync, readFileSync } from 'fs';
 import flatten from 'gulp-flatten';
 import filter from 'gulp-filter';
 import gif from 'gulp-if';
@@ -34,8 +36,6 @@ import serveIndex from 'serve-index';
 import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
-import compileHandlebars from 'gulp-compile-handlebars';
-import { existsSync, readFileSync } from 'fs';
 
 const settings = (() => {
   let settings = {};
