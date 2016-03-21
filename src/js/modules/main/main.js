@@ -37,8 +37,10 @@ export default View.extend({
     this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
     this.submit.on('click', this.onClickSubmit, this);
     this.session().objects().on('add remove', (model, collection) => {
-      const showSubmitButton = collection.length > 0;
-      this.submit.model.set('visible', showSubmitButton);
+      if (this.app.getState() !== Const.State.VIEWER) {
+        const showSubmitButton = collection.length > 0;
+        this.submit.model.set('visible', showSubmitButton);
+      }
     });
 
     const { selectPanoMode } = this.app.options;
