@@ -37,7 +37,7 @@ export default View.extend({
     this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
     this.submit.on('click', this.onClickSubmit, this);
     this.session().objects().on('add remove', (model, collection) => {
-      if (this.app.getState() != Const.State.VIEWER) {
+      if (this.app.getState() !== Const.State.VIEWER) {
         const showSubmitButton = collection.length > 0;
         this.submit.model.set('visible', showSubmitButton);
       }
