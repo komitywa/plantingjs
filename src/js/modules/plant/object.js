@@ -18,6 +18,7 @@ export default View.extend({
 
   initialize: function(options) {
     this.overlay = options.overlay;
+    this.listenTo(this.model, 'change:scale', this.resize);
     this.render();
     this.$img
         .one('load', function() {

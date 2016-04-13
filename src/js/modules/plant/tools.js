@@ -19,8 +19,8 @@ export default View.extend({
   initialize: function initialize({ parent, options }) {
     this.parentView = parent;
     this.options = options;
-    this.model
-      .on('change:userActivity', (model, userActivity) =>
+    this.listenTo(this.model, 'change:userActivity',
+      (model, userActivity) =>
         this.$el.toggleClass('user-active', userActivity));
     this.render();
   },
@@ -64,6 +64,7 @@ export default View.extend({
         }
       }
     };
+
     finishResizing = function() {
       const plantedObjectContainer = plantedObject;
       if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
@@ -127,4 +128,3 @@ export default View.extend({
   },
 
 });
-
