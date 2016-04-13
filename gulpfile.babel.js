@@ -38,14 +38,13 @@ import tap from 'gulp-tap';
 import useref from 'gulp-useref';
 
 const settings = (() => {
-  let settings = {};
   const settingsPath = './settings.json';
 
   if (existsSync(settingsPath)) {
-    settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
+    return JSON.parse(readFileSync(settingsPath, 'utf-8'));
   }
 
-  return settings;
+  return {};
 }());
 const DEFAULT_SETTINGS = {
   googleApiKey: 'You need to specify Google API Key'

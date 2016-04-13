@@ -1,11 +1,10 @@
 import { clone } from 'lodash';
 import { Events } from 'backbone';
 
-const EventEmitter = clone(Events);
 
 export default class {
     constructor() {
-      this.eventEmitter = clone(EventEmitter);
+      this.eventEmitter = clone(Events);
     }
 
     on(...args) {

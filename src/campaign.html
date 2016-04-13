@@ -20,17 +20,17 @@
     <div id="viewport" class="viewport"></div>
     <script src="js/main.js"></script>
     <script>
-      function on_campaign_save(campaign) {
+      function onCampaignSave(campaign) {
         console.log(campaign);
       }
 
       window.onload = function () {
-        PlantingInstance = new window.Planting( {
+        PlantingInstance = new window.Planting({
           container: document.querySelector('.viewport'),
           manifestoUrl: '/manifesto.json',
           googleApiKey: '{{googleApiKey}}',
           selectPanoMode: true,
-          onSelectPano: on_campaign_save,
+          onSelectPano: onCampaignSave,
         });
       }
     </script>

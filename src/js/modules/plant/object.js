@@ -31,6 +31,7 @@ export default View.extend({
       el: this.el.querySelector('.plantingjs-plantedobject-tools'),
       model: this.model,
       parent: this,
+      options: this.app.data.options,
     });
 
     this.$el.draggable({
