@@ -33,71 +33,72 @@ export default View.extend({
     this.model.collection.remove(this.model);
   },
 
-  resizeObject: function resizeObject(ev) {
+  resizeObject: function resizeObject() {
     const plantedObject = this.parentView.$el;
-    const scale = this.model.get('scale');
-    let cssScale;
-    let resizeOnDrag;
-    let finishResizing;
-    const buttonX = jquery(ev.target).offset().left;
-    const self = this;
 
     EVENT_MOUSEDOWN = true;
     jquery('body').addClass('noselect resize');
     plantedObject.addClass('plantingjs-active-object');
+    this.buttonX = this.$('.icon-resize').offset().left;
 
-    resizeOnDrag = function(evt) {
-      if (!EVENT_MOUSEDOWN) return;
-      if (plantedObject.hasClass('plantingjs-active-object')) {
-        const buttonCursorDistance = buttonX - evt.pageX;
-
-        if (buttonCursorDistance === 0) {
-          cssScale = scale;
-        } else if (buttonCursorDistance < 0) {
-          cssScale = scale - Math.abs(buttonCursorDistance / 100);
-        } else if (buttonCursorDistance > 0) {
-          cssScale = scale + buttonCursorDistance / 100;
-        }
-
-        if (cssScale > 0.2) {
-          self.model.set('scale', cssScale);
-        }
-      }
-    };
-
-    finishResizing = function() {
-      const plantedObjectContainer = plantedObject;
-      if (EVENT_MOUSEDOWN && plantedObjectContainer.hasClass('plantingjs-active-object')) {
-        jquery('body').removeClass('noselect resize');
-        plantedObjectContainer.removeClass('plantingjs-active-object');
-        jquery(document).off('mousemove', resizeOnDrag);
-        jquery(document).off('mouseup', finishResizing);
-        EVENT_MOUSEDOWN = false;
-      }
-    };
-
-    jquery(document).on('mousemove', resizeOnDrag);
-    jquery(document).on('mouseup', finishResizing);
+    jquery(document).on('mousemove', jquery.proxy(this.resizeOnDrag, this));
+    jquery(document).on('mouseup', jquery.proxy(this.finishResizing, this));
   },
 
-  rotateObject: function() {
+  resizeOnDrag: function resizeOnDrag(evt) {
+    if (!EVENT_MOUSEDOWN) return;
+    const plantedObject = this.parentView.$el;
+    const scale = this.model.get('scale');
+    let cssScale;
+    if (plantedObject.hasClass('plantingjs-active-object')) {
+      const buttonCursorDistance = this.buttonX - evt.pageX;
+
+      if (buttonCursorDistance === 0) {
+        cssScale = scale;
+      } else if (buttonCursorDistance < 0) {
+        cssScale = scale - Math.abs(buttonCursorDistance / 100);
+      } else if (buttonCursorDistance > 0) {
+        cssScale = scale + buttonCursorDistance / 100;
+      }
+
+      if (cssScale > 0.2) {
+        this.model.set('scale', cssScale);
+      }
+    }
+  },
+
+  finishResizing: function finishResizing() {
+    const plantedObject = this.parentView.$el;
+    if (EVENT_MOUSEDOWN &&
+      plantedObject.hasClass('plantingjs-active-object')) {
+      jquery('body').removeClass('noselect resize');
+      plantedObject.removeClass('plantingjs-active-object');
+      jquery(document).off('mousemove', jquery.proxy(this.resizeOnDrag, this));
+      jquery(document).off('mouseup', jquery.proxy(this.finishResizing, this));
+      EVENT_MOUSEDOWN = false;
+    }
+  },
+
+  rotateObject: function rotateObject() {
     const plantedObject = this.parentView.$el;
     EVENT_MOUSEDOWN = true;
     jquery('body').addClass('noselect rotate');
     plantedObject.addClass('plantingjs-active-object');
+    this.buttonX = this.$('.icon-loop').offset().left;
 
     jquery(document).on('mousemove', jquery.proxy(this.rotateOnMove, this));
     jquery(document).on('mouseup', jquery.proxy(this.finishRotation, this));
   },
 
-  rotateOnMove: function(evt) {
-    const buttonX = this.$('.icon-loop').offset().left;
+  rotateOnMove: function rotateOnMove(evt) {
     const plantedObject = this.parentView.$el;
     const plantedObjectProjections = this.model.get('projections');
     let newProjection = this.model.get('currentProjection');
     let currentProjection = this.model.get('currentProjection');
-    const buttonCursorDistance = evt.pageX - buttonX;
-    let projectionsToRotate = (Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance) % PROJECTION_LENGTH) / PROJECTION_LENGTH;
+    const buttonCursorDistance = evt.pageX - this.buttonX;
+    let projectionsToRotate = (
+      Math.abs(buttonCursorDistance) - Math.abs(buttonCursorDistance)
+      % PROJECTION_LENGTH) / PROJECTION_LENGTH;
     if (!EVENT_MOUSEDOWN) return;
     if (plantedObject.hasClass('plantingjs-active-object')) {
       projectionsToRotate %= plantedObjectProjections.length;
@@ -116,7 +117,7 @@ export default View.extend({
     }
   },
 
-  finishRotation: function() {
+  finishRotation: function finishRotation() {
     const plantedObject = this.parentView.$el;
     if (EVENT_MOUSEDOWN && plantedObject.hasClass('plantingjs-active-object')) {
       jquery(document).off('mousemove', this.rotateOnMove);

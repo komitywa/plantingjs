@@ -1,7 +1,9 @@
 <span class="icon-trash"></span>
-<span class="icon-resize"></span>
+{{#if options.SCALABILITY}}
+  <span class="icon-resize"></span>
+{{/if}}
 {{#if options.ROTATABILITY}}
-<div class="wrapper-rotate">
-  <span class="icon-loop"></span>
-</div>
+  <div class="wrapper-rotate">
+    <span class="icon-loop"></span>
+  </div>
 {{/if}}
