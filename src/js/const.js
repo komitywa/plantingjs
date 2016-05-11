@@ -1,6 +1,7 @@
 const DefaultSettings = {
   ROTATABILITY: false,
   SCALABILITY: false,
+  LAYERABILITY: false,
 };
 
 const Event = {

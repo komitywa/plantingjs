@@ -1,4 +1,3 @@
-import { Deferred as deferredObject } from 'jquery';
 import 'jquery-ui';
 import lodash from 'lodash';
 import EventEmitter from './event-emitter';
@@ -15,8 +14,6 @@ import ModalView from './modules/components/modal';
 
 export default class extends EventEmitter {
   constructor(options) {
-    const initDefer = deferredObject();
-
     super(options);
     this._state = null;
     this.visibleModal = null;
@@ -33,13 +30,14 @@ export default class extends EventEmitter {
     this.data.options = Object.assign(
       {}, Const.DefaultSettings, options.options || {});
     this.setState(Const.State.INITING);
-    this.manifesto()
+    this.initDefer = new Promise((resolve) => {
+      this.manifesto()
         .fetch()
         .done(() => {
           this._initializeViews();
-          initDefer.resolve();
+          resolve();
         });
-    this.initDefer = initDefer.promise();
+    });
   }
 
   session() {
@@ -83,11 +81,13 @@ export default class extends EventEmitter {
       model: this.manifesto(),
       app: this,
     });
-    this.layersManager = new LayersManagerView({
-      $parent: this.main.$proxy,
-      collection: this.session().objects(),
-      app: this,
-    });
+    if (this.data.options.LAYERABILITY) {
+      this.layersManager = new LayersManagerView({
+        $parent: this.main.$proxy,
+        collection: this.session().objects(),
+        app: this,
+      });
+    }
   }
 
   initPlant(objects) {
