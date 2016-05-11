@@ -1,0 +1,143 @@
+{
+	"IcoMoonType": "selection",
+	"icons": [
+		{
+			"icon": {
+				"paths": [
+					"M128 910.208c0 62.848 50.944 113.792 113.792 113.792h476.416c62.848 0 113.792-50.944 113.792-113.792v-654.208h-704v654.208zM896 64h-208l-63.104-64h-284.48l-44.416 64h-232v128h832v-128z"
+				],
+				"attrs": [
+					{}
+				],
+				"isMulticolor": false,
+				"tags": [
+					"c_kosz"
+				],
+				"grid": 16
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 4,
+				"id": 1,
+				"prevSize": 16,
+				"code": 58882,
+				"name": "trash"
+			},
+			"setIdx": 0,
+			"setId": 1,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
+					"M858.176 773.824l-608-608 165.824-165.824h-416v416l165.824-165.824 608 608-165.824 165.824h416v-416z"
+				],
+				"attrs": [
+					{}
+				],
+				"isMulticolor": false,
+				"tags": [
+					"a__stzralki"
+				],
+				"grid": 16
+			},
+			"attrs": [
+				{}
+			],
+			"properties": {
+				"order": 1,
+				"id": 0,
+				"prevSize": 16,
+				"code": 58880,
+				"name": "resize"
+			},
+			"setIdx": 0,
+			"setId": 1,
+			"iconIdx": 1
+		},
+		{
+			"icon": {
+				"paths": [
+					"M889.68 166.32c-93.608-102.216-228.154-166.32-377.68-166.32-282.77 0-512 229.23-512 512h96c0-229.75 186.25-416 416-416 123.020 0 233.542 53.418 309.696 138.306l-149.696 149.694h352v-352l-134.32 134.32z",
+					"M928 512c0 229.75-186.25 416-416 416-123.020 0-233.542-53.418-309.694-138.306l149.694-149.694h-352v352l134.32-134.32c93.608 102.216 228.154 166.32 377.68 166.32 282.77 0 512-229.23 512-512h-96z"
+				],
+				"attrs": [
+					{},
+					{}
+				],
+				"isMulticolor": false,
+				"tags": [
+					"loop",
+					"repeat",
+					"player",
+					"reload",
+					"refresh",
+					"update",
+					"synchronize",
+					"arrows"
+				],
+				"grid": 16
+			},
+			"attrs": [
+				{},
+				{}
+			],
+			"properties": {
+				"order": 2,
+				"id": 0,
+				"prevSize": 16,
+				"code": 58881,
+				"name": "loop"
+			},
+			"setIdx": 0,
+			"setId": 1,
+			"iconIdx": 2
+		}
+	],
+	"height": 1024,
+	"metadata": {
+		"name": "wu-icons"
+	},
+	"preferences": {
+		"fontPref": {
+			"prefix": "icon-",
+			"metadata": {
+				"fontFamily": "wu-icons",
+				"majorVersion": 1,
+				"minorVersion": 0
+			},
+			"showGlyphs": true,
+			"metrics": {
+				"emSize": 1024,
+				"baseline": 6.25,
+				"whitespace": 50
+			},
+			"resetPoint": 58880,
+			"showQuickUse": true,
+			"quickUsageToken": false,
+			"showMetrics": true,
+			"showMetadata": false,
+			"embed": false
+		},
+		"imagePref": {
+			"color": 0,
+			"height": 32,
+			"columns": 16,
+			"margin": 16,
+			"png": false,
+			"sprites": true
+		},
+		"historySize": 100,
+		"showCodes": true,
+		"gridSize": 16,
+		"showLiga": false,
+		"showGrid": true,
+		"showGlyphs": true,
+		"showQuickUse": true,
+		"showQuickUse2": true,
+		"showSVGs": true,
+		"search": ""
+	}
+}

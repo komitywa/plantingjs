@@ -26,9 +26,6 @@ export default View.extend({
   map: null,
   className: 'plantingjs-container',
   template: require('./main.hbs'),
-  events: {
-    'click .plantingjs-startbtn': 'startPlanting',
-  },
   $proxy: null,
 
   initialize() {
