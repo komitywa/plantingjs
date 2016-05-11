@@ -67,7 +67,7 @@ export default View.extend({
 
     return this.initializeMaps()
       .then((google) => {
-        this.map = new google.maps.StreetViewPanorama(element, options);
+        this.panorama = new google.maps.StreetViewPanorama(element, options);
       });
   },
 
