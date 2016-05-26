@@ -63,10 +63,10 @@ export default class extends EventEmitter {
 
   _initializeViews() {
     this.main = new MainView({
-      el: this.options.container,
       manifesto: this.manifesto().toJSON(),
       app: this,
     });
+    this.options.container.appendChild(this.main.render().el);
     this.overlay = new PlantOverlayView({
       el: this.main.el.querySelector('.plantingjs-overlay'),
       collection: this.session().objects(),

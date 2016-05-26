@@ -9,6 +9,7 @@
     'parser': 'babel-eslint',
     'rules': {
         'max-len': [1, 80],
-        'comma-dangle': [1]
+        'comma-dangle': [1],
+        'guard-for-in': [0]
     }
 }

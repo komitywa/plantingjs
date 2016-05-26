@@ -1,95 +1,86 @@
 import { View } from '../../core';
 import Const from '../../const';
-import Button from '../components/button';
+import { submitButton, selectButton, initButton } from './main-view-buttons';
+import template from './main.hbs';
 import { isFunction } from 'lodash';
 
 const IS_PLANTING_CLASS = 'plantingjs-is-planting';
-const SUBMIT_BUTTON_INIT_VALUES = {
-  modifier: 'accept',
-  label: 'zrobione!',
-  visible: false,
-};
-const START_BUTTON_INIT_VALUES = {
-  modifier: 'accept',
-  label: 'zacznij wysadzać!',
-  visible: false,
-};
-const SELECT_PANO_INIT_VALUES = {
-  modifier: 'accept',
-  label: 'wybierz',
-  visible: false,
-};
 const MODAL_CLASS = 'plantingjs-modal';
 
+function handleSelectPano() {
+  const { onSelectPano } = this.app.options;
+  const panoData = this.manifesto()
+    .pick('lat', 'lng', 'pitch', 'heading', 'zoom');
+
+  if (isFunction(onSelectPano)) {
+    onSelectPano(panoData);
+  } else {
+    throw Error('onSelectPano must be a function');
+  }
+}
+
+function handleInitPlanting() {
+  this.app.trigger(Const.Event.START_PLANTING);
+}
+
+function handlePlantedObjectsChanged(model, collection) {
+  if (this.app.getState() !== Const.State.VIEWER) {
+    this.submit.model.set('visible', collection.length > 0);
+  }
+}
+
+function handleMapVisibleChange(visible) {
+  if (this.app.getState() !== Const.State.VIEWER) {
+    this.start.model.set({ visible });
+  }
+}
+
+function handleStartPlanting() {
+  this.$el.toggleClass(IS_PLANTING_CLASS, true);
+  this.start.model.set('visible', false);
+}
+
+function handleStateChange(state) {
+  this.$el.children().attr('data-state', state);
+}
+
+function handleSubmit(event) {
+  /**
+   * @todo
+   * Show submit popup. For now just save session.
+   */
+  event.preventDefault();
+  this.session().save();
+}
+
 export default View.extend({
-  toolbox: null,
-  map: null,
-  className: 'plantingjs-container',
-  template: require('./main.hbs'),
-  $proxy: null,
+  className: 'plantingjs-proxy',
 
   initialize() {
-    this.render();
-    this.$proxy = this.$el.children();
-    this.submit = new Button(SUBMIT_BUTTON_INIT_VALUES);
-    this.submit.on('click', this.onClickSubmit, this);
-    this.session().objects().on('add remove', (model, collection) => {
-      if (this.app.getState() !== Const.State.VIEWER) {
-        const showSubmitButton = collection.length > 0;
-        this.submit.model.set('visible', showSubmitButton);
-      }
-    });
+    this.submit = submitButton({ click: handleSubmit }, this);
+    this.session()
+        .objects()
+        .on('add remove', handlePlantedObjectsChanged, this);
 
-    const { selectPanoMode } = this.app.options;
-
-    if (selectPanoMode) {
-      this.start = new Button(SELECT_PANO_INIT_VALUES);
-      this.start.on('click', () => {
-        const { onSelectPano } = this.app.options;
-        const panoData = this.manifesto()
-          .pick('lat', 'lng', 'pitch', 'heading', 'zoom');
-
-        if (isFunction(onSelectPano)) {
-          onSelectPano(panoData);
-        } else {
-          throw Error('onSelectPano must be a function');
-        }
-      });
+    if (this.app.options.selectPanoMode) {
+      this.start = selectButton({ click: handleSelectPano }, this);
     } else {
-      this.start = new Button(START_BUTTON_INIT_VALUES);
-      this.start.on('click', () => {
-        this.app.trigger(Const.Event.START_PLANTING);
-      });
+      this.start = initButton({ click: handleInitPlanting }, this);
     }
 
-    this.$proxy.append(this.submit.$el, this.start.$el);
     this.app
-      .on(Const.Event.VISIBLE_CHANGED, (visible) => {
-        if (this.app.getState() !== Const.State.VIEWER) {
-          this.start.model.set({ visible });
-        }
-      })
-      .on(Const.Event.START_PLANTING, () => {
-        this.$el.toggleClass(IS_PLANTING_CLASS, true);
-        this.start.model.set('visible', false);
-      })
-      .on(Const.Event.STATE_CHANGED, (state) => {
-        this.$el
-          .children().attr('data-state', state);
-      });
+        .on(Const.Event.VISIBLE_CHANGED, handleMapVisibleChange, this)
+        .on(Const.Event.START_PLANTING, handleStartPlanting, this)
+        .on(Const.Event.STATE_CHANGED, handleStateChange, this);
   },
 
   render() {
-    this.$el.html(this.template());
-  },
+    this.$el
+        .html(template())
+        .children()
+        .append(this.submit.$el, this.start.$el);
 
-  onClickSubmit(event) {
-    /**
-     * @todo
-     * Show submit popup. For now just save session.
-     */
-    event.preventDefault();
-    this.session().save();
+    return this;
   },
 
   getModal() {
