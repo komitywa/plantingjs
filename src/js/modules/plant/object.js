@@ -2,18 +2,15 @@ import lodash from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
+import { moveableComponent, MOVE_END } from '../components/moveable';
 
 export default View.extend({
-  className: 'plantingjs-plantedobject-container ui-draggable ui-draggable-handle',
+  className: 'plantingjs-plantedobject-container',
   template: require('./object.hbs'),
-
   events: {
-    'dragstart': 'dragstart',
-    'dragstop': 'saveCoords',
     'mouseover': 'setUserActivity',
     'mouseleave': 'unsetUserActivity',
   },
-
   $img: null,
 
   initialize: function(options) {
@@ -35,24 +32,28 @@ export default View.extend({
       options: this.app.data.options,
     });
 
-    this.$el.draggable({
-      cancel: '.icon-loop, .icon-trash, .icon-resize',
-    });
     this.model
       .on('change:currentProjection', this.updateProjection, this)
       .on('change:layerIndex', this.setLayer, this);
+
+    if (this.app.getState() !== Const.State.VIEWER) {
+      moveableComponent({ view: this });
+      this.on(MOVE_END, this.model.set, this.model);
+    }
   },
 
   render: function() {
+    const x = this.overlay.width() * this.model.get('x');
+    const y = this.overlay.height() / 2 + this.model.get('y') * this.overlay.width();
+
     this.$el
       .html(this.template({
         projectionUrl: this.model.getProjection(),
       }))
       .attr('data-cid', this.model.cid)
       .css({
-        left: this.overlay.width() * this.model.get('x'),
-        top: this.overlay.height() / 2 + this.model.get('y') * this.overlay.width(),
         zIndex: this.model.get('layerIndex'),
+        transform: `translate3d(${x}px, ${y}px, 0)`,
       });
 
     this.$img = this.$el.children('img');
@@ -74,26 +75,11 @@ export default View.extend({
     this.$img.attr('src', model.getProjection());
   },
 
-  saveCoords: function(ev, ui) {
-    this.model.set({
-      x: ui.position.left,
-      y: ui.position.top,
-    });
-
-    return this;
-  },
-
   setUserActivity: function() {
     this.model.set('userActivity', true);
   },
 
   unsetUserActivity: function() {
     this.model.set('userActivity', false);
-  },
-
-  dragstart: function(ev) {
-    if (this.app.getState() === Const.State.VIEWER) {
-      ev.preventDefault();
-    }
   },
 });
