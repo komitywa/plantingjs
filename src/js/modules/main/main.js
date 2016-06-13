@@ -76,9 +76,8 @@ export default View.extend({
 
   render() {
     this.$el
-        .html(template())
-        .children()
-        .append(this.submit.$el, this.start.$el);
+      .html(template())
+      .append(this.submit.$el, this.start.$el);
 
     return this;
   },
