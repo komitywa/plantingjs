@@ -41,7 +41,7 @@ function handleStartPlanting() {
 }
 
 function handleStateChange(state) {
-  this.$el.children().attr('data-state', state);
+  this.$el.attr('data-state', state);
 }
 
 function handleSubmit(event) {
