@@ -1,4 +1,4 @@
-import lodash from 'lodash';
+import {omit, extend, isFunction} from 'lodash';
 import { Model } from './core';
 import Const from './const';
 import PlantCollection from './modules/plant/collection';
@@ -36,8 +36,8 @@ export default Model.extend({
   toJSON() {
     const objects = this.objects().toJSON();
 
-    return lodash.extend(Model.prototype.toJSON.call(this), {
-      objects: lodash.omit(objects, this.ignoreObjectValues),
+    return extend(Model.prototype.toJSON.call(this), {
+      objects: omit(objects, this.ignoreObjectValues),
     });
   },
 
@@ -46,7 +46,7 @@ export default Model.extend({
 
     this.app.trigger(Const.Event.SAVE_REQUEST, data);
 
-    if (lodash.isFunction(this.app.options.onSave)) {
+    if (isFunction(this.app.options.onSave)) {
       this.app.options.onSave.call(this, data);
     }
   },

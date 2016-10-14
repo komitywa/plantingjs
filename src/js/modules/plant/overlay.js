@@ -1,5 +1,6 @@
-import lodash from 'lodash';
 import jquery from 'jquery';
+import 'jquery-ui';
+import {without, find, extend} from 'lodash';
 import { View } from '../../core';
 import PlantViewObject from './object';
 import Const from '../../const';
@@ -52,7 +53,7 @@ export default View.extend({
   removeObject: function(object) {
     object.tools.remove();
     object.remove();
-    this.objects = lodash.without(this.objects, lodash.find(this.objects, {
+    this.objects = without(this.objects, find(this.objects, {
       cid: object.cid,
     }));
   },
@@ -87,7 +88,7 @@ export default View.extend({
 
   plantObject: function(ev, ui) {
     const model = ui.draggable.data('model');
-    const newModel = lodash.extend(model, {
+    const newModel = extend(model, {
       x: ui.position.left / this.width(),
       y: (ui.position.top - (this.height() / 2)) / this.width(),
     });

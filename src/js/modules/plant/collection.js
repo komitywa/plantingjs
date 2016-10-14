@@ -1,4 +1,4 @@
-import lodash from 'lodash';
+import {isNull, isNumber, forEach, extend} from 'lodash';
 import { Collection } from '../../core';
 import PlantModel from './model';
 
@@ -14,10 +14,10 @@ export default Collection.extend({
   setLayer: function(model) {
     const layerIndex = model.get('layerIndex');
 
-    if (lodash.isNull(layerIndex)) {
+    if (isNull(layerIndex)) {
       model.set('layerIndex', this.layers.length);
       this.layers.push(model.cid);
-    } else if (lodash.isNumber(layerIndex)) {
+    } else if (isNumber(layerIndex)) {
       this.layers.splice(layerIndex, 0, model.cid);
     }
   },
@@ -35,14 +35,14 @@ export default Collection.extend({
   },
 
   reindexModelsLayer: function() {
-    lodash.each(this.layers, function(modelCid, index) {
+    forEach(this.layers, function(modelCid, index) {
       this.get(modelCid)
         .set('layerIndex', index);
     }, this);
   },
 
   parse: function(object) {
-    lodash.extend(object, {
+    extend(object, {
       x: object.position.x,
       y: object.position.y,
       objectId: object.object,

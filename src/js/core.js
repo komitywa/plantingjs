@@ -1,5 +1,5 @@
 import Backbone from 'backbone';
-import lodash from 'lodash';
+import {isObject, has, extend, map, clone} from 'lodash';
 
 const coreMembers = {
   app: null,
@@ -13,13 +13,13 @@ const coreMembers = {
 };
 
 function _setContext(options) {
-  if (lodash.isObject(options) && lodash.has(options, 'app')) {
+  if (isObject(options) && has(options, 'app')) {
     this.app = options.app;
   }
 }
 
 export const View = Backbone.View.extend(
-    lodash.extend({
+    extend({
       constructor(options) {
         _setContext.call(this, options);
         Backbone.View.call(this, options);
@@ -28,7 +28,7 @@ export const View = Backbone.View.extend(
 );
 
 export const Model = Backbone.Model.extend(
-    lodash.extend({
+    extend({
       constructor(modelAttrs, options) {
         _setContext.call(this, options);
         Backbone.Model.call(this, modelAttrs, options);
@@ -37,13 +37,13 @@ export const Model = Backbone.Model.extend(
       getCopy() {
         const data = Backbone.Model.prototype.get.apply(this, arguments);
 
-        return lodash.map(data, lodash.clone);
+        return map(data, clone);
       },
     }, coreMembers)
 );
 
 export const Collection = Backbone.Collection.extend(
-    lodash.extend({
+    extend({
       constructor(models, options) {
         _setContext.call(this, options);
         Backbone.Collection.call(this, models, options);

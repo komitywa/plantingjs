@@ -1,5 +1,6 @@
-import { chain, range } from 'lodash';
 import jquery from 'jquery';
+import 'jquery-ui';
+import { chain, range } from 'lodash';
 import { Collection, View } from '../../core';
 import ToolboxModel from '../plant/model';
 import template from './sidebar.hbs';

@@ -1,4 +1,4 @@
-import lodash from 'lodash';
+import {isNull} from 'lodash';
 import { View } from '../../core';
 import PlantViewTools from '../plant/tools';
 import Const from '../../const';
@@ -19,7 +19,7 @@ export default View.extend({
     this.render();
     this.$img
         .one('load', function() {
-          if (lodash.isNull(this.model.get('scale'))) {
+          if (isNull(this.model.get('scale'))) {
             this.model.set('scale', this.$img.width() / this.overlay.width());
           }
           this.resize();

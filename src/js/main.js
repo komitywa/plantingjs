@@ -1,3 +1,3 @@
-import Planting from './planting';
+const Planting = require('./planting.js');
 
-export default Planting;
+module.exports = Planting.default;

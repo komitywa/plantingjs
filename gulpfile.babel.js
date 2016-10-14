@@ -1,7 +1,8 @@
 import autoprefixer from 'gulp-autoprefixer';
-import babel from 'babel-core/register';
+import babelRegister from 'babel-register';
 import babelify from 'babelify';
 import browserify from 'browserify';
+import browserifyShim from 'browserify-shim';
 import compileHandlebars from 'gulp-compile-handlebars';
 import concat from 'gulp-concat';
 import connect from 'connect';
@@ -37,15 +38,10 @@ import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
 
-const settings = (() => {
-  const settingsPath = './settings.json';
+const SETTINGS_PATH = './settings.json';
+const settings = existsSync(SETTINGS_PATH) ?
+  JSON.parse(readFileSync(SETTINGS_PATH, 'utf-8')) : {};
 
-  if (existsSync(settingsPath)) {
-    return JSON.parse(readFileSync(settingsPath, 'utf-8'));
-  }
-
-  return {};
-}());
 const DEFAULT_SETTINGS = {
   googleApiKey: 'You need to specify Google API Key'
 };
@@ -94,7 +90,9 @@ gulp.task('js', function() {
           entries: [file.path],
           debug: true,
           standalone: 'Planting',
-          transform: [hbsfy, babelify],
+          transform: [hbsfy, babelify.configure({
+            ignore: /src\/vendor/,
+          }), browserifyShim],
         }).bundle();
       });
     }))
@@ -248,7 +246,7 @@ gulp.task('test:setup', function() {
 
 gulp.task('test', ['test:setup'], function() {
   return gulp.src(['test/*.js', '!test/env'])
-    .pipe(mocha({compilers: {js: babel}}))
+    .pipe(mocha({compilers: {js: babelRegister}}))
     .pipe(istanbul.writeReports());
 });
 /* End of running unittests with coverage */

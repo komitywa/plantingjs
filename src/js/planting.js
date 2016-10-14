@@ -1,5 +1,4 @@
-import 'jquery-ui';
-import lodash from 'lodash';
+import {forEach} from 'lodash';
 import EventEmitter from './event-emitter';
 import Const from './const';
 import SessionDataModel from './session-data';
@@ -91,7 +90,7 @@ export default class extends EventEmitter {
   }
 
   initPlant(objects) {
-    lodash.each(objects, (object) => {
+    forEach(objects, (object) => {
       this.session()
         .objects()
         .add(object, {
