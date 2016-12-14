@@ -1,8 +1,11 @@
 /* global describe:false */
 /* global before:false */
+/* global beforeEach:false */
+/* global afterEach:false */
 /* global it:false */
 import environment from './env/client';
 import { equal, notEqual, strictEqual } from 'assert';
+import Button from '../src/js/modules/components/button';
 
 const buttonValues = {
   label: 'test',
@@ -10,57 +13,56 @@ const buttonValues = {
   visible: true,
 };
 
-describe('Button Component', () => {
+describe('Button Component',  function () {
   before((done) => {
     environment.then(() => {
       done();
     });
   });
 
-  let button;
-
-  it('initializes', () => {
-    const Button = require('../src/js/modules/components/button');
-
-    button = new Button(buttonValues);
+  beforeEach(function() {
+    this.button = new Button(buttonValues);
   });
 
-  it('has proper label', () => {
-    const label = button.el.innerHTML.trim();
+  afterEach(function() {
+    this.button = null;
+  });
 
+  it('has proper label', function() {
+    const label = this.button.el.innerHTML.trim();
     equal(label, buttonValues.label);
   });
 
-  it('updates label on label change', () => {
+  it('updates label on label change', function() {
     const newLabel = 'test2';
     let label;
 
-    button.model.set('label', newLabel);
-    label = button.el.innerHTML.trim();
+    this.button.model.set('label', newLabel);
+    label = this.button.el.innerHTML.trim();
     equal(label, newLabel);
   });
 
-  it('has custom classname', () => {
+  it('has custom classname', function() {
     const className = `plantingjs-component-button-${buttonValues.modifier}`;
-    const classes = Array.from(button.el.classList);
+    const classes = Array.from(this.button.el.classList);
 
     notEqual(classes.indexOf(className), -1);
   });
 
-  it('shown because I wanted it', () => {
-    strictEqual(button.$el.hasClass('hidden'), false);
+  it('shown because I wanted it', function() {
+    strictEqual(this.button.$el.hasClass('hidden'), false);
   });
 
-  it('hides on demand', () => {
-    button.model.set('visible', false);
-    strictEqual(button.$el.hasClass('hidden'), true);
+  it('hides on demand', function() {
+    this.button.model.set('visible', false);
+    strictEqual(this.button.$el.hasClass('hidden'), true);
   });
 
-  it('emits click event', (done) => {
-    button.on('click', () => done());
+  it('emits click event', function (done) {
+    this.button.on('click', () => done());
 
     setTimeout(() => {
-      button.el.click();
+      this.button.el.click();
     }, 50);
   });
 });

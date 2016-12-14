@@ -19,12 +19,7 @@ import gulp from 'gulp';
 import gutil from 'gulp-util';
 import hbsfy from 'hbsfy';
 import http from 'http';
-/*
-    We need to import in that way, because there's bug in isparta.
-    See: https://github.com/douglasduteil/isparta/pull/60
-*/
-import { Instrumenter } from 'isparta';
-import istanbul from 'gulp-istanbul';
+import istanbul from 'gulp-babel-istanbul';
 import livereload from 'gulp-livereload';
 import minifyHtml from 'gulp-minify-html';
 import mocha from 'gulp-mocha';
@@ -239,8 +234,8 @@ gulp.task('lint', function() {
 
 /* Running unittests with coverage */
 gulp.task('test:setup', function() {
-  return gulp.src(['src/**/*.js'])
-    .pipe(istanbul({instrumenter: Instrumenter, includeUntested: true}))
+  return gulp.src(['src/**/*.js', '!src/vendor/**/*.js'])
+    .pipe(istanbul({includeUntested: true}))
     .pipe(istanbul.hookRequire());
 });
 
