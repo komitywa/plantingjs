@@ -1,0 +1,313 @@
+@font-face {
+  font-family: 'wu-icons';
+  src: url("../fonts/wu-icons.eot?a99bbt");
+  src: url("../fonts/wu-icons.eot?a99bbt#iefix") format("embedded-opentype"), url("../fonts/wu-icons.ttf?a99bbt") format("truetype"), url("../fonts/wu-icons.woff?a99bbt") format("woff"), url("../fonts/wu-icons.svg?a99bbt#wu-icons") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'wu-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-trash:before {
+  content: "\e602"; }
+
+.icon-resize:before {
+  content: "\e600"; }
+
+.icon-loop:before {
+  content: "\e601"; }
+
+/* layout styles */
+body {
+  font-family: Roboto, arial, sans-serif;
+  font-weight: 500; }
+
+.viewport {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+
+.noselect {
+  /* Prevent text selection */
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+      user-select: none; }
+
+.rotate {
+  cursor: ew-resize !important; }
+
+.scale {
+  cursor: ns-resize !important; }
+
+.plantingjs-proxy {
+  position: relative;
+  height: 100%;
+  width: 100%; }
+
+.plantingjs-proxy[data-state="viewer"] .plantingjs-plantedobject-tools,
+.plantingjs-proxy[data-state="viewer"] .layers-menu {
+  display: none !important; }
+
+.plantingjs-overlay {
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  display: none;
+  position: absolute;
+  overflow: hidden; }
+
+.plantingjs-google {
+  height: 100%;
+  width: 100%; }
+
+.layers-menu {
+  display: none;
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  right: 5px; }
+
+.layers-menu .plantingjs-layer-item {
+  height: 40px;
+  margin-bottom: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #000;
+  /*border-radius: 50%;*/
+  text-align: center; }
+
+.plantingjs-layer-col {
+  display: inline-block; }
+
+.plantingjs-layer-item-up,
+.plantingjs-layer-item-down {
+  display: block;
+  margin: 0 auto; }
+
+.plantingjs-layer-item.user-active {
+  box-shadow: 0px 0px 20px white; }
+
+.plantingjs-hidden {
+  display: none; }
+
+.plantingjs-plantedobject-container {
+  position: absolute !important;
+  border-radius: 20%; }
+
+.plantingjs-plantedobject-container img {
+  border-radius: 20%; }
+
+.plantingjs-plantedobject-tools {
+  top: -20px;
+  right: -20px;
+  bottom: -20px;
+  left: -20px;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid #000;
+  border-radius: 50%;
+  font-size: 1.5em;
+  text-shadow: 0 0 1px #fff;
+  box-shadow: 0 0 0px transparent, inset 0 0 0px rgba(255, 255, 255, 0);
+  transition: box-shadow .5s; }
+
+.plantingjs-plantedobject-tools.user-active {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(255, 255, 255, 0.9); }
+
+.plantingjs-plantedobject-tools [class*="icon-"] {
+  position: absolute;
+  padding: .3em;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid #fff;
+  border-radius: 50%;
+  cursor: pointer; }
+
+.plantingjs-plantedobject-tools .icon-trash {
+  top: -20px;
+  left: 49%; }
+
+.plantingjs-plantedobject-tools .icon-resize {
+  top: 70%;
+  left: 0; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate {
+  position: absolute;
+  top: 70%;
+  left: 82%; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-loop {
+  opacity: 1;
+  position: relative;
+  top: 0;
+  left: 0; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate > * {
+  padding: .3em;
+  opacity: 0;
+  transition: all .5s; }
+
+.noselect .plantingjs-plantedobject-tools .wrapper-rotate > *,
+.plantingjs-plantedobject-tools .wrapper-rotate:hover > * {
+  opacity: 1; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-left,
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-right {
+  top: 5%;
+  font-size: .7em;
+  border: 0; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-right {
+  right: -1.3em; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate .icon-menu-left {
+  left: -1.3em; }
+
+.plantingjs-plantedobject-tools .wrapper-rotate .degrees {
+  position: absolute;
+  top: 90%;
+  right: 0;
+  left: 0;
+  text-align: center;
+  font-family: Roboto, arial, sans-serif;
+  font-size: .7em;
+  font-weight: bold; }
+
+.plantingjs-toolbox {
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 180px;
+  background-color: #fff;
+  transform: translateX(-100%);
+  transition: transform 0.15s ease-in-out; }
+  .plantingjs-is-planting .plantingjs-toolbox {
+    transform: translateX(-80%); }
+  .plantingjs-toolbox.plantingjs-is-user-active {
+    transform: translateX(0); }
+  .plantingjs-toolbox-toggle {
+    position: absolute;
+    right: 0;
+    background-color: #fff; }
+  .plantingjs-toolbox-hide {
+    width: 0; }
+  .plantingjs-toolbox-list {
+    padding: 0; }
+    .plantingjs-toolbox-list:hover .plantingjs-toolbox-item .plantingjs-toolbox-image {
+      opacity: .8; }
+    .plantingjs-toolbox-list:hover .plantingjs-toolbox-item:hover .plantingjs-toolbox-image {
+      opacity: 1; }
+  .plantingjs-toolbox-item {
+    display: block;
+    margin: 0;
+    border-bottom: 1px solid #A0A0A0; }
+  .plantingjs-toolbox-image {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    transition: opacity 0.15s ease-in-out; }
+  .plantingjs-toolbox-container {
+    box-shadow: 3px 0px 10px #000;
+    height: 100%;
+    overflow: auto; }
+
+.plantingjs-toolboxobject-item {
+  position: relative;
+  margin-bottom: 2px;
+  min-height: 100px;
+  background: #fafafa; }
+
+.plantingjs-component-button {
+  background: #fff;
+  padding: 10px;
+  opacity: .8;
+  transition: opacity 0.15s ease-in-out;
+  /**
+         * @todo
+         * This is a temporary fix. The magic number represents increased 
+         * `.plantingjs-overlay` z-index value
+         */
+  z-index: 101; }
+  .plantingjs-component-button.hidden {
+    display: none; }
+  .plantingjs-component-button:hover {
+    opacity: 1; }
+  .plantingjs-component-button-accept {
+    color: #000;
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    padding: 0 10px;
+    padding-left: 30px;
+    box-sizing: border-box;
+    height: 50px;
+    line-height: 50px; }
+    .plantingjs-component-button-accept:before {
+      content: '';
+      border-radius: 25px;
+      position: absolute;
+      top: 0;
+      left: -25px;
+      background: #CBFD02;
+      height: 50px;
+      width: 50px; }
+  .plantingjs-component-button-start-planting-button, .plantingjs-component-button-select-pano-button {
+    position: absolute;
+    top: 0;
+    left: 50%; }
+
+.plantingjs-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000; }
+  .plantingjs-modal.hidden {
+    display: none; }
+  .plantingjs-modal-background {
+    background: rgba(74, 74, 74, 0.8);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1; }
+    .plantingjs-modal-background:hover {
+      cursor: pointer; }
+  .plantingjs-modal-inner {
+    position: relative;
+    max-width: 80%; }
+  .plantingjs-modal-content {
+    background: #fff;
+    padding: 20px; }
+  .plantingjs-modal-close-btn {
+    background: #000;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    position: absolute;
+    padding: 4px 6px;
+    right: -12px;
+    top: -12px; }
+    .plantingjs-modal-close-btn:hover {
+      cursor: pointer; }
+    .plantingjs-modal-close-btn:focus {
+      outline: none; }
