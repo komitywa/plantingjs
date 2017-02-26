@@ -8,3 +8,5 @@ coverage/
 *.pyc
 settings.json
 .tern-port
+github_deploy_key
+github_deploy_key.pub

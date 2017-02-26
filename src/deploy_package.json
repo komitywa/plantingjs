@@ -1,0 +1,14 @@
+{
+  "name": "plantingjs",
+  "version": "0.0.1",
+  "bugs": "https://github.com/komitywa/plantingjs/issues",
+  "license": "MIT",
+  "scripts": {},
+  "author": {
+    "name": "Komitywa",
+    "email": "komitywapoznan@gmail.com",
+    "url": "http://komitywa.org"
+  },
+  "private": true,
+  "main": "./js/main.js"
+}

@@ -5,11 +5,13 @@
   "bugs": "https://github.com/komitywa/plantingjs/issues",
   "license": "MIT",
   "scripts": {
-    "serve": "./node_modules/.bin/gulp serve",
-    "build": "./node_modules/.bin/gulp build",
-    "lint": "./node_modules/.bin/gulp lint",
-    "test": "./node_modules/.bin/gulp test",
-    "codecov": "./node_modules/.bin/codecov"
+    "serve": "gulp serve",
+    "build": "gulp build",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "codecov": "codecov",
+    "postinstall": "gulp",
+    "start": "gulp autodeploy"
   },
   "author": {
     "name": "Komitywa",

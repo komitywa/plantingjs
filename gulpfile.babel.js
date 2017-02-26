@@ -11,7 +11,7 @@ import csso from 'gulp-csso';
 import del from 'del';
 import domain from 'domain';
 import eslint from 'gulp-eslint';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import flatten from 'gulp-flatten';
 import filter from 'gulp-filter';
 import gif from 'gulp-if';
@@ -33,6 +33,8 @@ import size from 'gulp-size';
 import tap from 'gulp-tap';
 import useref from 'gulp-useref';
 
+import {resolve} from 'path';
+
 const SETTINGS_PATH = './settings.json';
 const settings = existsSync(SETTINGS_PATH) ?
   JSON.parse(readFileSync(SETTINGS_PATH, 'utf-8')) : {};
@@ -44,6 +46,20 @@ const DEFAULT_SETTINGS = {
 /* Default task */
 gulp.task('default', function() {
   gulp.start('build');
+});
+
+gulp.task('deploy_json', ['clean'], function(cb) {
+  return sequence(
+    'clean',
+    ['js', 'css', 'fonts', 'extras'],
+    'buildsize',
+    cb
+  );
+});
+
+gulp.task('autodeploy', ['clean', 'deploy_json'], function() {
+  const file = readFileSync(resolve(__dirname, './src/deploy_package.json'), 'utf-8');
+  return writeFileSync('./dist/package.json', file);
 });
 
 
